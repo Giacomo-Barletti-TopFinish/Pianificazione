@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{773691B5-FA74-45B2-B8FB-CE360970C644}</ProjectGuid>
+    <ProjectGuid>{68BE4434-09AA-4E0B-AAFD-2FC07DBD9DA5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Pianificazione.Data</RootNamespace>
-    <AssemblyName>Pianificazione.Data</AssemblyName>
+    <RootNamespace>Pianificazione.Service</RootNamespace>
+    <AssemblyName>Pianificazione.Service</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,12 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Lib\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,24 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\AdapterBase.cs" />
-    <Compile Include="Core\BusinessBase.cs" />
-    <Compile Include="Core\ColumnMapAttribute.cs" />
-    <Compile Include="Core\ContextManager.cs" />
-    <Compile Include="Core\DaoExtensor.cs" />
-    <Compile Include="Core\DataContextAttribute.cs" />
-    <Compile Include="Core\Exceptions.cs" />
-    <Compile Include="PianificazioneAdapter.cs" />
-    <Compile Include="PianificazioneAdapterBase.cs" />
-    <Compile Include="PianificazioneBusiness.cs" />
-    <Compile Include="PianificazioneBusinessBase.cs" />
+    <Compile Include="PianificazioneService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Pianificazione.Entities\Pianificazione.Entities.csproj">
-      <Project>{815f39cd-fc6b-4a2b-8ce9-c3739ce3abd0}</Project>
-      <Name>Pianificazione.Entities</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

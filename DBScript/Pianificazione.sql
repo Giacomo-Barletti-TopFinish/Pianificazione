@@ -126,6 +126,7 @@ select * from usr_prd_fasi where idlanciod = '0000000000000000000059778' order b
 
 select * from pianificazione_log order by idlog desc
 
+select distinct tipo from pianificazione_log
 
 select * from pianificazione_lancio 
 
@@ -143,3 +144,8 @@ TRUNCATE TABLE PIANIFICAZIONE_LANCIO;
 TRUNCATE TABLE PIANIFICAZIONE_FASE;
 TRUNCATE TABLE PIANIFICAZIONE_LOG;
 
+select * from pianificazione_fase where idlancio = 52507 order by idfase
+
+select * from pianificazione_fase 
+where stato <>'CHIUSO' AND codiceclifo = 'GALVA' and ((DATAINIZIO >= to_date('10/12/2018', 'DD/MM/YYYY') and DATAINIZIO <= to_date('11/12/2018', 'DD/MM/YYYY')) OR
+(DATAFINE >= to_date('10/12/2018', 'DD/MM/YYYY') and DATAFINE <= to_date('11/12/2018', 'DD/MM/YYYY')))
