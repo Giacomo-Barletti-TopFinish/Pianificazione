@@ -44,5 +44,15 @@
     <Compile Include="PianificazioneService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Pianificazione.Data\Pianificazione.Data.csproj">
+      <Project>{773691B5-FA74-45B2-B8FB-CE360970C644}</Project>
+      <Name>Pianificazione.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Pianificazione.Entities\Pianificazione.Entities.csproj">
+      <Project>{815F39CD-FC6B-4A2B-8CE9-C3739CE3ABD0}</Project>
+      <Name>Pianificazione.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -47,30 +47,27 @@ namespace PianificazioneService
         {
             try
             {
-                ScheduleService.ScheduleService sPianificazione = new ScheduleService.ScheduleService();
+                ScheduleService.ScheduleService sCheduler = new ScheduleService.ScheduleService();
                 ScheduleDS.MONITOR_SCHEDULERRow schedulazione;
-                if (sPianificazione.VerificaEsecuzione("PIANIFICAZIONE_1", out schedulazione))
+                if (sCheduler.VerificaEsecuzione("PIANIFICAZIONE_1", out schedulazione))
                 {
                     Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
-                    //MagazzinoMonitor mMagazzino = new MagazzinoMonitor();
-                    //mMagazzino.VerificaSaldiNegativi();
-                    sPianificazione.AggiornaSchedulazione(schedulazione);
+                    pianificazione.CreaPianificazione();
+                    sCheduler.AggiornaSchedulazione(schedulazione);
                 }
 
-                if (sPianificazione.VerificaEsecuzione("PIANIFICAZIONE_2", out schedulazione))
+                if (sCheduler.VerificaEsecuzione("PIANIFICAZIONE_2", out schedulazione))
                 {
                     Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
-                    //MagazzinoMonitor mMagazzino = new MagazzinoMonitor();
-                    //mMagazzino.VerificaSaldiNegativi();
-                    sPianificazione.AggiornaSchedulazione(schedulazione);
+                    pianificazione.CreaPianificazione();
+                    sCheduler.AggiornaSchedulazione(schedulazione);
                 }
 
-                if (sPianificazione.VerificaEsecuzione("PIANIFICAZIONE_3", out schedulazione))
+                if (sCheduler.VerificaEsecuzione("PIANIFICAZIONE_3", out schedulazione))
                 {
                     Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
-                    //MagazzinoMonitor mMagazzino = new MagazzinoMonitor();
-                    //mMagazzino.VerificaSaldiNegativi();
-                    sPianificazione.AggiornaSchedulazione(schedulazione);
+                    pianificazione.CreaPianificazione();
+                    sCheduler.AggiornaSchedulazione(schedulazione);
                 }
 
             }

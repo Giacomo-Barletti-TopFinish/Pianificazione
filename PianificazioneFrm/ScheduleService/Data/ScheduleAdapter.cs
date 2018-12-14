@@ -19,7 +19,7 @@ namespace ScheduleServices.Data
 
         public void FillSchedule_SCHEDULER(ScheduleDS ds)
         {
-            string select = @"select * from Schedule_SCHEDULER";
+            string select = @"select * from MONITOR_SCHEDULER";
 
             using (DbDataAdapter da = BuildDataAdapter(select))
             {

@@ -24,9 +24,9 @@ namespace PianificazioneService
                 });
 
                 configure.RunAsLocalSystem();
-                configure.SetServiceName("MetalMonitorService");
-                configure.SetDisplayName("MetalMonitorService");
-                configure.SetDescription("Servizio di monitoring di Metalplus");
+                configure.SetServiceName("PianificazioneService");
+                configure.SetDisplayName("PianificazioneService");
+                configure.SetDescription("Servizio di pianificazione da RVL di Metalplus");
                 HostLogger.Get<Program>().Info("Servizio avviato");
                 configure.StartAutomatically();
             });
