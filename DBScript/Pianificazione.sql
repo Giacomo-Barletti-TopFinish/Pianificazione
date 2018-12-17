@@ -124,6 +124,7 @@ select idlanciod,count(*) from usr_prd_fasi group by idlanciod
 
 select * from usr_prd_fasi where idlanciod = '0000000000000000000059778' order by idprdfase
 
+TRUNCATE TABLE PIANIFICAZIONE_LOG;
 select * from pianificazione_log order by idlog desc
 
 select * from pianificazione_log  where tipo = 'ERRORE'
@@ -167,9 +168,9 @@ inner join pianificazione_lancio la on la.idlancio = fa.idlancio
 inner join es_diba db on db.idarticolo = fa.idmagazz
 inner join gruppo.magazz ar on ar.idmagazz=fa.idmagazz
 inner join gruppo.magazz pf on pf.idmagazz=db.idprodottofinito
-where (DATAINIZIO >= to_date(?, 'DD/MM/YYYY') and DATAINIZIO <= to_date(?, 'DD/MM/YYYY')) OR
-(DATAFINE >= to_date(?, 'DD/MM/YYYY') and DATAFINE <= to_date(?, 'DD/MM/YYYY'))
-
+where ((DATAINIZIO >= to_date('10/12/2018', 'DD/MM/YYYY') and DATAINIZIO <= to_date('16/12/2018', 'DD/MM/YYYY')) OR
+(DATAFINE >= to_date('10/12/2018', 'DD/MM/YYYY') and DATAFINE <= to_date('16/10/2018', 'DD/MM/YYYY')))
+and nomecommessa = 'STC/2018/0000016334'
 
 SELECT * FROM BOLLE_VENDITA
 WHERE 
@@ -178,4 +179,21 @@ AND DATDOC<= TO_DATE(?,'DD-MM-YYYY')
 
 select * from es_diba
 
+TRUNCATE TABLE PIANIFICAZIONE_LOG;
 
+select * from pianificazione_log order by idlog desc;
+
+select * from monitor_scheduler where ESEGUITA = 'N';
+
+select distinct tipo from pianificazione_log ;
+
+select fa.azienda,la.idmagazz,fa.idmagazz idmagazz_fase,la.datacommessa, la.nomecommessa,pf.modello modelloLancio,ar.modello,fa.stato,
+fa.idfase,fa.codiceclifo,trim(cli.ragionesoc), fa.datainizio, fa.datafine, fa.qta, fa.qtadater, fa.qtater
+from PIANIFICAZIONE_FASE fa
+inner join pianificazione_lancio la on la.idlancio = fa.idlancio
+inner join gruppo.magazz ar on ar.idmagazz=fa.idmagazz
+inner join gruppo.magazz pf on pf.idmagazz=la.idmagazz
+inner join gruppo.clifo cli on cli.codice = fa.codiceclifo
+where ((DATAINIZIO >= to_date('10/12/2018', 'DD/MM/YYYY') and DATAINIZIO <= to_date('16/12/2018', 'DD/MM/YYYY')) OR
+(DATAFINE >= to_date('10/12/2018', 'DD/MM/YYYY') and DATAFINE <= to_date('16/10/2018', 'DD/MM/YYYY')))
+and nomecommessa = 'STC/2018/0000016334'

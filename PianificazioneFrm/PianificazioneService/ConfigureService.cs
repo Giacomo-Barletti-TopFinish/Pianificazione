@@ -29,7 +29,7 @@ namespace PianificazioneService
                 configure.SetDisplayName("PianificazioneService");
                 configure.SetDescription("Servizio di pianificazione da RVL di Metalplus");
                 HostLogger.Get<Program>().Info("Servizio avviato");
-                Console.WriteLine("Servizio avviato");
+                Console.WriteLine("Servizio in fase di avvio");
                 configure.StartAutomatically();
             });
 
