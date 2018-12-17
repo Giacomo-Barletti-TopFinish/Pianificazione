@@ -10,6 +10,7 @@ namespace PianificazioneService
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Avvio");
             ConfigureService.Configure();
         }
     }

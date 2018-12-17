@@ -63,7 +63,7 @@ namespace PianificazioneFrm
 
             int indiceRamo = 0;
             Dictionary<decimal, int> riferimentoBarra = new Dictionary<decimal, int>();
-            int colore = 0;
+            
             foreach (PianificazioneDS.PIANIFICAZIONE_FASERow fase in ds.PIANIFICAZIONE_FASE.OrderBy(x => x.IDLANCIO).ThenBy(x => x.IDFASE))
             {
                 Lavorazione lavorazione = new Lavorazione();
@@ -99,9 +99,11 @@ namespace PianificazioneFrm
                 lavorazione.Fine = fine;
 
                 lavorazione.colore = Color.Green;
-                if (colore % 2 == 0)
-                    lavorazione.colore = Color.Red;
-                colore++;
+                if(fase.STATO == StatoFasePianificazione.APERTO)
+                    lavorazione.colore = Color.OrangeRed;
+
+                if (fase.STATO == StatoFasePianificazione.PIANIFICATO)
+                    lavorazione.colore = Color.DeepSkyBlue;
 
                 lavorazione.Ramo = indiceRamo;
 

@@ -126,6 +126,9 @@ select * from usr_prd_fasi where idlanciod = '0000000000000000000059778' order b
 
 select * from pianificazione_log order by idlog desc
 
+select * from pianificazione_log  where tipo = 'ERRORE'
+
+
 select distinct tipo from pianificazione_log
 
 select * from pianificazione_lancio 
@@ -149,3 +152,30 @@ select * from pianificazione_fase where idlancio = 52507 order by idfase
 select * from pianificazione_fase 
 where stato <>'CHIUSO' AND codiceclifo = 'GALVA' and ((DATAINIZIO >= to_date('10/12/2018', 'DD/MM/YYYY') and DATAINIZIO <= to_date('11/12/2018', 'DD/MM/YYYY')) OR
 (DATAFINE >= to_date('10/12/2018', 'DD/MM/YYYY') and DATAFINE <= to_date('11/12/2018', 'DD/MM/YYYY')))
+
+select * from usr_prd_fasi where idprdfase = '0000000000000000000358630'
+
+select * from usr_prd_movfasi where idprdfase = '0000000000000000000358630'
+
+select * from monitor_scheduler order by idscheduler desc
+
+
+select la.idmagazz,la.datacommessa, la.nomecommessa,pf.modello modellofinito,ar.modello,fa.stato,
+fa.idfase,fa.codiceclifo,fa.datainizio, fa.datafine, fa.qta, fa.qtadater, fa.qtater
+from PIANIFICAZIONE_FASE fa
+inner join pianificazione_lancio la on la.idlancio = fa.idlancio
+inner join es_diba db on db.idarticolo = fa.idmagazz
+inner join gruppo.magazz ar on ar.idmagazz=fa.idmagazz
+inner join gruppo.magazz pf on pf.idmagazz=db.idprodottofinito
+where (DATAINIZIO >= to_date(?, 'DD/MM/YYYY') and DATAINIZIO <= to_date(?, 'DD/MM/YYYY')) OR
+(DATAFINE >= to_date(?, 'DD/MM/YYYY') and DATAFINE <= to_date(?, 'DD/MM/YYYY'))
+
+
+SELECT * FROM BOLLE_VENDITA
+WHERE 
+    DATDOC >= TO_DATE(?,'DD-MM-YYYY')
+AND DATDOC<= TO_DATE(?,'DD-MM-YYYY')
+
+select * from es_diba
+
+

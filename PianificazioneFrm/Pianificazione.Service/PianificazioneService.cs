@@ -322,6 +322,7 @@ namespace Pianificazione.Service
             {
                 sb.AppendLine("Errore:" + ex.Message);
                 sb.AppendLine("Sorgente: " + ex.Source);
+                sb.AppendLine("Stack: " + ex.StackTrace);
 
                 ex = ex.InnerException;
             }
@@ -331,6 +332,7 @@ namespace Pianificazione.Service
             {
                 bPianificazione.InsertPianificazioneLog("EXCEPTION", messaggio);
             }
+            Console.WriteLine(messaggio);
         }
     }
 }

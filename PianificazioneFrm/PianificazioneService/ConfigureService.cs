@@ -16,6 +16,7 @@ namespace PianificazioneService
             {
                 configure.UseLog4Net("..\\..\\App.config");
                 HostLogger.Get<Program>().Info("Servizio in fase di avvio");
+                Console.WriteLine("Servizio in fase di avvio");
                 configure.Service<WindowsService>(service =>
                 {
                     service.ConstructUsing(s => new WindowsService());
@@ -28,6 +29,7 @@ namespace PianificazioneService
                 configure.SetDisplayName("PianificazioneService");
                 configure.SetDescription("Servizio di pianificazione da RVL di Metalplus");
                 HostLogger.Get<Program>().Info("Servizio avviato");
+                Console.WriteLine("Servizio avviato");
                 configure.StartAutomatically();
             });
 
