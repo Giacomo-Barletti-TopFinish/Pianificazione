@@ -34,7 +34,7 @@ namespace PianificazioneFrm
 
                 ganttChart1.MouseMove += new MouseEventHandler(ganttChart1.GanttChart_MouseMove);
                 ganttChart1.MouseMove += new MouseEventHandler(GanttChart1_MouseMove);
-                ganttChart1.MouseDragged += new MouseEventHandler(ganttChart1.GanttChart_MouseDragged);
+//                ganttChart1.MouseDragged += new MouseEventHandler(ganttChart1.GanttChart_MouseDragged);
                 ganttChart1.MouseLeave += new EventHandler(ganttChart1.GanttChart_MouseLeave);
 
                 if (rdPerData.Checked)

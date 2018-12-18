@@ -186,6 +186,9 @@ namespace Pianificazione.Service
             if (giorno.Month == 12 && giorno.Day == 26)
                 giorno = giorno.AddDays(1);
 
+            if (giorno.DayOfWeek == DayOfWeek.Saturday)
+                return giorno.AddDays(2);
+
             if (giorno.DayOfWeek == DayOfWeek.Sunday)
                 return giorno.AddDays(1);
 
