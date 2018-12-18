@@ -168,6 +168,7 @@ namespace PianificazioneFrm.Gantt
         private Color _color;
         private Color _hoverColor;
         private int _index;
+        private decimal _qta;
 
         public string RowText
         {
@@ -211,11 +212,17 @@ namespace PianificazioneFrm.Gantt
             set { _index = value; }
         }
 
+        public decimal Qta
+        {
+            get { return _qta; }
+            set { _qta = value; }
+        }
+
         public BarInformation()
         {
         }
 
-        public BarInformation(string rowText, DateTime fromTime, DateTime totime, Color color, Color hoverColor, int index)
+        public BarInformation(string rowText, DateTime fromTime, DateTime totime, Color color, Color hoverColor, int index,decimal qta)
         {
             RowText = rowText;
             FromTime = fromTime;
@@ -224,9 +231,10 @@ namespace PianificazioneFrm.Gantt
             HoverColor = hoverColor;
             Index = index;
             Label = RowText;
+            Qta = qta;
         }
 
-        public BarInformation(string label, string rowText, DateTime fromTime, DateTime totime, Color color, Color hoverColor, int index)
+        public BarInformation(string label, string rowText, DateTime fromTime, DateTime totime, Color color, Color hoverColor, int index,decimal qta)
         {
             RowText = rowText;
             FromTime = fromTime;
@@ -235,6 +243,7 @@ namespace PianificazioneFrm.Gantt
             HoverColor = hoverColor;
             Index = index;
             Label = label;
+            Qta = qta;
         }
     }
 

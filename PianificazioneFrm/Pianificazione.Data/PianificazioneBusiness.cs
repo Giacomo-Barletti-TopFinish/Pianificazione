@@ -27,6 +27,13 @@ namespace Pianificazione.Data
         }
 
         [DataContext]
+        public void FillPIANIFICAZIONE_FASEPerCommessa(PianificazioneDS ds, string commessa)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.FillPIANIFICAZIONE_FASEPerCommessa(ds, commessa);
+        }
+
+        [DataContext]
         public void FillUSR_PRD_MOVFASI(PianificazioneDS ds, List<string> IDPRDFASE)
         {
             PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);

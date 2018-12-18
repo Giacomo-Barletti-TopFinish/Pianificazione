@@ -16,5 +16,6 @@ namespace Pianificazione.Entities
         public Color colore { get; set; }
         public int Ramo { get; set; }
         public string IDPRDFASE { get; set; }
+        public decimal Qta{ get; set; }
     }
 }

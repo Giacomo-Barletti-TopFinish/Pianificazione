@@ -44,6 +44,22 @@ namespace Pianificazione.Data
             }
         }
 
+        public void FillPIANIFICAZIONE_FASEPerCommessa(PianificazioneDS ds, string commessa)
+        {
+            string select = @"SELECT FA.* FROM PIANIFICAZIONE_FASE FA
+                                INNER JOIN PIANIFICAZIONE_LANCIO LA ON LA.IDLANCIO = FA.IDLANCIO
+                                WHERE LA.NOMECOMMESSA LIKE $P<COMMESSA>";
+
+            ParamSet ps = new ParamSet();
+            commessa = string.Format("%{0}%", commessa);
+            ps.AddParam("COMMESSA", DbType.String, commessa);
+
+            using (DbDataAdapter da = BuildDataAdapter(select, ps))
+            {
+                da.Fill(ds.PIANIFICAZIONE_FASE);
+            }
+        }
+
         public void FillUSR_PRD_FASI(PianificazioneDS ds, List<string> IDROOTPRDFASE)
         {
             string inCOndition = ConvertToStringForInCondition(IDROOTPRDFASE);
@@ -167,7 +183,7 @@ namespace Pianificazione.Data
             ParamSet ps = new ParamSet();
             ps.AddParam("IDLANCIOD", DbType.String, IDLANCIOD);
 
-            using (DbDataAdapter da = BuildDataAdapter(select,ps))
+            using (DbDataAdapter da = BuildDataAdapter(select, ps))
             {
                 da.Fill(ds.USR_PRD_FASI);
             }

@@ -11,5 +11,6 @@ namespace Pianificazione.Entities
         public static readonly string PIANIFICATO = "PIANIFICATO";
         public static readonly string APERTO = "APERTO";
         public static readonly string CHIUSO = "CHIUSO";
+        public static readonly string ANNULLATO = "ANNULLATO";
     }
 }

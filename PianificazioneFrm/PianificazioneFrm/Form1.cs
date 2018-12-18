@@ -31,11 +31,39 @@ namespace PianificazioneFrm
                 ganttChart1 = new GanttChart();
                 ganttChart1.AllowChange = true;
                 ganttChart1.Dock = DockStyle.Fill;
-                ganttChart1.FromDate = new DateTime(dtDal.Value.Year, dtDal.Value.Month, dtDal.Value.Day, 0, 0, 0);
-                ganttChart1.ToDate = new DateTime(dtAl.Value.Year, dtAl.Value.Month, dtAl.Value.Day, 23, 59, 0);
-                tableLayoutPanel1.Controls.Add(ganttChart1, 0, 0);
 
-                b.FillUSR_PRD_FASI_ROOT(dsRoot, dtDal.Value, dtAl.Value);
+                ganttChart1.MouseMove += new MouseEventHandler(ganttChart1.GanttChart_MouseMove);
+                ganttChart1.MouseMove += new MouseEventHandler(GanttChart1_MouseMove);
+                ganttChart1.MouseDragged += new MouseEventHandler(ganttChart1.GanttChart_MouseDragged);
+                ganttChart1.MouseLeave += new EventHandler(ganttChart1.GanttChart_MouseLeave);
+
+                if (rdPerData.Checked)
+                {
+                    ganttChart1.FromDate = new DateTime(dtDal.Value.Year, dtDal.Value.Month, dtDal.Value.Day, 0, 0, 0);
+                    ganttChart1.ToDate = new DateTime(dtAl.Value.Year, dtAl.Value.Month, dtAl.Value.Day, 23, 59, 0);
+                    tableLayoutPanel1.Controls.Add(ganttChart1, 0, 0);
+
+                    b.FillUSR_PRD_FASI_ROOT(dsRoot, dtDal.Value, dtAl.Value);
+
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(txCommessa.Text))
+                    {
+                        lblMessage.Text = "Indicare la commessa da ricercare";
+                        return;
+                    }
+
+                    txCommessa.Text = txCommessa.Text.Trim().ToUpper();
+                    b.FillPIANIFICAZIONE_FASEPerCommessa(dsRoot, txCommessa.Text);
+
+                    DateTime dataInizio = dsRoot.PIANIFICAZIONE_FASE.Where(x => !x.IsDATAINIZIONull()).Min(x => x.DATAINIZIO);
+                    DateTime dataFine = dsRoot.PIANIFICAZIONE_FASE.Where(x => !x.IsDATAFINENull()).Max(x => x.DATAFINE);
+
+                    ganttChart1.FromDate = new DateTime(dataInizio.Year, dataInizio.Month, dataInizio.Day, 0, 0, 0);
+                    ganttChart1.ToDate = new DateTime(dataFine.Year, dataFine.Month, dataFine.Day, 23, 59, 0);
+                    tableLayoutPanel1.Controls.Add(ganttChart1, 0, 0);
+                }
                 List<decimal> idlancio = dsRoot.PIANIFICAZIONE_FASE.Where(x => !x.IsIDLANCIONull()).Select(x => x.IDLANCIO).Distinct().ToList();
 
                 List<Lavorazione> lavorazioni = CreaListaLavorazione(dsRoot);
@@ -50,8 +78,33 @@ namespace PianificazioneFrm
             tableLayoutPanel1.Update();
         }
 
+        private void GanttChart1_MouseMove(Object sender, MouseEventArgs e)
+        {
+            List<string> toolTipText = new List<string>();
+
+            if (ganttChart1.MouseOverRowText.Length > 0)
+            {
+                BarInformation val = (BarInformation)ganttChart1.MouseOverRowValue;
+                toolTipText.Add(string.Format("Quantita: {0}",val.Qta));
+                toolTipText.Add("Dal ");
+                toolTipText.Add(val.FromTime.ToLongDateString() + " - " + val.FromTime.ToString("HH:mm"));
+                toolTipText.Add("Al ");
+                toolTipText.Add(val.ToTime.ToLongDateString() + " - " + val.ToTime.ToString("HH:mm"));
+            }
+            else
+            {
+                toolTipText.Add("");
+            }
+
+            ganttChart1.ToolTipTextTitle = ganttChart1.MouseOverRowText;
+            ganttChart1.ToolTipText = toolTipText;
+
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
+            lblMessage.Text = string.Empty;
+
             dtAl.Value = DateTime.Today;
 
             dtDal.Value = DateTime.Today.AddDays(-7);
@@ -63,7 +116,7 @@ namespace PianificazioneFrm
 
             int indiceRamo = 0;
             Dictionary<decimal, int> riferimentoBarra = new Dictionary<decimal, int>();
-            
+
             foreach (PianificazioneDS.PIANIFICAZIONE_FASERow fase in ds.PIANIFICAZIONE_FASE.OrderBy(x => x.IDLANCIO).ThenBy(x => x.IDFASE))
             {
                 Lavorazione lavorazione = new Lavorazione();
@@ -99,11 +152,14 @@ namespace PianificazioneFrm
                 lavorazione.Fine = fine;
 
                 lavorazione.colore = Color.Green;
-                if(fase.STATO == StatoFasePianificazione.APERTO)
-                    lavorazione.colore = Color.OrangeRed;
+                if (fase.STATO == StatoFasePianificazione.APERTO)
+                    lavorazione.colore = Color.Yellow;
 
                 if (fase.STATO == StatoFasePianificazione.PIANIFICATO)
                     lavorazione.colore = Color.DeepSkyBlue;
+
+                if (fase.STATO == StatoFasePianificazione.ANNULLATO)
+                    lavorazione.colore = Color.Red;
 
                 lavorazione.Ramo = indiceRamo;
 
@@ -129,6 +185,8 @@ namespace PianificazioneFrm
                     riferimentoBarra.Add(fase.IDFASE, -1);
                 else
                     riferimentoBarra.Add(fase.IDFASE, lavorazione.Ramo);
+
+                lavorazione.Qta = fase.QTA;
 
                 lavorazioni.Add(lavorazione);
             }
@@ -170,7 +228,7 @@ namespace PianificazioneFrm
                 Color colore = Color.Green;
                 if (indiceColore % 2 == 0)
                     colore = Color.Red;
-                lst1.Add(new BarInformation(fase.IDLANCIOD, fase.CODICECLIFO, inizio, fine, colore, Color.Khaki, indice));
+                lst1.Add(new BarInformation(fase.IDLANCIOD, fase.CODICECLIFO, inizio, fine, colore, Color.Khaki, indice,fase.QTA));
                 if (fase.CODICECLIFO.Trim() == "MONT")
                     riferimentoBarra.Add(fase.IDPRDFASE, -1);
                 else
@@ -188,7 +246,7 @@ namespace PianificazioneFrm
 
             foreach (Lavorazione lavorazione in lavorazioni)
             {
-                lst1.Add(new BarInformation(lavorazione.Commessa, lavorazione.Reparto, lavorazione.Inizio, lavorazione.Fine, lavorazione.colore, Color.Khaki, lavorazione.Ramo));
+                lst1.Add(new BarInformation(lavorazione.Commessa, lavorazione.Reparto, lavorazione.Inizio, lavorazione.Fine, lavorazione.colore, Color.Khaki, lavorazione.Ramo,lavorazione.Qta));
             }
 
             return lst1;

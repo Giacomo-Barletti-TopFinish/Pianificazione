@@ -293,6 +293,9 @@ namespace Pianificazione.Service
 
                 fase.STATO = (fase.QTADATER == 0) ? StatoFasePianificazione.CHIUSO : StatoFasePianificazione.APERTO;
 
+                if (fase.QTAANN > 0)
+                    fase.STATO = StatoFasePianificazione.ANNULLATO;
+
             }
 
         }
