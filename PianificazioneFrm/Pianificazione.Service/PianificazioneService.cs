@@ -126,12 +126,70 @@ namespace Pianificazione.Service
                     CorreggiDateFasePianificata(faseFigliaPianificata);
                 }
             }
-            fasiFiglie = _ds.PIANIFICAZIONE_FASE.Where(x => !x.IsIDFASEPADRENull() && x.IDFASEPADRE == fasePianificata.IDFASE).ToList();
+        //    fasiFiglie = _ds.PIANIFICAZIONE_FASE.Where(x => !x.IsIDFASEPADRENull() && x.IDFASEPADRE == fasePianificata.IDFASE).ToList();
 
             finePrecedente = fasiFiglie.Where(x => !x.IsDATAFINENull()).Max(x => x.DATAFINE);
             fasePianificata.DATAINIZIO = finePrecedente;
-            fasePianificata.DATAFINE = finePrecedente.AddDays((double)fasePianificata.OFFSETTIME);
-            if (fasePianificata.OFFSETTIME == 0) fasePianificata.DATAINIZIO = finePrecedente.AddHours(1);
+
+            finePrecedente = CorreggiGiorno(finePrecedente);
+
+            fasePianificata.DATAFINE = CalcolaGiorno(finePrecedente, fasePianificata.OFFSETTIME);
+
+            //fasePianificata.DATAFINE = finePrecedente.AddDays((double)fasePianificata.OFFSETTIME);
+            //if (fasePianificata.OFFSETTIME == 0) fasePianificata.DATAINIZIO = finePrecedente.AddHours(1);
+        }
+
+        private DateTime CalcolaGiorno(DateTime dalGiorno, decimal offset)
+        {
+            if (offset == 0)
+                return dalGiorno.AddHours(1);
+            DateTime giorno = new DateTime();
+            for(int i =0;i<offset;i++)
+            {
+                giorno = dalGiorno.AddDays(1);
+                giorno = CorreggiGiorno(giorno);
+            }
+
+            return giorno;
+        }
+
+        private DateTime CorreggiGiorno(DateTime giorno)
+        {
+
+            if(giorno.Month==1 && giorno.Day==1)
+                giorno = giorno.AddDays(1);
+
+            if (giorno.Month == 6 && giorno.Day == 1)
+                giorno = giorno.AddDays(1);
+
+            if (giorno.Month == 25 && giorno.Day == 4)
+                giorno = giorno.AddDays(1);
+
+            if (giorno.Month == 5 && giorno.Day == 1)
+                giorno = giorno.AddDays(1);
+
+            if (giorno.Month == 6 && giorno.Day == 2)
+                giorno = giorno.AddDays(1);
+
+            if (giorno.Month == 8 && giorno.Day == 15)
+                giorno = giorno.AddDays(1);
+
+            if (giorno.Month == 11 && giorno.Day == 1)
+                giorno = giorno.AddDays(1);
+
+            if (giorno.Month == 12 && giorno.Day == 8)
+                giorno = giorno.AddDays(1);
+
+            if (giorno.Month == 12 && giorno.Day == 25)
+                giorno = giorno.AddDays(1);
+
+            if (giorno.Month == 12 && giorno.Day == 26)
+                giorno = giorno.AddDays(1);
+
+            if (giorno.DayOfWeek == DayOfWeek.Sunday)
+                return giorno.AddDays(1);
+
+            return giorno;
         }
 
         private void CreaAlbertoPianificazione(List<PianificazioneDS.USR_PRD_FASIRow> fasi, decimal IDLANCIO)
