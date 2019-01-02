@@ -126,7 +126,7 @@ namespace Pianificazione.Service
                 List<PianificazioneDS.PIANIFICAZIONE_FASERow> fasiFigliePianificate = fasiFiglie.Where(x => x.STATO == StatoFasePianificazione.PIANIFICATO).ToList();
                 foreach (PianificazioneDS.PIANIFICAZIONE_FASERow faseFigliaPianificata in fasiFigliePianificate)
                 {
-                    CorreggiDateFasePianificata(faseFigliaPianificata,ref attendibilita);
+                    CorreggiDateFasePianificata(faseFigliaPianificata, ref attendibilita);
                 }
             }
             //    fasiFiglie = _ds.PIANIFICAZIONE_FASE.Where(x => !x.IsIDFASEPADRENull() && x.IDFASEPADRE == fasePianificata.IDFASE).ToList();
@@ -302,6 +302,10 @@ namespace Pianificazione.Service
                 if (fase.QTAANN > 0)
                     fase.STATO = StatoFasePianificazione.ANNULLATO;
 
+                if (fase.STATO == StatoFasePianificazione.PIANIFICATO)
+                    fase.ATTENDIBILITA = 2;
+                else
+                    fase.ATTENDIBILITA = 1;
             }
 
         }
