@@ -131,7 +131,11 @@ select idlanciod,count(*) from usr_prd_fasi group by idlanciod
 select * from usr_prd_fasi where idlanciod = '0000000000000000000059778' order by idprdfase
 
 TRUNCATE TABLE PIANIFICAZIONE_LOG;
-select * from pianificazione_log order by idlog desc
+
+  SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') FROM dual;
+
+select TO_CHAR(l.data, 'DD-MON-YYYY HH24:MI:SS'),
+ l.* from pianificazione_log l order by idlog desc
 
 select * from pianificazione_log  where tipo = 'ERRORE'
 

@@ -7302,6 +7302,8 @@ namespace Pianificazione.Entities {
             
             private global::System.Data.DataColumn columnRIFERIMENTO_INFRA;
             
+            private global::System.Data.DataColumn columnATTENDIBILITA;
+            
             private global::System.Data.DataColumn columnDATARIF_INFRA;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -7579,6 +7581,14 @@ namespace Pianificazione.Entities {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ATTENDIBILITAColumn {
+                get {
+                    return this.columnATTENDIBILITA;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public global::System.Data.DataColumn DATARIF_INFRAColumn {
                 get {
                     return this.columnDATARIF_INFRA;
@@ -7653,6 +7663,7 @@ namespace Pianificazione.Entities {
                         decimal QTAPIA, 
                         decimal QTAACCLE, 
                         string RIFERIMENTO_INFRA, 
+                        decimal ATTENDIBILITA, 
                         System.DateTime DATARIF_INFRA) {
                 PIANIFICAZIONE_FASERow rowPIANIFICAZIONE_FASERow = ((PIANIFICAZIONE_FASERow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
@@ -7686,6 +7697,7 @@ namespace Pianificazione.Entities {
                         QTAPIA,
                         QTAACCLE,
                         RIFERIMENTO_INFRA,
+                        ATTENDIBILITA,
                         DATARIF_INFRA};
                 rowPIANIFICAZIONE_FASERow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowPIANIFICAZIONE_FASERow);
@@ -7739,6 +7751,7 @@ namespace Pianificazione.Entities {
                 this.columnQTAPIA = base.Columns["QTAPIA"];
                 this.columnQTAACCLE = base.Columns["QTAACCLE"];
                 this.columnRIFERIMENTO_INFRA = base.Columns["RIFERIMENTO_INFRA"];
+                this.columnATTENDIBILITA = base.Columns["ATTENDIBILITA"];
                 this.columnDATARIF_INFRA = base.Columns["DATARIF_INFRA"];
             }
             
@@ -7805,6 +7818,8 @@ namespace Pianificazione.Entities {
                 base.Columns.Add(this.columnQTAACCLE);
                 this.columnRIFERIMENTO_INFRA = new global::System.Data.DataColumn("RIFERIMENTO_INFRA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRIFERIMENTO_INFRA);
+                this.columnATTENDIBILITA = new global::System.Data.DataColumn("ATTENDIBILITA", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnATTENDIBILITA);
                 this.columnDATARIF_INFRA = new global::System.Data.DataColumn("DATARIF_INFRA", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDATARIF_INFRA);
                 this.columnIDFASE.AllowDBNull = false;
@@ -17413,6 +17428,22 @@ namespace Pianificazione.Entities {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal ATTENDIBILITA {
+                get {
+                    try {
+                        return ((decimal)(this[this.tablePIANIFICAZIONE_FASE.ATTENDIBILITAColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ATTENDIBILITA\' in table \'PIANIFICAZIONE_FASE\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePIANIFICAZIONE_FASE.ATTENDIBILITAColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public System.DateTime DATARIF_INFRA {
                 get {
                     try {
@@ -17581,6 +17612,18 @@ namespace Pianificazione.Entities {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetRIFERIMENTO_INFRANull() {
                 this[this.tablePIANIFICAZIONE_FASE.RIFERIMENTO_INFRAColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsATTENDIBILITANull() {
+                return this.IsNull(this.tablePIANIFICAZIONE_FASE.ATTENDIBILITAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetATTENDIBILITANull() {
+                this[this.tablePIANIFICAZIONE_FASE.ATTENDIBILITAColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

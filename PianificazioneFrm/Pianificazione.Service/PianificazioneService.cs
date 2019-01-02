@@ -110,10 +110,11 @@ namespace Pianificazione.Service
 
             if (faseRoot.STATO != StatoFasePianificazione.PIANIFICATO)
                 return;
-            CorreggiDateFasePianificata(faseRoot);
+            int attendibilita = 0;
+            CorreggiDateFasePianificata(faseRoot, ref attendibilita);
         }
 
-        private void CorreggiDateFasePianificata(PianificazioneDS.PIANIFICAZIONE_FASERow fasePianificata)
+        private void CorreggiDateFasePianificata(PianificazioneDS.PIANIFICAZIONE_FASERow fasePianificata, ref int attendibilita)
         {
 
             List<PianificazioneDS.PIANIFICAZIONE_FASERow> fasiFiglie = _ds.PIANIFICAZIONE_FASE.Where(x => !x.IsIDFASEPADRENull() && x.IDFASEPADRE == fasePianificata.IDFASE).ToList();
@@ -125,18 +126,18 @@ namespace Pianificazione.Service
                 List<PianificazioneDS.PIANIFICAZIONE_FASERow> fasiFigliePianificate = fasiFiglie.Where(x => x.STATO == StatoFasePianificazione.PIANIFICATO).ToList();
                 foreach (PianificazioneDS.PIANIFICAZIONE_FASERow faseFigliaPianificata in fasiFigliePianificate)
                 {
-                    CorreggiDateFasePianificata(faseFigliaPianificata);
+                    CorreggiDateFasePianificata(faseFigliaPianificata,ref attendibilita);
                 }
             }
             //    fasiFiglie = _ds.PIANIFICAZIONE_FASE.Where(x => !x.IsIDFASEPADRENull() && x.IDFASEPADRE == fasePianificata.IDFASE).ToList();
-
+            attendibilita++;
             finePrecedente = fasiFiglie.Where(x => !x.IsDATAFINENull()).Max(x => x.DATAFINE);
             fasePianificata.DATAINIZIO = finePrecedente;
 
-            finePrecedente = CorreggiGiorno(finePrecedente);
+            finePrecedente = CorreggiGiornoSeFestivo(finePrecedente);
 
             fasePianificata.DATAFINE = CalcolaGiorno(finePrecedente, fasePianificata.OFFSETTIME);
-
+            fasePianificata.ATTENDIBILITA = attendibilita;
             //fasePianificata.DATAFINE = finePrecedente.AddDays((double)fasePianificata.OFFSETTIME);
             //if (fasePianificata.OFFSETTIME == 0) fasePianificata.DATAINIZIO = finePrecedente.AddHours(1);
         }
@@ -149,13 +150,13 @@ namespace Pianificazione.Service
             for (int i = 0; i < offset; i++)
             {
                 giorno = dalGiorno.AddDays(1);
-                giorno = CorreggiGiorno(giorno);
+                giorno = CorreggiGiornoSeFestivo(giorno);
             }
 
             return giorno;
         }
 
-        private DateTime CorreggiGiorno(DateTime giorno)
+        private DateTime CorreggiGiornoSeFestivo(DateTime giorno)
         {
 
             if (giorno.Month == 1 && giorno.Day == 1)
