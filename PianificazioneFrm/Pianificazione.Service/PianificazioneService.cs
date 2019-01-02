@@ -31,7 +31,7 @@ namespace Pianificazione.Service
                 SciviLog(ex);
                 return;
             }
-            SciviLog("INFO", string.Format("Trovati {0} lanci da verificare", _ds.USR_PRD_LANCIOD.Count));
+            SciviLog("START", string.Format("Trovati {0} lanci da verificare", _ds.USR_PRD_LANCIOD.Count));
 
             int numeroElementiLancio = _ds.USR_PRD_LANCIOD.Count();
             int contatoreLancio = 1;
@@ -95,6 +95,8 @@ namespace Pianificazione.Service
 
                 }
             }
+            SciviLog("END", "Fine elaborazione");
+
         }
 
         private void CorreggiDate(PianificazioneDS.PIANIFICAZIONE_LANCIORow pLancio)
@@ -126,7 +128,7 @@ namespace Pianificazione.Service
                     CorreggiDateFasePianificata(faseFigliaPianificata);
                 }
             }
-        //    fasiFiglie = _ds.PIANIFICAZIONE_FASE.Where(x => !x.IsIDFASEPADRENull() && x.IDFASEPADRE == fasePianificata.IDFASE).ToList();
+            //    fasiFiglie = _ds.PIANIFICAZIONE_FASE.Where(x => !x.IsIDFASEPADRENull() && x.IDFASEPADRE == fasePianificata.IDFASE).ToList();
 
             finePrecedente = fasiFiglie.Where(x => !x.IsDATAFINENull()).Max(x => x.DATAFINE);
             fasePianificata.DATAINIZIO = finePrecedente;
@@ -144,7 +146,7 @@ namespace Pianificazione.Service
             if (offset == 0)
                 return dalGiorno.AddHours(1);
             DateTime giorno = new DateTime();
-            for(int i =0;i<offset;i++)
+            for (int i = 0; i < offset; i++)
             {
                 giorno = dalGiorno.AddDays(1);
                 giorno = CorreggiGiorno(giorno);
@@ -156,7 +158,7 @@ namespace Pianificazione.Service
         private DateTime CorreggiGiorno(DateTime giorno)
         {
 
-            if(giorno.Month==1 && giorno.Day==1)
+            if (giorno.Month == 1 && giorno.Day == 1)
                 giorno = giorno.AddDays(1);
 
             if (giorno.Month == 6 && giorno.Day == 1)

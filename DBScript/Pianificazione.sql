@@ -1,7 +1,13 @@
 select * from ditta1.usr_prd_fasi
-where (DATAINIZIO >= to_date('10/12/2018', 'DD/MM/YYYY') and DATAINIZIO <= to_date('11/12/2018', 'DD/MM/YYYY')) OR
-(DATAFINE >= to_date('10/12/2018', 'DD/MM/YYYY') and DATAFINE <= to_date('11/12/2018', 'DD/MM/YYYY'))
+where DATAINIZIO <= to_date('11/12/2018', 'DD/MM/YYYY') AND
+DATAFINE >= to_date('10/12/2018', 'DD/MM/YYYY') 
+--1991
 
+select mf.idprdmovfase,fa.* from pianificazione_fase fa
+left join usr_prd_movfasi mf on fa.idprdfase = mf.idprdfase
+where fa.DATAINIZIO <= to_date('10/01/2019', 'DD/MM/YYYY') AND
+fa.DATAFINE >= to_date('21/12/2018', 'DD/MM/YYYY') 
+and fa.stato = 'PIANIFICATO'
 
 
 select distinct idlanciod from ditta1.usr_prd_fasi
@@ -197,3 +203,85 @@ inner join gruppo.clifo cli on cli.codice = fa.codiceclifo
 where ((DATAINIZIO >= to_date('10/12/2018', 'DD/MM/YYYY') and DATAINIZIO <= to_date('16/12/2018', 'DD/MM/YYYY')) OR
 (DATAFINE >= to_date('10/12/2018', 'DD/MM/YYYY') and DATAFINE <= to_date('16/10/2018', 'DD/MM/YYYY')))
 and nomecommessa = 'STC/2018/0000016334'
+
+
+SELECT * FROM PIANIFICAZIONE_FASE 
+WHERE ( DATAINIZIO <= to_date('13/12/2018 23:59:59','DD/MM/YYYY HH24:MI:SS') AND DATAINIZIO >= to_date('11/12/2018 00:00:01','DD/MM/YYYY HH24:MI:SS') ) 
+OR ( DATAFINE <= to_date('13/12/2018 23:59:59','DD/MM/YYYY HH24:MI:SS') AND DATAFINE >= to_date('11/12/2018 00:00:01','DD/MM/YYYY HH24:MI:SS') )
+order by idlancio
+
+
+select * from ditta2.usr_prd_lanciod where idlanciod = '0000000000000000000025994'
+select * from ditta2.usr_prd_fasi where idprdfase = '0000000000000000000223619'
+select * from ditta2.usr_prd_movfasi where idprdfase = '0000000000000000000223619'
+union all
+select * from ditta2.usr_prd_movfasi where idprdfase = '0000000000000000000223618'
+
+select * from ditta2.usr_prd_fasi where idlanciod = '0000000000000000000025994'
+
+
+select * from pianificazione_lancio where idlanciod = '0000000000000000000025994'
+37213
+
+select * from pianificazione_fase where idlancio in( 37213,37173)
+
+select * from pianificazione_lancio where nomecommessa like '%18576%'
+
+
+select fa.* from pianificazione_fase fa
+inner join pianificazione_lancio la on la.idlancio = fa.idlancio
+where la.nomecommessa like '%19043%'
+order by fa.idlancio, fa.idfase
+
+select * from pianificazione_fase where idlancio = 76868
+
+select codiceclifo,count(*) from pianificazione_fase where idlancio = 76868
+group by codiceclifo
+
+ord
+select * from pianificazione_lancio where idlancio in (76868)
+0000000000000000000060293
+
+select * from ditta2.usr_prd_flusso_movfasi where idprdmovfase = '0000000000000000000263521'
+
+select * from ditta2.usr_prd_lanciod pl
+inner join pianificazione_lancio la on la.idlanciod = pl.idlanciod
+where la.idlancio in (76868)
+
+select * from usr_prd_fasi where idlanciod = '0000000000000000000060293'
+
+
+
+select mf.idprdmovfase,fa.* from pianificazione_fase fa
+left join usr_prd_movfasi mf on fa.idprdfase = mf.idprdfase AND FA.STATO = 'APERTO'
+where fa.DATAINIZIO <= to_date('10/01/2019', 'DD/MM/YYYY') AND
+fa.DATAFINE >= to_date('27/12/2018', 'DD/MM/YYYY') 
+and fa.stato = 'PIANIFICATO'
+
+
+
+
+select * from usr_prd_movfasi where idprdmovfase = '0000000000000000000626491'
+0000000000000000000464319
+
+
+select fa.azienda,la.idmagazz,fa.idmagazz idmagazz_fase,la.datacommessa, la.nomecommessa,pf.modello modelloLancio,ar.modello,fa.stato,
+fa.idfase,fa.codiceclifo as reparto,trim(cli.ragionesoc), fa.datainizio, fa.datafine, 
+nvl(mf.qta,fa.qta) qta, 
+nvl(mf.qtadater,fa.qtadater) qtadater, 
+nvl(mf.qtater,fa.qtater) qtater, 
+nvl(mf.qtaann,fa.qtaann) qtaann, 
+fa.idfasepadre, fa.idlancio,
+climf.codice as lavorante,trim(climf.ragionesoc),mf.qta as qta_odl,mf.qtadater as qtadater_odl, mf.qtater as qtater_odl, mf.qtaann as qtaann_odl
+from PIANIFICAZIONE_FASE fa
+inner join pianificazione_lancio la on la.idlancio = fa.idlancio
+inner join gruppo.magazz ar on ar.idmagazz=fa.idmagazz
+inner join gruppo.magazz pf on pf.idmagazz=la.idmagazz
+inner join gruppo.clifo cli on cli.codice = fa.codiceclifo 
+left join usr_prd_movfasi mf on fa.idprdfase = mf.idprdfase AND FA.STATO = 'APERTO'
+left join gruppo.clifo climf on climf.codice = mf.codiceclifo 
+order by idfase
+
+where fa.DATAINIZIO <= to_date(?, 'DD/MM/YYYY') AND 
+fa.DATAFINE >= to_date(?, 'DD/MM/YYYY') order by fa.idlancio, fa.idfase
+
