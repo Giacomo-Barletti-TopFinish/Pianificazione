@@ -110,7 +110,7 @@ namespace Pianificazione.Service
 
             if (faseRoot.STATO != StatoFasePianificazione.PIANIFICATO)
                 return;
-            int attendibilita = 0;
+            int attendibilita = 1;
             CorreggiDateFasePianificata(faseRoot, ref attendibilita);
         }
 
@@ -119,7 +119,7 @@ namespace Pianificazione.Service
 
             List<PianificazioneDS.PIANIFICAZIONE_FASERow> fasiFiglie = _ds.PIANIFICAZIONE_FASE.Where(x => !x.IsIDFASEPADRENull() && x.IDFASEPADRE == fasePianificata.IDFASE).ToList();
             if (fasiFiglie.Count == 0) return;
-
+           
             DateTime finePrecedente = fasePianificata.DATAINIZIO;
             if (fasiFiglie.Any(x => x.STATO == StatoFasePianificazione.PIANIFICATO))
             {
@@ -137,7 +137,7 @@ namespace Pianificazione.Service
             finePrecedente = CorreggiGiornoSeFestivo(finePrecedente);
 
             fasePianificata.DATAFINE = CalcolaGiorno(finePrecedente, fasePianificata.OFFSETTIME);
-            fasePianificata.ATTENDIBILITA = attendibilita;
+            fasePianificata.ATTENDIBILITA = attendibilita;           
             //fasePianificata.DATAFINE = finePrecedente.AddDays((double)fasePianificata.OFFSETTIME);
             //if (fasePianificata.OFFSETTIME == 0) fasePianificata.DATAINIZIO = finePrecedente.AddHours(1);
         }
@@ -226,6 +226,7 @@ namespace Pianificazione.Service
                 fase.AZIENDA = faseRow.AZIENDA;
                 fase.IDPRDFASE = faseRow.IDPRDFASE;
                 fase.STATO = StatoFasePianificazione.PIANIFICATO;
+                fase.ATTENDIBILITA = 2;
                 AssegnaPadre(faseRow, fase);
 
                 fase.CODICECLIFO = faseRow.IsCODICECLIFONull() ? string.Empty : faseRow.CODICECLIFO;
@@ -300,13 +301,13 @@ namespace Pianificazione.Service
                 fase.STATO = (fase.QTADATER == 0) ? StatoFasePianificazione.CHIUSO : StatoFasePianificazione.APERTO;
 
                 if (fase.QTAANN > 0)
-                    fase.STATO = StatoFasePianificazione.ANNULLATO;
-
-                if (fase.STATO == StatoFasePianificazione.PIANIFICATO)
-                    fase.ATTENDIBILITA = 2;
-                else
-                    fase.ATTENDIBILITA = 1;
+                    fase.STATO = StatoFasePianificazione.ANNULLATO;              
             }
+
+            if (fase.STATO == StatoFasePianificazione.PIANIFICATO)
+                fase.ATTENDIBILITA = 2;
+            else
+                fase.ATTENDIBILITA = 1;
 
         }
 
