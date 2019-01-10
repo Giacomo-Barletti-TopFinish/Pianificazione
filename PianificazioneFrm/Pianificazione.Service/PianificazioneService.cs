@@ -95,6 +95,12 @@ namespace Pianificazione.Service
 
                 }
             }
+
+            using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
+            {
+                bPianificazione.ImpostaFaseAnnullataPerQuantita();
+                SciviLog("INFO", "ImpostaFaseAnnullataPerQuantita");
+            }
             SciviLog("END", "Fine elaborazione");
 
         }
@@ -119,7 +125,7 @@ namespace Pianificazione.Service
 
             List<PianificazioneDS.PIANIFICAZIONE_FASERow> fasiFiglie = _ds.PIANIFICAZIONE_FASE.Where(x => !x.IsIDFASEPADRENull() && x.IDFASEPADRE == fasePianificata.IDFASE).ToList();
             if (fasiFiglie.Count == 0) return;
-           
+
             DateTime finePrecedente = fasePianificata.DATAINIZIO;
             if (fasiFiglie.Any(x => x.STATO == StatoFasePianificazione.PIANIFICATO))
             {
@@ -137,7 +143,7 @@ namespace Pianificazione.Service
             finePrecedente = CorreggiGiornoSeFestivo(finePrecedente);
 
             fasePianificata.DATAFINE = CalcolaGiorno(finePrecedente, fasePianificata.OFFSETTIME);
-            fasePianificata.ATTENDIBILITA = attendibilita;           
+            fasePianificata.ATTENDIBILITA = attendibilita;
             //fasePianificata.DATAFINE = finePrecedente.AddDays((double)fasePianificata.OFFSETTIME);
             //if (fasePianificata.OFFSETTIME == 0) fasePianificata.DATAINIZIO = finePrecedente.AddHours(1);
         }
@@ -151,6 +157,7 @@ namespace Pianificazione.Service
             {
                 giorno = dalGiorno.AddDays(1);
                 giorno = CorreggiGiornoSeFestivo(giorno);
+                dalGiorno = giorno;
             }
 
             return giorno;
@@ -301,7 +308,7 @@ namespace Pianificazione.Service
                 fase.STATO = (fase.QTADATER == 0) ? StatoFasePianificazione.CHIUSO : StatoFasePianificazione.APERTO;
 
                 if (fase.QTAANN > 0)
-                    fase.STATO = StatoFasePianificazione.ANNULLATO;              
+                    fase.STATO = StatoFasePianificazione.ANNULLATO;
             }
 
             if (fase.STATO == StatoFasePianificazione.PIANIFICATO)
@@ -405,6 +412,239 @@ namespace Pianificazione.Service
                 bPianificazione.InsertPianificazioneLog("EXCEPTION", messaggio);
             }
             Console.WriteLine(messaggio);
+        }
+
+        public void CreaPianificazioneSuBaseODL()
+        {
+            _ds = new PianificazioneDS();
+            try
+            {
+                using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
+                {
+
+                    bPianificazione.FillUSR_PRD_MOVFASIAperti(_ds);
+                    bPianificazione.FillUSR_PRD_FASIAperti(_ds);
+                    bPianificazione.FillUSR_PRD_LANCIODAperti(_ds);
+                }
+            }
+            catch (Exception ex)
+            {
+                SciviLog(ex);
+                return;
+            }
+            SciviLog("START", string.Format("Trovati {0} ODL aperti", _ds.USR_PRD_MOVFASI.Count));
+
+            int numeroODLAperti = _ds.USR_PRD_MOVFASI.Count();
+            int contatoreODL = 1;
+
+            foreach (PianificazioneDS.USR_PRD_MOVFASIRow odl in _ds.USR_PRD_MOVFASI)
+            {
+                string IDPRDMOVFASE_ORIGINE = odl.IDPRDMOVFASE;
+                int attendibilita = 1;
+                using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
+                {
+                    try
+                    {
+                        SciviLog("INFO", string.Format("Elaborazione {0} di {1} ODL: {2}", contatoreODL, numeroODLAperti, IDPRDMOVFASE_ORIGINE));
+                        contatoreODL++;
+
+                        if (odl.IsIDPRDFASENull())
+                        {
+                            SciviLog("WARNING", string.Format("ODL: {0} IDPRDFASE NULL", IDPRDMOVFASE_ORIGINE));
+                            continue;
+                        }
+
+
+                        PianificazioneDS.USR_PRD_FASIRow fase = _ds.USR_PRD_FASI.Where(x => x.IDPRDFASE == odl.IDPRDFASE).FirstOrDefault();
+                        if (fase == null)
+                        {
+                            SciviLog("WARNING", string.Format("ODL: {0} IMPOSSIBILE TROVARE FASE", IDPRDMOVFASE_ORIGINE));
+                            continue;
+                        }
+
+                        decimal quantita = odl.QTA;
+                        CreaPianificazione_ODL(odl, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita);
+
+                        while (!fase.IsIDPRDFASEPADRENull())
+                        {
+                            fase = _ds.USR_PRD_FASI.Where(x => x.IDPRDFASE == fase.IDPRDFASEPADRE).FirstOrDefault();
+
+                            if(
+                                fase.IDTABFAS== "0000000077" || // SALNDATURA
+                                fase.IDTABFAS == "0000000066" || // MONTAGGIO
+                                fase.IDTABFAS == "0000000173" || // MONTAGGIO CAMPIONI
+                                fase.IDTABFAS == "0000000203" || // MONTAGGIO SU FINITO
+                                fase.IDTABFAS == "0000000202"  // MONTAGGIO SU GREZZO
+                                )
+                            {
+                                fase = null;
+                                break;
+                            }
+                            attendibilita++;
+                            CreaPianificazione_ODL(null, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita);
+                        }
+
+                        CorreggiDatePianificazioneODL(odl);
+
+                        bPianificazione.SalvaPianificazione_ODL(_ds);
+                        _ds.AcceptChanges();
+
+                        _ds.PIANIFICAZIONE_LANCIO.Clear();
+                        _ds.PIANIFICAZIONE_FASE.Clear();
+                        _ds.PIANIFICAZIONE_ODL.Clear();
+                    }
+                    catch (Exception ex)
+                    {
+                        SciviLog("ERRORE", string.Format("ODL: {0} ECCEZIONE AL PASSO {1} DI {2}", odl.IDPRDMOVFASE, contatoreODL - 1, numeroODLAperti));
+                        SciviLog(ex);
+                    }
+
+                }
+            }
+
+            SciviLog("END", "Fine elaborazione");
+
+        }
+
+        private void CorreggiDatePianificazioneODL(PianificazioneDS.USR_PRD_MOVFASIRow odl)
+        {
+            PianificazioneDS.PIANIFICAZIONE_ODLRow odlAperto = _ds.PIANIFICAZIONE_ODL.Where(x => x.IDPRDMOVFASE == odl.IDPRDMOVFASE && x.STATO == StatoFasePianificazione.APERTO).FirstOrDefault();
+            if (odlAperto == null)
+            {
+                SciviLog("ERRORE", string.Format("ODL: {0} IMPOSSIBILE TROVARE ODL APERTO PER CORREZIONE DATE", odl.IDPRDMOVFASE));
+                return;
+            }
+
+
+            List<PianificazioneDS.PIANIFICAZIONE_ODLRow> pianificati = _ds.PIANIFICAZIONE_ODL.Where(x => x.IDPRDMOVFASE == odl.IDPRDMOVFASE).OrderBy(x => x.ATTENDIBILITA).ToList();
+            DateTime datafine = odlAperto.DATAFINE;
+            foreach (PianificazioneDS.PIANIFICAZIONE_ODLRow pianificato in pianificati.Where(x => x.IDODL != odlAperto.IDODL))
+            {
+                pianificato.DATAINIZIO = datafine;
+                pianificato.DATAFINE = CalcolaGiorno(datafine, pianificato.OFFSETTIME);
+
+                datafine = pianificato.DATAFINE;
+            }
+        }
+
+        private void CreaPianificazione_ODL(PianificazioneDS.USR_PRD_MOVFASIRow odl, PianificazioneDS.USR_PRD_FASIRow fase, string IDPRDMOVFASE_ORIGINE, int attendibilita, decimal quantita)
+        {
+
+            PianificazioneDS.PIANIFICAZIONE_ODLRow pODL = _ds.PIANIFICAZIONE_ODL.NewPIANIFICAZIONE_ODLRow();
+            using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
+            {
+                long IDODL = bPianificazione.GetID();
+                pODL.IDODL = IDODL;
+                pODL.DATA_ELABORAZIONE = DateTime.Now;
+            }
+            pODL.IDLANCIOD = fase.IsIDLANCIODNull() ? string.Empty : fase.IDLANCIOD;
+            pODL.AZIENDA = fase.AZIENDA;
+            pODL.STATO = StatoFasePianificazione.PIANIFICATO;
+            pODL.IDPRDMOVFASE = IDPRDMOVFASE_ORIGINE;
+            pODL.CODICECLIFO = fase.IsCODICECLIFONull() ? string.Empty : fase.CODICECLIFO;
+            pODL.IDPRDFASE = fase.IsIDPRDFASENull() ? string.Empty : fase.IDPRDFASE;
+
+            if (!fase.IsDATAINIZIONull())
+                pODL.DATAINIZIO = fase.DATAINIZIO;
+            if (!fase.IsDATAFINENull())
+                pODL.DATAFINE = fase.DATAFINE;
+
+            if (!fase.IsOFFSETTIMENull())
+                pODL.OFFSETTIME = fase.OFFSETTIME;
+
+            if (!fase.IsLEADTIMENull())
+                pODL.LEADTIME = fase.LEADTIME;
+
+            if (!fase.IsIDMAGAZZNull())
+                pODL.IDMAGAZZ = fase.IDMAGAZZ;
+
+            pODL.QTA = quantita;
+            pODL.QTAANN = 0;
+            pODL.QTANET = 0;
+            pODL.QTAASS = 0;
+            pODL.QTACON = 0;
+            pODL.QTATER = 0;
+            pODL.QTADATER = quantita;
+            pODL.QTAACC = 0;
+            pODL.QTADAC = 0;
+            pODL.QTALAV = 0;
+            pODL.QTADAPIA = 0;
+            pODL.QTAPIA = 0;
+            pODL.QTAACCLE = 0;
+
+            if (!fase.IsRIFERIMENTO_INFRANull())
+                pODL.RIFERIMENTO_INFRA = fase.RIFERIMENTO_INFRA;
+            if (!fase.IsDATARIF_INFRANull())
+                pODL.DATARIF_INFRA = fase.DATARIF_INFRA;
+
+            pODL.ATTENDIBILITA = attendibilita;
+
+
+            if (odl != null)
+            {
+                pODL.ATTENDIBILITA = 1;
+
+                if (!odl.IsQTADATERNull())
+                {
+                    if (odl.QTADATER == 0) pODL.STATO = StatoFasePianificazione.CHIUSO;
+                    else pODL.STATO = StatoFasePianificazione.APERTO;
+                }
+
+                if (!odl.IsQTAANNNull())
+                    if (odl.QTAANN > 0) pODL.STATO = StatoFasePianificazione.ANNULLATO;
+
+
+                pODL.IDPRDMOVFASE = odl.IDPRDMOVFASE;
+                pODL.CODICECLIFO = odl.IsCODICECLIFONull() ? string.Empty : odl.CODICECLIFO;
+
+                if (!odl.IsDATAINIZIONull())
+                    pODL.DATAINIZIO = odl.DATAINIZIO;
+                if (!odl.IsDATAFINENull())
+                    pODL.DATAFINE = odl.DATAFINE;
+
+                if (!odl.IsOFFSETTIMENull())
+                    pODL.OFFSETTIME = odl.OFFSETTIME;
+
+                if (!odl.IsLEADTIMENull())
+                    pODL.LEADTIME = odl.LEADTIME;
+
+                if (!odl.IsIDMAGAZZNull())
+                    pODL.IDMAGAZZ = odl.IDMAGAZZ;
+
+                if (!odl.IsQTANull())
+                    pODL.QTA = odl.QTA;
+                if (!odl.IsQTAANNNull())
+                    pODL.QTAANN = odl.QTAANN;
+                if (!odl.IsQTANETNull())
+                    pODL.QTANET = odl.QTANET;
+                if (!odl.IsQTAASSNull())
+                    pODL.QTAASS = odl.QTAASS;
+                if (!odl.IsQTACONNull())
+                    pODL.QTACON = odl.QTACON;
+                if (!odl.IsQTATERNull())
+                    pODL.QTATER = odl.QTATER;
+                if (!odl.IsQTADATERNull())
+                    pODL.QTADATER = odl.QTADATER;
+                if (!odl.IsQTAACCNull())
+                    pODL.QTAACC = odl.QTAACC;
+                if (!odl.IsQTADACNull())
+                    pODL.QTADAC = odl.QTADAC;
+                if (!odl.IsQTALAVNull())
+                    pODL.QTALAV = odl.QTALAV;
+                if (!odl.IsQTADAPIANull())
+                    pODL.QTADAPIA = odl.QTADAPIA;
+                if (!odl.IsQTAPIANull())
+                    pODL.QTAPIA = odl.QTAPIA;
+                if (!odl.IsQTAACCLENull())
+                    pODL.QTAACCLE = odl.QTAACCLE;
+                if (!odl.IsRIFERIMENTO_INFRANull())
+                    pODL.RIFERIMENTO_INFRA = odl.RIFERIMENTO_INFRA;
+                if (!odl.IsDATARIF_INFRANull())
+                    pODL.DATARIF_INFRA = odl.DATARIF_INFRA;
+
+            }
+            _ds.PIANIFICAZIONE_ODL.AddPIANIFICAZIONE_ODLRow(pODL);
+
         }
     }
 }

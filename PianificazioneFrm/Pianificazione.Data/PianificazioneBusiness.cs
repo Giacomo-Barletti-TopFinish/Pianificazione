@@ -76,6 +76,13 @@ namespace Pianificazione.Data
         }
 
         [DataContext]
+        public void FillUSR_PRD_FASIAperti(PianificazioneDS ds)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.FillUSR_PRD_FASIAperti(ds);
+        }
+
+        [DataContext]
         public void FillUSR_PRD_FASIByIDLANCIOD(PianificazioneDS ds, string IDLANCIOD)
         {
             PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
@@ -123,5 +130,18 @@ namespace Pianificazione.Data
             a.UpdateTable(ds.PIANIFICAZIONE_FASE.TableName, ds);
         }
 
+        [DataContext(true)]
+        public void SalvaPianificazione_ODL(PianificazioneDS ds)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.UpdateTable(ds.PIANIFICAZIONE_ODL.TableName, ds);
+        }
+
+        [DataContext(true)]
+        public void ImpostaFaseAnnullataPerQuantita()
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.ImpostaFaseAnnullataPerQuantita();
+        }
     }
 }

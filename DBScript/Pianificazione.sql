@@ -289,3 +289,53 @@ order by idfase
 where fa.DATAINIZIO <= to_date(?, 'DD/MM/YYYY') AND 
 fa.DATAFINE >= to_date(?, 'DD/MM/YYYY') order by fa.idlancio, fa.idfase
 
+select TO_CHAR(l.data, 'DD-MON-YYYY HH24:MI:SS'),
+ l.* from pianificazione_log l 
+ where tipo = 'END' or tipo = 'START'
+ order by idlog desc
+
+select * from pianificazione_fase where idfase = 39629
+
+select * from pianificazione_lancio where idlancio = 39624
+
+select * from usr_prd_movfasi where idprdmovfase = '0000000000000000000320746'
+
+select * from usr_prd_fasi where idprdfase = '0000000000000000000432697'
+
+select * from usr_prd_movfasi where idprdfase = '0000000000000000000432697'
+
+select * from usr_prd_fasi where idlanciod = '0000000000000000000055559'
+
+select * from usr_prd_fasi fa
+inner join usr_prd_movfasi mf on mf.idprdfase = fa.idprdfase
+where idlanciod = '0000000000000000000034165'
+
+
+TRUNCATE TABLE PIANIFICAZIONE_ODL;
+
+TRUNCATE TABLE pianificazione_log;
+
+
+select * from pianificazione_log order by idlog desc;
+
+
+SELECT DISTINCT TF.* FROM USR_PRD_FASI TF 
+                            INNER JOIN USR_PRD_LANCIOD LA ON TF.IDLANCIOD = LA.IDLANCIOD
+                            INNER JOIN USR_PRD_FASI FA ON FA.IDLANCIOD = LA.IDLANCIOD
+                            INNER JOIN USR_PRD_MOVFASI MF ON MF.IDPRDFASE = FA.IDPRDFASE
+                            WHERE MF.QTADATER > 0
+                            
+
+
+SELECT * FROM PIANIFICAZIONE_ODL ORDER BY idlanciod,IDPRDMOVFASE, ATTENDIBILITA 
+
+select * from usr_prd_fasi where idprdfase = '0000000000000000000416478'
+select * from usr_prd_fasi where idprdfase = '0000000000000000000416512'
+
+select * from usr_prd_fasi where idprdfasepadre = '0000000000000000000416478'
+
+select count(*),idprdfasepadre from usr_prd_fasi group by idprdfasepadre having count(*) > 3
+
+select * from ditta1.usr_prd_rdiba where idmagazz = 0000077693
+
+select * from es_diba where idarticolo = 0000077693

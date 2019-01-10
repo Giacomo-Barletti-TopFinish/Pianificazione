@@ -87,6 +87,10 @@ namespace PianificazioneService
                     sCheduler.AggiornaSchedulazione(schedulazione);
                 }
                 Console.WriteLine("** Timercallback END");
+                Pianificazione.Service.PianificazioneService p = new Pianificazione.Service.PianificazioneService();
+                p.CreaPianificazioneSuBaseODL();
+
+
             }
             catch (Exception ex)
             {

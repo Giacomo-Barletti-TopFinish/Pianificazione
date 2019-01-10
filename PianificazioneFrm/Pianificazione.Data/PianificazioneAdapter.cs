@@ -154,7 +154,7 @@ namespace Pianificazione.Data
 
         public void FillUSR_PRD_MOVFASIAperti(PianificazioneDS ds)
         {
-            string select = @"SELECT * FROM USR_PRD_MOVFASI WHERE QTADATER > 0";
+            string select = @"SELECT * FROM USR_PRD_MOVFASI WHERE QTADATER > 0 AND IDTIPOMOVFASE <> 'ODM0000001'";
 
             using (DbDataAdapter da = BuildDataAdapter(select))
             {
@@ -172,6 +172,21 @@ namespace Pianificazione.Data
             using (DbDataAdapter da = BuildDataAdapter(select))
             {
                 da.Fill(ds.USR_PRD_LANCIOD);
+            }
+
+        }
+
+        public void FillUSR_PRD_FASIAperti(PianificazioneDS ds)
+        {
+            string select = @"SELECT DISTINCT TF.* FROM USR_PRD_FASI TF 
+                            INNER JOIN USR_PRD_LANCIOD LA ON TF.IDLANCIOD = LA.IDLANCIOD
+                            INNER JOIN USR_PRD_FASI FA ON FA.IDLANCIOD = LA.IDLANCIOD
+                            INNER JOIN USR_PRD_MOVFASI MF ON MF.IDPRDFASE = FA.IDPRDFASE
+                            WHERE MF.QTADATER > 0";
+
+            using (DbDataAdapter da = BuildDataAdapter(select))
+            {
+                da.Fill(ds.USR_PRD_FASI);
             }
 
         }
@@ -262,6 +277,16 @@ namespace Pianificazione.Data
             ps.AddParam("NOTA", DbType.String, Nota);
 
             using (DbCommand cmd = BuildCommand(insert, ps))
+            {
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void ImpostaFaseAnnullataPerQuantita()
+        {
+            string update = @"UPDATE PIANIFICAZIONE_FASE SET STATO = 'ANNULLATO' where  QTA = QTAANN ";
+        
+            using (DbCommand cmd = BuildCommand(update))
             {
                 cmd.ExecuteNonQuery();
             }
