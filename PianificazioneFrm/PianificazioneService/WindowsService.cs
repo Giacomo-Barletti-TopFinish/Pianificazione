@@ -68,6 +68,7 @@ namespace PianificazioneService
                     Console.WriteLine("PIANIFICAZIONE_1");
                     Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
                     pianificazione.CreaPianificazione();
+                    pianificazione.CreaPianificazioneSuBaseODL();
                     sCheduler.AggiornaSchedulazione(schedulazione);
                 }
 
@@ -76,6 +77,7 @@ namespace PianificazioneService
                     Console.WriteLine("PIANIFICAZIONE_2");
                     Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
                     pianificazione.CreaPianificazione();
+                    pianificazione.CreaPianificazioneSuBaseODL();
                     sCheduler.AggiornaSchedulazione(schedulazione);
                 }
 
@@ -84,12 +86,18 @@ namespace PianificazioneService
                     Console.WriteLine("PIANIFICAZIONE_3");
                     Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
                     pianificazione.CreaPianificazione();
+                    pianificazione.CreaPianificazioneSuBaseODL();
                     sCheduler.AggiornaSchedulazione(schedulazione);
                 }
                 Console.WriteLine("** Timercallback END");
-                Pianificazione.Service.PianificazioneService p = new Pianificazione.Service.PianificazioneService();
-                p.CreaPianificazioneSuBaseODL();
-
+                if (sCheduler.VerificaEsecuzione("PIANIFICAZIONE_4", out schedulazione))
+                {
+                    Console.WriteLine("PIANIFICAZIONE_4");
+                    Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
+                    pianificazione.CreaPianificazione();
+                    pianificazione.CreaPianificazioneSuBaseODL();
+                    sCheduler.AggiornaSchedulazione(schedulazione);
+                }
 
             }
             catch (Exception ex)

@@ -268,6 +268,16 @@ namespace Pianificazione.Data
             }
         }
 
+        public long TruncatePianificazione_ODL()
+        {
+            string select = @" TRUNCATE TABLE PIANIFICAZIONE_ODL";
+            using (IDbCommand da = BuildCommand(select))
+            {
+                long lnNextVal = Convert.ToInt64(da.ExecuteNonQuery());
+                return lnNextVal;
+            }
+        }
+
         public void InsertPianificazioneLog(string Tipo, string Nota)
         {
             string insert = @"INSERT INTO PIANIFICAZIONE_LOG  ( IDLOG, DATA,TIPO,NOTA  ) VALUES (NULL,to_date('{0}','DD/MM/YYYY HH24:MI:SS'),$P<TIPO>,$P<NOTA>)";

@@ -19,6 +19,7 @@ namespace Pianificazione.Service
                 bPianificazione.FillUSR_PRD_LANCIODAperti(_ds);
             }
         }
+       
         public void CreaPianificazione()
         {
             _ds = new PianificazioneDS();
@@ -421,7 +422,7 @@ namespace Pianificazione.Service
             {
                 using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
                 {
-
+                    bPianificazione.TruncatePianificazione_ODL();
                     bPianificazione.FillUSR_PRD_MOVFASIAperti(_ds);
                     bPianificazione.FillUSR_PRD_FASIAperti(_ds);
                     bPianificazione.FillUSR_PRD_LANCIODAperti(_ds);

@@ -116,6 +116,13 @@ namespace Pianificazione.Data
             PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
             a.InsertPianificazioneLog(Tipo, Nota);
         }
+
+        [DataContext]
+        public void TruncatePianificazione_ODL()
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.TruncatePianificazione_ODL();
+        }
         [DataContext]
         public long GetID()
         {
