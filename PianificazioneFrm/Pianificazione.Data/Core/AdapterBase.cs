@@ -451,7 +451,7 @@ namespace Pianificazione.Data.Core
             using (IDbCommand cmd = BuildCommand(query, paramSet))
             {
                 using (IDataReader reader = cmd.ExecuteReader())
-                {
+                {                    
                     List<T> entities = reader.ToEntityList<T>();
                     return entities;
                 }

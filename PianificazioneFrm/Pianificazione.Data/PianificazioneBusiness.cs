@@ -150,5 +150,33 @@ namespace Pianificazione.Data
             PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
             a.ImpostaFaseAnnullataPerQuantita();
         }
+
+        [DataContext]
+        public void FillUSR_ACCTO_CON(PianificazioneDS ds, string IDPRDFASE)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.FillUSR_ACCTO_CON(ds, IDPRDFASE);
+        }
+
+        [DataContext]
+        public List<string> GetDestinazioneMaterialeOrdineLavoro(string IDPRDFLUSSOMOVMATE)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            return a.GetDestinazioneMaterialeOrdineLavoro(IDPRDFLUSSOMOVMATE);
+        }
+
+        [DataContext]
+        public List<string> GetDestinazioneMaterialeDiCommessa(string IDPRDMOVMATE)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            return a.GetDestinazioneMaterialeDiCommessa(IDPRDMOVMATE);
+        }
+
+        [DataContext]
+        public List<string> GetDestinazioneOrdineCliente(string IDVENDITED)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            return a.GetDestinazioneOrdineCliente(IDVENDITED);
+        }
     }
 }

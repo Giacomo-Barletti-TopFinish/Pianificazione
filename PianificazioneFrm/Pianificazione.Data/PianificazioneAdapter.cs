@@ -278,6 +278,103 @@ namespace Pianificazione.Data
             }
         }
 
+        public List<string> GetDestinazioneOrdineCliente(string IDVENDITED)
+        {
+            List<string> valori = new List<string>();
+            string select = @" SELECT 
+                                    vd.data_conferma ||' ('||vt.fullnumdoc||'-'||vd.nrriga||')'
+                                    FROM usr_venditeD VD 
+                                    inner JOIN usr_venditeT VT ON VD.idvenditeT = VT.IDVENDITET
+                                    WHERE vd.IDVENDITED =  $P{IDVENDITED} ORDER BY  vd.data_conferma  ";
+
+            ParamSet ps = new ParamSet();
+            ps.AddParam("IDVENDITED", DbType.String, IDVENDITED);
+            using (IDbCommand da = BuildCommand(select, ps))
+            {
+                using (IDataReader reader = da.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string valore = reader.GetString(0);
+                        if (valore != "(-)")
+                            valori.Add(valore);
+                    }
+                }
+            }
+
+            return valori;
+        }
+
+        public List<string> GetDestinazioneMaterialeOrdineLavoro(string IDPRDFLUSSOMOVMATE)
+        {
+            List<string> valori = new List<string>();
+            string select = @" select LA.NOMECOMMESSA ||'('||MF.nummovfase||')' FROM USR_PRD_LANCIOD LA
+                                INNER JOIN usr_prd_fasi FA ON LA.IDLANCIOD = FA.IDLANCIOD
+                                INNER JOIN usr_prd_movmate MM ON MM.IDPRDFASE = FA.IDPRDFASE
+                                INNER JOIN usr_prd_movFASI MF ON MF.IDPRDMOVFASE = MM.IDPRDMOVFASE
+                                INNER JOIN usr_prd_flusso_movmate FMM ON FMM.idprdmovmate = MM.idprdmovmate
+                                where FMM.idprdflussomovmate =  $P{IDPRDFLUSSOMOVMATE}  ";
+
+            ParamSet ps = new ParamSet();
+            ps.AddParam("IDPRDFLUSSOMOVMATE", DbType.String, IDPRDFLUSSOMOVMATE);
+            using (IDbCommand da = BuildCommand(select, ps))
+            {
+                using (IDataReader reader = da.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string valore = reader.GetString(0);
+                        if (valore != "()")
+                            valori.Add(valore);
+                    }
+                }
+            }
+
+            return valori;
+        }
+
+        public List<string> GetDestinazioneMaterialeDiCommessa(string IDPRDMOVMATE)
+        {
+            List<string> valori = new List<string>();
+            string select = @" select LA.NOMECOMMESSA FROM USR_PRD_LANCIOD LA
+                                inner join usr_prd_mate ma on ma.idlanciod = la.idlanciod
+                                where ma.idprdmate =  $P{IDPRDMOVMATE}  ";
+
+            ParamSet ps = new ParamSet();
+            ps.AddParam("IDPRDMOVMATE", DbType.String, IDPRDMOVMATE);
+            using (IDbCommand da = BuildCommand(select, ps))
+            {
+                using (IDataReader reader = da.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string valore = reader.GetString(0);
+                        if (valore != "()")
+                            valori.Add(valore);
+                    }
+                }
+            }
+
+            return valori;
+
+        }
+        public void FillUSR_ACCTO_CON(PianificazioneDS ds, string IDPRDFASE)
+        {
+
+            string select = @" select * from usr_accto_con con 
+                            inner join usr_accto_con_doc doc on doc.idacctocon = con.idacctocon
+                            where doc.destinazione=1
+                            and doc.iddestinazione =  $P{IDPRDFASE} ";
+
+            ParamSet ps = new ParamSet();
+            ps.AddParam("IDPRDFASE", DbType.String, IDPRDFASE);
+
+            using (DbDataAdapter da = BuildDataAdapter(select, ps))
+            {
+                da.Fill(ds.USR_ACCTO_CON);
+            }
+        }
+
         public void InsertPianificazioneLog(string Tipo, string Nota)
         {
             string insert = @"INSERT INTO PIANIFICAZIONE_LOG  ( IDLOG, DATA,TIPO,NOTA  ) VALUES (NULL,to_date('{0}','DD/MM/YYYY HH24:MI:SS'),$P<TIPO>,$P<NOTA>)";
@@ -295,7 +392,7 @@ namespace Pianificazione.Data
         public void ImpostaFaseAnnullataPerQuantita()
         {
             string update = @"UPDATE PIANIFICAZIONE_FASE SET STATO = 'ANNULLATO' where  QTA = QTAANN ";
-        
+
             using (DbCommand cmd = BuildCommand(update))
             {
                 cmd.ExecuteNonQuery();

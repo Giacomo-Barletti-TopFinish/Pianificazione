@@ -19,7 +19,7 @@ namespace Pianificazione.Service
                 bPianificazione.FillUSR_PRD_LANCIODAperti(_ds);
             }
         }
-       
+
         public void CreaPianificazione()
         {
             _ds = new PianificazioneDS();
@@ -470,8 +470,8 @@ namespace Pianificazione.Service
                         {
                             fase = _ds.USR_PRD_FASI.Where(x => x.IDPRDFASE == fase.IDPRDFASEPADRE).FirstOrDefault();
 
-                            if(
-                                fase.IDTABFAS== "0000000077" || // SALNDATURA
+                            if (
+                                fase.IDTABFAS == "0000000077" || // SALNDATURA
                                 fase.IDTABFAS == "0000000066" || // MONTAGGIO
                                 fase.IDTABFAS == "0000000173" || // MONTAGGIO CAMPIONI
                                 fase.IDTABFAS == "0000000203" || // MONTAGGIO SU FINITO
@@ -505,6 +505,53 @@ namespace Pianificazione.Service
 
             SciviLog("END", "Fine elaborazione");
 
+        }
+
+        private string EstraiDestinazione(PianificazioneDS.USR_PRD_FASIRow fase)
+        {
+            List<string> valori = new List<string>();
+            _ds.USR_ACCTO_CON.Clear();
+            using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
+            {
+                bPianificazione.FillUSR_ACCTO_CON(_ds, fase.IDPRDFASE);
+                if (_ds.USR_ACCTO_CON.Count == 0) return string.Empty;
+
+                foreach (PianificazioneDS.USR_ACCTO_CONRow accantonato in _ds.USR_ACCTO_CON)
+                {
+                    if (accantonato.IsORIGINENull()) continue;
+                    if (accantonato.IsIDORIGINENull()) continue;
+                    switch (accantonato.ORIGINE)
+                    {
+                        case 0: // ordine cliente - USR_VENDITED
+                            List<string> ListaOC = bPianificazione.GetDestinazioneOrdineCliente(accantonato.IDORIGINE);
+                            valori.AddRange(ListaOC);
+                            break;
+                        case 1: // materiale da commessa - USR_PRD_MATE
+                            List<string> listaCommessa = bPianificazione.GetDestinazioneMaterialeDiCommessa(accantonato.IDORIGINE);
+                            valori.AddRange(listaCommessa);
+                            break;
+                        case 2: // materiale ordine di lavoro - USR_PRD_FLUSSO_MOVMATE
+                            List<string> listaODL = bPianificazione.GetDestinazioneMaterialeOrdineLavoro(accantonato.IDORIGINE);
+                            valori.AddRange(listaODL);
+                            break;
+                    }
+                }
+            }
+
+
+            if (valori.Count == 0) return string.Empty;
+            StringBuilder valore = new StringBuilder();
+
+            foreach (string str in valori)
+            {
+                if (!string.IsNullOrEmpty(str))
+                {
+                    valore.Append(str);
+                    valore.Append("; ");
+                }
+            }
+
+            return valore.ToString();
         }
 
         private void CorreggiDatePianificazioneODL(PianificazioneDS.USR_PRD_MOVFASIRow odl)
@@ -644,6 +691,16 @@ namespace Pianificazione.Service
                     pODL.DATARIF_INFRA = odl.DATARIF_INFRA;
 
             }
+
+            if (fase.IsIDPRDFASEPADRENull())
+            {
+                string destinazione = EstraiDestinazione(fase);
+                if (destinazione.Length > 300)
+                    destinazione = destinazione.Substring(0, 300);
+                pODL.DESTINAZIONE = destinazione;
+
+            }
+
             _ds.PIANIFICAZIONE_ODL.AddPIANIFICAZIONE_ODLRow(pODL);
 
         }

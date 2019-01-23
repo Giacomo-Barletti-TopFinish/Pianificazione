@@ -61,8 +61,13 @@ namespace PianificazioneService
             Console.WriteLine("** Timercallback");
             try
             {
+#if DEBUG
+                Pianificazione.Service.PianificazioneService p = new Pianificazione.Service.PianificazioneService();
+                p.CreaPianificazioneSuBaseODL();
+#endif
                 ScheduleService.ScheduleService sCheduler = new ScheduleService.ScheduleService();
                 ScheduleDS.MONITOR_SCHEDULERRow schedulazione;
+
                 if (sCheduler.VerificaEsecuzione("PIANIFICAZIONE_1", out schedulazione))
                 {
                     Console.WriteLine("PIANIFICAZIONE_1");
