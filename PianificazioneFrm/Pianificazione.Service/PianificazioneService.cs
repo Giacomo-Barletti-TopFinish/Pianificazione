@@ -422,7 +422,7 @@ namespace Pianificazione.Service
             {
                 using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
                 {
-                    bPianificazione.TruncatePianificazione_ODL();
+                    bPianificazione.TruncateTable(_ds.PIANIFICAZIONE_ODL.TableName);
                     bPianificazione.FillUSR_PRD_MOVFASIAperti(_ds);
                     bPianificazione.FillUSR_PRD_FASIAperti(_ds);
                     bPianificazione.FillUSR_PRD_LANCIODAperti(_ds);
@@ -507,14 +507,129 @@ namespace Pianificazione.Service
 
         }
 
-        private string EstraiDestinazione(PianificazioneDS.USR_PRD_FASIRow fase)
+        public void TrovaOCPerFasiAccantonate()
+        {
+            _ds = new PianificazioneDS();
+            try
+            {
+                using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
+                {
+                    bPianificazione.TruncateTable(_ds.TEMPORANEA.TableName);
+
+                    bPianificazione.FillUSR_PRD_FASI_ConAccantonatoDaLavorare(_ds);
+                }
+            }
+            catch (Exception ex)
+            {
+                SciviLog(ex);
+                return;
+            }
+            SciviLog("START", string.Format("Trovati {0} Fasi ", _ds.USR_PRD_FASI.Count));
+
+            int fasiDaLavorare = _ds.USR_PRD_FASI.Count();
+            int contatoreFasi = 1;
+
+            foreach (PianificazioneDS.USR_PRD_FASIRow fase in _ds.USR_PRD_FASI)
+            {
+                string idprdfaseOrigine = fase.IDPRDFASE;
+                using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
+                {
+                    try
+                    {
+                        SciviLog("INFO", string.Format("Elaborazione {0} di {1} Fase: {2}", contatoreFasi, fasiDaLavorare, idprdfaseOrigine));
+                        contatoreFasi++;
+                        if (contatoreFasi == 309)
+                            contatoreFasi = contatoreFasi;
+
+                        using (PianificazioneDS ds1 = new PianificazioneDS())
+                        {
+                            string OC = TrovaOC(ds1, fase);
+                            PianificazioneDS.TEMPORANEARow t = _ds.TEMPORANEA.NewTEMPORANEARow();
+                            long idt = bPianificazione.GetID();
+                            t.IDT = idt;
+                            t.IDPRDFASE = fase.IDPRDFASE;
+                            t.OC = OC;
+                            _ds.TEMPORANEA.AddTEMPORANEARow(t);
+                            bPianificazione.SalvaTemporanea(_ds);
+                            _ds.TEMPORANEA.AcceptChanges();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        SciviLog("ERRORE", string.Format("Fase: {0} ECCEZIONE AL PASSO {1} DI {2}", fase.IDPRDFASE, contatoreFasi - 1, fasiDaLavorare));
+                        SciviLog(ex);
+                    }
+
+                }
+            }
+            SciviLog("END", "Fine elaborazione");
+
+        }
+
+        private string TrovaOC(PianificazioneDS ds, PianificazioneDS.USR_PRD_FASIRow fase)
+        {
+            ds.USR_ACCTO_CON.Clear();
+            using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
+            {
+                bPianificazione.FillUSR_ACCTO_CON(ds, fase.IDPRDFASE);
+                string OC;
+                string commessa;
+                foreach (PianificazioneDS.USR_ACCTO_CONRow accantonato in ds.USR_ACCTO_CON)
+                {
+                    switch (accantonato.ORIGINE)
+                    {
+                        case 0:
+                            OC = bPianificazione.GetDestinazioneOrdineCliente(accantonato.IDORIGINE)[0];
+                            return OC;
+
+                        case 1: // materiale da commessa - USR_PRD_MATE
+
+                            PianificazioneDS.USR_PRD_FASIRow faseDaLavorare1;
+                            using (PianificazioneDS ds1 = new PianificazioneDS())
+                            {
+                                bPianificazione.FillUSR_PRD_FASI_FaseFinaleCommessaDaIDORIGINE_Tipo_1(ds1, accantonato.IDORIGINE);
+                                faseDaLavorare1 = ds1.USR_PRD_FASI.FirstOrDefault();
+                                if (faseDaLavorare1 == null) return string.Empty;
+                                if (faseDaLavorare1.IDPRDFASE == fase.IDPRDFASE)
+                                {
+                                    SciviLog("WARNING", string.Format("Fase: {0} LOOP ACCANTONAMENTO", fase.IDPRDFASE));
+                                    return string.Empty;
+                                }
+                                OC = TrovaOC(ds1, faseDaLavorare1);
+                                return OC;
+                            }
+
+
+                        case 2: // materiale ordine di lavoro - USR_PRD_FLUSSO_MOVMATE
+                            PianificazioneDS.USR_PRD_FASIRow faseDaLavorare2;
+                            using (PianificazioneDS ds1 = new PianificazioneDS())
+                            {
+                                bPianificazione.FillUSR_PRD_FASI_FaseFinaleCommessaDaIDORIGINE_Tipo_2(ds1, accantonato.IDORIGINE);
+                                faseDaLavorare2 = ds1.USR_PRD_FASI.FirstOrDefault();
+                                if (faseDaLavorare2 == null) return string.Empty;
+                                {
+                                    SciviLog("WARNING", string.Format("Fase: {0} LOOP ACCANTONAMENTO", fase.IDPRDFASE));
+                                    return string.Empty;
+                                }
+                                OC = TrovaOC(ds1, faseDaLavorare2);
+                                return OC;
+                            }
+                        default: return string.Empty;
+
+                    }
+                }
+                return string.Empty;
+            }
+        }
+
+        private void EstraiDestinazione(PianificazioneDS.USR_PRD_FASIRow fase, PianificazioneDS.PIANIFICAZIONE_ODLRow pODL)
         {
             List<string> valori = new List<string>();
             _ds.USR_ACCTO_CON.Clear();
             using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
             {
                 bPianificazione.FillUSR_ACCTO_CON(_ds, fase.IDPRDFASE);
-                if (_ds.USR_ACCTO_CON.Count == 0) return string.Empty;
+                if (_ds.USR_ACCTO_CON.Count == 0) return;
 
                 foreach (PianificazioneDS.USR_ACCTO_CONRow accantonato in _ds.USR_ACCTO_CON)
                 {
@@ -539,7 +654,7 @@ namespace Pianificazione.Service
             }
 
 
-            if (valori.Count == 0) return string.Empty;
+            if (valori.Count == 0) return;
             StringBuilder valore = new StringBuilder();
 
             foreach (string str in valori)
@@ -551,7 +666,11 @@ namespace Pianificazione.Service
                 }
             }
 
-            return valore.ToString();
+            string destinazione = valore.ToString();
+            if (destinazione.Length > 300)
+                destinazione = destinazione.Substring(0, 300);
+            pODL.DESTINAZIONE = destinazione;
+            return;
         }
 
         private void CorreggiDatePianificazioneODL(PianificazioneDS.USR_PRD_MOVFASIRow odl)
@@ -694,15 +813,12 @@ namespace Pianificazione.Service
 
             if (fase.IsIDPRDFASEPADRENull())
             {
-                string destinazione = EstraiDestinazione(fase);
-                if (destinazione.Length > 300)
-                    destinazione = destinazione.Substring(0, 300);
-                pODL.DESTINAZIONE = destinazione;
-
+                EstraiDestinazione(fase, pODL);
             }
 
             _ds.PIANIFICAZIONE_ODL.AddPIANIFICAZIONE_ODLRow(pODL);
 
         }
     }
+
 }

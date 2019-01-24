@@ -63,7 +63,7 @@ namespace PianificazioneService
             {
 #if DEBUG
                 Pianificazione.Service.PianificazioneService p = new Pianificazione.Service.PianificazioneService();
-                p.CreaPianificazioneSuBaseODL();
+                p.TrovaOCPerFasiAccantonate();
 #endif
                 ScheduleService.ScheduleService sCheduler = new ScheduleService.ScheduleService();
                 ScheduleDS.MONITOR_SCHEDULERRow schedulazione;

@@ -258,6 +258,55 @@ namespace Pianificazione.Data
                 da.Fill(ds.PIANIFICAZIONE_FASE);
             }
         }
+
+        public void FillUSR_PRD_FASI_ConAccantonatoDaLavorare(PianificazioneDS ds)
+        {
+            string select = @"select distinct fa.* from usr_prd_fasi fa 
+                                inner join usr_accto_con_doc doc on doc.iddestinazione = fa.idprdfase
+                                inner join usr_accto_con con on con.idacctocon = doc.idacctocon
+                                where idprdfasepadre is null and con.origine in (1,2)
+                                ";
+
+            using (DbDataAdapter da = BuildDataAdapter(select))
+            {
+                da.Fill(ds.USR_PRD_FASI);
+            }
+        }
+
+        public void FillUSR_PRD_FASI_FaseFinaleCommessaDaIDORIGINE_Tipo_1(PianificazioneDS ds, string IDPRDMOVMATE)
+        {
+            string select = @"select fa1.* FROM  usr_prd_mate ma 
+inner join usr_prd_fasi fa1 on fa1.idlanciod = ma.idlanciod
+                                where fa1.idprdfasepadre is null 
+                                and ma.idprdmate =  $P{IDPRDMOVMATE} ";
+
+            ParamSet ps = new ParamSet();
+            ps.AddParam("IDPRDMOVMATE", DbType.String, IDPRDMOVMATE);
+
+            using (DbDataAdapter da = BuildDataAdapter(select, ps))
+            {
+                da.Fill(ds.USR_PRD_FASI);
+            }
+        }
+
+        public void FillUSR_PRD_FASI_FaseFinaleCommessaDaIDORIGINE_Tipo_2(PianificazioneDS ds, string IDPRDFLUSSOMOVMATE)
+        {
+            string select = @"select FA1.* FROM usr_prd_fasi FA 
+                                INNER JOIN usr_prd_movmate MM ON MM.IDPRDFASE = FA.IDPRDFASE
+                                INNER JOIN usr_prd_movFASI MF ON MF.IDPRDMOVFASE = MM.IDPRDMOVFASE
+                                INNER JOIN usr_prd_flusso_movmate FMM ON FMM.idprdmovmate = MM.idprdmovmate
+                                inner join usr_prd_fasi fa1 on fa1.idlanciod = fa.idlanciod
+                                where FMM.idprdflussomovmate =  $P{IDPRDFLUSSOMOVMATE}
+                                and fa1.idprdfasepadre is null";
+
+            ParamSet ps = new ParamSet();
+            ps.AddParam("IDPRDFLUSSOMOVMATE", DbType.String, IDPRDFLUSSOMOVMATE);
+
+            using (DbDataAdapter da = BuildDataAdapter(select, ps))
+            {
+                da.Fill(ds.USR_PRD_FASI);
+            }
+        }
         public long GetID()
         {
             string select = @" SELECT LANCIO_SEQUENCE.NEXTVAL FROM DUAL";
@@ -268,9 +317,9 @@ namespace Pianificazione.Data
             }
         }
 
-        public long TruncatePianificazione_ODL()
+        public long TruncateTable(string tabella)
         {
-            string select = @" TRUNCATE TABLE PIANIFICAZIONE_ODL";
+            string select = @" TRUNCATE TABLE "+tabella;
             using (IDbCommand da = BuildCommand(select))
             {
                 long lnNextVal = Convert.ToInt64(da.ExecuteNonQuery());
