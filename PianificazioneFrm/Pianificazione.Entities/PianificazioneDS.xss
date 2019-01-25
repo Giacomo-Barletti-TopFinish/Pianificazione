@@ -15,7 +15,7 @@
     <Shape ID="DesignTable:PIANIFICAZIONE_FASE" ZOrder="4" X="1008" Y="0" Height="637" Width="197" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="633" />
     <Shape ID="DesignTable:USR_ACCTO_CON" ZOrder="3" X="558" Y="417" Height="304" Width="179" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="301" />
     <Shape ID="DesignTable:PIANIFICAZIONE_ODL" ZOrder="2" X="1260" Y="19" Height="304" Width="193" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="301" />
-    <Shape ID="DesignTable:TEMPORANEA" ZOrder="1" X="1683" Y="454" Height="86" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="82" />
+    <Shape ID="DesignTable:PIAN_CATENA_COMMESSA" ZOrder="1" X="1306" Y="393" Height="124" Width="224" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="120" />
   </Shapes>
   <Connectors />
 </DiagramLayout>

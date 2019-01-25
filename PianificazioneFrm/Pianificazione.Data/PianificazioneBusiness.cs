@@ -147,7 +147,7 @@ namespace Pianificazione.Data
         public void SalvaTemporanea(PianificazioneDS ds)
         {
             PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
-            a.UpdateTable(ds.TEMPORANEA.TableName, ds);
+            a.UpdateTable(ds.PIAN_CATENA_COMMESSA.TableName, ds);
         }
         [DataContext(true)]
         public void ImpostaFaseAnnullataPerQuantita()

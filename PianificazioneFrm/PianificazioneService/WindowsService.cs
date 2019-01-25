@@ -72,7 +72,7 @@ namespace PianificazioneService
                 {
                     Console.WriteLine("PIANIFICAZIONE_1");
                     Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
-                    pianificazione.CreaPianificazione();
+                 //   pianificazione.CreaPianificazione();
                     pianificazione.CreaPianificazioneSuBaseODL();
                     sCheduler.AggiornaSchedulazione(schedulazione);
                 }
@@ -81,7 +81,7 @@ namespace PianificazioneService
                 {
                     Console.WriteLine("PIANIFICAZIONE_2");
                     Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
-                    pianificazione.CreaPianificazione();
+               //     pianificazione.CreaPianificazione();
                     pianificazione.CreaPianificazioneSuBaseODL();
                     sCheduler.AggiornaSchedulazione(schedulazione);
                 }

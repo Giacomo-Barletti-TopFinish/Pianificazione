@@ -514,7 +514,7 @@ namespace Pianificazione.Service
             {
                 using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
                 {
-                    bPianificazione.TruncateTable(_ds.TEMPORANEA.TableName);
+                    bPianificazione.TruncateTable(_ds.PIAN_CATENA_COMMESSA.TableName);
 
                     bPianificazione.FillUSR_PRD_FASI_ConAccantonatoDaLavorare(_ds);
                 }
@@ -538,20 +538,10 @@ namespace Pianificazione.Service
                     {
                         SciviLog("INFO", string.Format("Elaborazione {0} di {1} Fase: {2}", contatoreFasi, fasiDaLavorare, idprdfaseOrigine));
                         contatoreFasi++;
-                        if (contatoreFasi == 309)
-                            contatoreFasi = contatoreFasi;
 
                         using (PianificazioneDS ds1 = new PianificazioneDS())
                         {
-                            string OC = TrovaOC(ds1, fase);
-                            PianificazioneDS.TEMPORANEARow t = _ds.TEMPORANEA.NewTEMPORANEARow();
-                            long idt = bPianificazione.GetID();
-                            t.IDT = idt;
-                            t.IDPRDFASE = fase.IDPRDFASE;
-                            t.OC = OC;
-                            _ds.TEMPORANEA.AddTEMPORANEARow(t);
-                            bPianificazione.SalvaTemporanea(_ds);
-                            _ds.TEMPORANEA.AcceptChanges();
+                            TrovaOC(ds1, fase, fase.IDPRDFASE, 0, string.Empty);
                         }
                     }
                     catch (Exception ex)
@@ -566,21 +556,42 @@ namespace Pianificazione.Service
 
         }
 
-        private string TrovaOC(PianificazioneDS ds, PianificazioneDS.USR_PRD_FASIRow fase)
+        private void CreaRigaCatenaCommessa(string riferimento, string padre, string IDPRDFASE, int livello)
+        {
+            using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
+            {
+                PianificazioneDS.PIAN_CATENA_COMMESSARow cc = _ds.PIAN_CATENA_COMMESSA.NewPIAN_CATENA_COMMESSARow();
+                long idcc = bPianificazione.GetID();
+                cc.IDCC = idcc;
+                cc.RIFERIMENTO = riferimento;
+                cc.PADRE = padre;
+                cc.IDPRDFASE = IDPRDFASE;
+                cc.LIVELLO = livello;
+                _ds.PIAN_CATENA_COMMESSA.AddPIAN_CATENA_COMMESSARow(cc);
+                bPianificazione.SalvaTemporanea(_ds);
+                _ds.PIAN_CATENA_COMMESSA.AcceptChanges();
+            }
+        }
+
+        private void TrovaOC(PianificazioneDS ds, PianificazioneDS.USR_PRD_FASIRow fase, string IDPRDFASE_RIFERIMENTO, int livello, string padre)
         {
             ds.USR_ACCTO_CON.Clear();
             using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
             {
                 bPianificazione.FillUSR_ACCTO_CON(ds, fase.IDPRDFASE);
-                string OC;
-                string commessa;
+
+
                 foreach (PianificazioneDS.USR_ACCTO_CONRow accantonato in ds.USR_ACCTO_CON)
                 {
                     switch (accantonato.ORIGINE)
                     {
                         case 0:
-                            OC = bPianificazione.GetDestinazioneOrdineCliente(accantonato.IDORIGINE)[0];
-                            return OC;
+                            List<string> OC = bPianificazione.GetDestinazioneOrdineCliente(accantonato.IDORIGINE);
+                            foreach (string oc in OC)
+                            {
+                                CreaRigaCatenaCommessa(oc, padre, IDPRDFASE_RIFERIMENTO, livello);
+                            }
+                            return;
 
                         case 1: // materiale da commessa - USR_PRD_MATE
 
@@ -589,14 +600,20 @@ namespace Pianificazione.Service
                             {
                                 bPianificazione.FillUSR_PRD_FASI_FaseFinaleCommessaDaIDORIGINE_Tipo_1(ds1, accantonato.IDORIGINE);
                                 faseDaLavorare1 = ds1.USR_PRD_FASI.FirstOrDefault();
-                                if (faseDaLavorare1 == null) return string.Empty;
+                                if (faseDaLavorare1 == null) return;
                                 if (faseDaLavorare1.IDPRDFASE == fase.IDPRDFASE)
                                 {
                                     SciviLog("WARNING", string.Format("Fase: {0} LOOP ACCANTONAMENTO", fase.IDPRDFASE));
-                                    return string.Empty;
+                                    return;
                                 }
-                                OC = TrovaOC(ds1, faseDaLavorare1);
-                                return OC;
+                                bPianificazione.FillUSR_PRD_LANCIOD(ds, faseDaLavorare1.IDLANCIOD);
+                                PianificazioneDS.USR_PRD_LANCIODRow lancio = ds.USR_PRD_LANCIOD.Where(x => x.IDLANCIOD == faseDaLavorare1.IDLANCIOD).FirstOrDefault();
+                                if (lancio == null)
+                                    return;
+                                livello++;
+                                CreaRigaCatenaCommessa(lancio.NOMECOMMESSA, padre, IDPRDFASE_RIFERIMENTO, livello);
+                                TrovaOC(ds1, faseDaLavorare1, IDPRDFASE_RIFERIMENTO, livello, lancio.NOMECOMMESSA);
+                                return;
                             }
 
 
@@ -606,19 +623,24 @@ namespace Pianificazione.Service
                             {
                                 bPianificazione.FillUSR_PRD_FASI_FaseFinaleCommessaDaIDORIGINE_Tipo_2(ds1, accantonato.IDORIGINE);
                                 faseDaLavorare2 = ds1.USR_PRD_FASI.FirstOrDefault();
-                                if (faseDaLavorare2 == null) return string.Empty;
+                                if (faseDaLavorare2 == null) return;
+                                if (faseDaLavorare2.IDPRDFASE == fase.IDPRDFASE)
                                 {
                                     SciviLog("WARNING", string.Format("Fase: {0} LOOP ACCANTONAMENTO", fase.IDPRDFASE));
-                                    return string.Empty;
+                                    return;
                                 }
-                                OC = TrovaOC(ds1, faseDaLavorare2);
-                                return OC;
+                                bPianificazione.FillUSR_PRD_LANCIOD(ds, faseDaLavorare2.IDLANCIOD);
+                                PianificazioneDS.USR_PRD_LANCIODRow lancio = ds.USR_PRD_LANCIOD.Where(x => x.IDLANCIOD == faseDaLavorare2.IDLANCIOD).FirstOrDefault();
+                                if (lancio == null)
+                                    return;
+                                livello++;
+                                CreaRigaCatenaCommessa(lancio.NOMECOMMESSA, padre, IDPRDFASE_RIFERIMENTO, livello);
+                                TrovaOC(ds1, faseDaLavorare2, IDPRDFASE_RIFERIMENTO, livello, lancio.NOMECOMMESSA);
+                                return;
                             }
-                        default: return string.Empty;
-
                     }
                 }
-                return string.Empty;
+                return;
             }
         }
 
