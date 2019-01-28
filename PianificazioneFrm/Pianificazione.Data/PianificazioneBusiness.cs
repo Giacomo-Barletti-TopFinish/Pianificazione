@@ -76,6 +76,13 @@ namespace Pianificazione.Data
         }
 
         [DataContext]
+        public void FillPIAN_CATENA_COMMESSA(PianificazioneDS ds)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.FillPIAN_CATENA_COMMESSA(ds);
+        }
+
+        [DataContext]
         public void FillUSR_PRD_FASIAperti(PianificazioneDS ds)
         {
             PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
@@ -111,10 +118,10 @@ namespace Pianificazione.Data
         }
 
         [DataContext(true)]
-        public void InsertPianificazioneLog(string Tipo, string Nota)
+        public void InsertPianificazioneLog(string Tipo, string Nota, string Applicazione)
         {
             PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
-            a.InsertPianificazioneLog(Tipo, Nota);
+            a.InsertPianificazioneLog(Tipo, Nota, Applicazione);
         }
 
         [DataContext]

@@ -64,6 +64,7 @@ namespace PianificazioneService
 #if DEBUG
                 Pianificazione.Service.PianificazioneService p = new Pianificazione.Service.PianificazioneService();
                 p.TrovaOCPerFasiAccantonate();
+                p.CreaPianificazioneSuBaseODL();
 #endif
                 ScheduleService.ScheduleService sCheduler = new ScheduleService.ScheduleService();
                 ScheduleDS.MONITOR_SCHEDULERRow schedulazione;
@@ -72,7 +73,8 @@ namespace PianificazioneService
                 {
                     Console.WriteLine("PIANIFICAZIONE_1");
                     Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
-                 //   pianificazione.CreaPianificazione();
+                    //   pianificazione.CreaPianificazione();
+                    pianificazione.TrovaOCPerFasiAccantonate();
                     pianificazione.CreaPianificazioneSuBaseODL();
                     sCheduler.AggiornaSchedulazione(schedulazione);
                 }
@@ -81,7 +83,8 @@ namespace PianificazioneService
                 {
                     Console.WriteLine("PIANIFICAZIONE_2");
                     Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
-               //     pianificazione.CreaPianificazione();
+                    //     pianificazione.CreaPianificazione();
+                    pianificazione.TrovaOCPerFasiAccantonate();
                     pianificazione.CreaPianificazioneSuBaseODL();
                     sCheduler.AggiornaSchedulazione(schedulazione);
                 }
@@ -90,7 +93,8 @@ namespace PianificazioneService
                 {
                     Console.WriteLine("PIANIFICAZIONE_3");
                     Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
-                    pianificazione.CreaPianificazione();
+                   // pianificazione.CreaPianificazione();
+                    pianificazione.TrovaOCPerFasiAccantonate();
                     pianificazione.CreaPianificazioneSuBaseODL();
                     sCheduler.AggiornaSchedulazione(schedulazione);
                 }
@@ -99,7 +103,8 @@ namespace PianificazioneService
                 {
                     Console.WriteLine("PIANIFICAZIONE_4");
                     Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
-                    pianificazione.CreaPianificazione();
+                    //pianificazione.CreaPianificazione();
+                    pianificazione.TrovaOCPerFasiAccantonate();
                     pianificazione.CreaPianificazioneSuBaseODL();
                     sCheduler.AggiornaSchedulazione(schedulazione);
                 }

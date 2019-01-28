@@ -11,6 +11,7 @@ namespace Pianificazione.Service
     public class PianificazioneService
     {
         private PianificazioneDS _ds;
+        private string Applicazione;
         private void CaricaListaLanciAperti()
         {
             using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
@@ -23,16 +24,17 @@ namespace Pianificazione.Service
         public void CreaPianificazione()
         {
             _ds = new PianificazioneDS();
+            Applicazione = "Pianificazione lanci";
             try
             {
                 CaricaListaLanciAperti();
             }
             catch (Exception ex)
             {
-                SciviLog(ex);
+                SciviLog(ex, Applicazione);
                 return;
             }
-            SciviLog("START", string.Format("Trovati {0} lanci da verificare", _ds.USR_PRD_LANCIOD.Count));
+            SciviLog("START", string.Format("Trovati {0} lanci da verificare", _ds.USR_PRD_LANCIOD.Count), Applicazione);
 
             int numeroElementiLancio = _ds.USR_PRD_LANCIOD.Count();
             int contatoreLancio = 1;
@@ -42,7 +44,7 @@ namespace Pianificazione.Service
                 {
                     try
                     {
-                        SciviLog("INFO", string.Format("Elaborazione {0} di {1} IDLANCIOD: {2}", contatoreLancio, numeroElementiLancio, lancio.IDLANCIOD));
+                        SciviLog("INFO", string.Format("Elaborazione {0} di {1} IDLANCIOD: {2}", contatoreLancio, numeroElementiLancio, lancio.IDLANCIOD), Applicazione);
                         contatoreLancio++;
 
                         bPianificazione.FillUSR_PRD_FASIByIDLANCIOD(_ds, lancio.IDLANCIOD);
@@ -56,19 +58,19 @@ namespace Pianificazione.Service
                         if (pLancio == null)
                         {
                             long idlancio = bPianificazione.GetID();
-                            SciviLog("INFO", string.Format("IDLANCIOD: {0} non trovato in PIANIFICAZIONE_LANCIO CREATO NUOVO CON ID: {1}", lancio.IDLANCIOD, idlancio));
+                            SciviLog("INFO", string.Format("IDLANCIOD: {0} non trovato in PIANIFICAZIONE_LANCIO CREATO NUOVO CON ID: {1}", lancio.IDLANCIOD, idlancio), Applicazione);
                             pLancio = CreaPianificazione_Lancio(idlancio, lancio);
                             _ds.PIANIFICAZIONE_LANCIO.AddPIANIFICAZIONE_LANCIORow(pLancio);
                         }
                         else
                         {
-                            SciviLog("INFO", string.Format("IDLANCIOD: {0} trovato in PIANIFICAZIONE_LANCIO CON ID: {1}", lancio.IDLANCIOD, pLancio.IDLANCIO));
+                            SciviLog("INFO", string.Format("IDLANCIOD: {0} trovato in PIANIFICAZIONE_LANCIO CON ID: {1}", lancio.IDLANCIOD, pLancio.IDLANCIO), Applicazione);
                         }
 
                         PianificazioneDS.USR_PRD_FASIRow faseRoot = _ds.USR_PRD_FASI.Where(x => x.ROOTSN == 1 && x.IDLANCIOD == lancio.IDLANCIOD).FirstOrDefault();
                         if (faseRoot == null)
                         {
-                            SciviLog("WARNING", string.Format("IDLANCIOD: {0} IMPOSSIBILE TROVARE FASE ROOT", lancio.IDLANCIOD));
+                            SciviLog("WARNING", string.Format("IDLANCIOD: {0} IMPOSSIBILE TROVARE FASE ROOT", lancio.IDLANCIOD), Applicazione);
                             continue;
                         }
                         else
@@ -90,8 +92,8 @@ namespace Pianificazione.Service
                     }
                     catch (Exception ex)
                     {
-                        SciviLog("ERRORE", string.Format("IDLANCIOD: {0} ECCEZIONE AL PASSO {1} DI {2}", lancio.IDLANCIOD, contatoreLancio - 1, numeroElementiLancio));
-                        SciviLog(ex);
+                        SciviLog("ERRORE", string.Format("IDLANCIOD: {0} ECCEZIONE AL PASSO {1} DI {2}", lancio.IDLANCIOD, contatoreLancio - 1, numeroElementiLancio), Applicazione);
+                        SciviLog(ex, Applicazione);
                     }
 
                 }
@@ -100,9 +102,9 @@ namespace Pianificazione.Service
             using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
             {
                 bPianificazione.ImpostaFaseAnnullataPerQuantita();
-                SciviLog("INFO", "ImpostaFaseAnnullataPerQuantita");
+                SciviLog("INFO", "ImpostaFaseAnnullataPerQuantita", Applicazione);
             }
-            SciviLog("END", "Fine elaborazione");
+            SciviLog("END", "Fine elaborazione", Applicazione);
 
         }
 
@@ -111,7 +113,7 @@ namespace Pianificazione.Service
             PianificazioneDS.PIANIFICAZIONE_FASERow faseRoot = _ds.PIANIFICAZIONE_FASE.Where(x => x.IDLANCIO == pLancio.IDLANCIO).FirstOrDefault();
             if (faseRoot == null)
             {
-                SciviLog("WARNING", string.Format("IDLANCIO: {0} non ha fase di root", pLancio.IDLANCIO));
+                SciviLog("WARNING", string.Format("IDLANCIO: {0} non ha fase di root", pLancio.IDLANCIO), Applicazione);
                 return;
             }
 
@@ -326,7 +328,7 @@ namespace Pianificazione.Service
                 PianificazioneDS.PIANIFICAZIONE_FASERow fasePadre = _ds.PIANIFICAZIONE_FASE.Where(x => x.IDPRDFASE == faseRow.IDPRDFASEPADRE).FirstOrDefault();
                 if (fasePadre == null)
                 {
-                    SciviLog("WARNING", string.Format("IDPRDFASEPADRE: {0} IMPOSSIBILE TROVARE PIANIFICAZIONE FASE", faseRow.IDPRDFASEPADRE));
+                    SciviLog("WARNING", string.Format("IDPRDFASEPADRE: {0} IMPOSSIBILE TROVARE PIANIFICAZIONE FASE", faseRow.IDPRDFASEPADRE), Applicazione);
                 }
                 else
                 {
@@ -387,15 +389,15 @@ namespace Pianificazione.Service
             return pLancio;
         }
 
-        private void SciviLog(string tipo, string nota)
+        private void SciviLog(string tipo, string nota, string Applicazione)
         {
             using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
             {
-                bPianificazione.InsertPianificazioneLog(tipo, nota);
+                bPianificazione.InsertPianificazioneLog(tipo, nota, Applicazione);
             }
         }
 
-        private void SciviLog(Exception ex)
+        private void SciviLog(Exception ex, string Applicazione)
         {
             StringBuilder sb = new StringBuilder();
             while (ex != null)
@@ -410,7 +412,7 @@ namespace Pianificazione.Service
             if (messaggio.Length > 500) messaggio = messaggio.Substring(0, 500);
             using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
             {
-                bPianificazione.InsertPianificazioneLog("EXCEPTION", messaggio);
+                bPianificazione.InsertPianificazioneLog("EXCEPTION", messaggio, Applicazione);
             }
             Console.WriteLine(messaggio);
         }
@@ -418,6 +420,7 @@ namespace Pianificazione.Service
         public void CreaPianificazioneSuBaseODL()
         {
             _ds = new PianificazioneDS();
+            Applicazione = "Pianificazione base ODL";
             try
             {
                 using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
@@ -426,14 +429,15 @@ namespace Pianificazione.Service
                     bPianificazione.FillUSR_PRD_MOVFASIAperti(_ds);
                     bPianificazione.FillUSR_PRD_FASIAperti(_ds);
                     bPianificazione.FillUSR_PRD_LANCIODAperti(_ds);
+                    bPianificazione.FillPIAN_CATENA_COMMESSA(_ds);
                 }
             }
             catch (Exception ex)
             {
-                SciviLog(ex);
+                SciviLog(ex, Applicazione);
                 return;
             }
-            SciviLog("START", string.Format("Trovati {0} ODL aperti", _ds.USR_PRD_MOVFASI.Count));
+            SciviLog("START", string.Format("Trovati {0} ODL aperti", _ds.USR_PRD_MOVFASI.Count), Applicazione);
 
             int numeroODLAperti = _ds.USR_PRD_MOVFASI.Count();
             int contatoreODL = 1;
@@ -446,12 +450,12 @@ namespace Pianificazione.Service
                 {
                     try
                     {
-                        SciviLog("INFO", string.Format("Elaborazione {0} di {1} ODL: {2}", contatoreODL, numeroODLAperti, IDPRDMOVFASE_ORIGINE));
+                        SciviLog("INFO", string.Format("Elaborazione {0} di {1} ODL: {2}", contatoreODL, numeroODLAperti, IDPRDMOVFASE_ORIGINE), Applicazione);
                         contatoreODL++;
 
                         if (odl.IsIDPRDFASENull())
                         {
-                            SciviLog("WARNING", string.Format("ODL: {0} IDPRDFASE NULL", IDPRDMOVFASE_ORIGINE));
+                            SciviLog("WARNING", string.Format("ODL: {0} IDPRDFASE NULL", IDPRDMOVFASE_ORIGINE), Applicazione);
                             continue;
                         }
 
@@ -459,7 +463,7 @@ namespace Pianificazione.Service
                         PianificazioneDS.USR_PRD_FASIRow fase = _ds.USR_PRD_FASI.Where(x => x.IDPRDFASE == odl.IDPRDFASE).FirstOrDefault();
                         if (fase == null)
                         {
-                            SciviLog("WARNING", string.Format("ODL: {0} IMPOSSIBILE TROVARE FASE", IDPRDMOVFASE_ORIGINE));
+                            SciviLog("WARNING", string.Format("ODL: {0} IMPOSSIBILE TROVARE FASE", IDPRDMOVFASE_ORIGINE), Applicazione);
                             continue;
                         }
 
@@ -496,20 +500,21 @@ namespace Pianificazione.Service
                     }
                     catch (Exception ex)
                     {
-                        SciviLog("ERRORE", string.Format("ODL: {0} ECCEZIONE AL PASSO {1} DI {2}", odl.IDPRDMOVFASE, contatoreODL - 1, numeroODLAperti));
-                        SciviLog(ex);
+                        SciviLog("ERRORE", string.Format("ODL: {0} ECCEZIONE AL PASSO {1} DI {2}", odl.IDPRDMOVFASE, contatoreODL - 1, numeroODLAperti), Applicazione);
+                        SciviLog(ex, Applicazione);
                     }
 
                 }
             }
 
-            SciviLog("END", "Fine elaborazione");
+            SciviLog("END", "Fine elaborazione", Applicazione);
 
         }
 
         public void TrovaOCPerFasiAccantonate()
         {
             _ds = new PianificazioneDS();
+            Applicazione = "OC per accantonati";
             try
             {
                 using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
@@ -521,10 +526,10 @@ namespace Pianificazione.Service
             }
             catch (Exception ex)
             {
-                SciviLog(ex);
+                SciviLog(ex, Applicazione);
                 return;
             }
-            SciviLog("START", string.Format("Trovati {0} Fasi ", _ds.USR_PRD_FASI.Count));
+            SciviLog("START", string.Format("Trovati {0} Fasi ", _ds.USR_PRD_FASI.Count), Applicazione);
 
             int fasiDaLavorare = _ds.USR_PRD_FASI.Count();
             int contatoreFasi = 1;
@@ -536,27 +541,27 @@ namespace Pianificazione.Service
                 {
                     try
                     {
-                        SciviLog("INFO", string.Format("Elaborazione {0} di {1} Fase: {2}", contatoreFasi, fasiDaLavorare, idprdfaseOrigine));
+                        SciviLog("INFO", string.Format("Elaborazione {0} di {1} Fase: {2}", contatoreFasi, fasiDaLavorare, idprdfaseOrigine), Applicazione);
                         contatoreFasi++;
 
                         using (PianificazioneDS ds1 = new PianificazioneDS())
                         {
-                            TrovaOC(ds1, fase, fase.IDPRDFASE, 0, string.Empty);
+                            TrovaOC(ds1, fase, fase.IDPRDFASE, 0, string.Empty, 0);
                         }
                     }
                     catch (Exception ex)
                     {
-                        SciviLog("ERRORE", string.Format("Fase: {0} ECCEZIONE AL PASSO {1} DI {2}", fase.IDPRDFASE, contatoreFasi - 1, fasiDaLavorare));
-                        SciviLog(ex);
+                        SciviLog("ERRORE", string.Format("Fase: {0} ECCEZIONE AL PASSO {1} DI {2}", fase.IDPRDFASE, contatoreFasi - 1, fasiDaLavorare), Applicazione);
+                        SciviLog(ex, Applicazione);
                     }
 
                 }
             }
-            SciviLog("END", "Fine elaborazione");
+            SciviLog("END", "Fine elaborazione", Applicazione);
 
         }
 
-        private void CreaRigaCatenaCommessa(string riferimento, string padre, string IDPRDFASE, int livello)
+        private void CreaRigaCatenaCommessa(string riferimento, string padre, string IDPRDFASE, int livello, int durata, int durata_cumulativa, bool OC)
         {
             using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
             {
@@ -567,13 +572,17 @@ namespace Pianificazione.Service
                 cc.PADRE = padre;
                 cc.IDPRDFASE = IDPRDFASE;
                 cc.LIVELLO = livello;
+                cc.DURATA = durata;
+                cc.DURATA_COMULATIVA = durata_cumulativa;
+                cc.OC = OC ? "1" : "0";
+                
                 _ds.PIAN_CATENA_COMMESSA.AddPIAN_CATENA_COMMESSARow(cc);
                 bPianificazione.SalvaTemporanea(_ds);
                 _ds.PIAN_CATENA_COMMESSA.AcceptChanges();
             }
         }
 
-        private void TrovaOC(PianificazioneDS ds, PianificazioneDS.USR_PRD_FASIRow fase, string IDPRDFASE_RIFERIMENTO, int livello, string padre)
+        private void TrovaOC(PianificazioneDS ds, PianificazioneDS.USR_PRD_FASIRow fase, string IDPRDFASE_RIFERIMENTO, int livello, string padre, int durata_cumulativa_precedente)
         {
             ds.USR_ACCTO_CON.Clear();
             using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
@@ -589,7 +598,7 @@ namespace Pianificazione.Service
                             List<string> OC = bPianificazione.GetDestinazioneOrdineCliente(accantonato.IDORIGINE);
                             foreach (string oc in OC)
                             {
-                                CreaRigaCatenaCommessa(oc, padre, IDPRDFASE_RIFERIMENTO, livello);
+                                CreaRigaCatenaCommessa(oc, padre, IDPRDFASE_RIFERIMENTO, livello, 0, durata_cumulativa_precedente, true);
                             }
                             return;
 
@@ -603,16 +612,17 @@ namespace Pianificazione.Service
                                 if (faseDaLavorare1 == null) return;
                                 if (faseDaLavorare1.IDPRDFASE == fase.IDPRDFASE)
                                 {
-                                    SciviLog("WARNING", string.Format("Fase: {0} LOOP ACCANTONAMENTO", fase.IDPRDFASE));
+                                    SciviLog("WARNING", string.Format("Fase: {0} LOOP ACCANTONAMENTO", fase.IDPRDFASE), Applicazione);
                                     return;
                                 }
-                                bPianificazione.FillUSR_PRD_LANCIOD(ds, faseDaLavorare1.IDLANCIOD);
-                                PianificazioneDS.USR_PRD_LANCIODRow lancio = ds.USR_PRD_LANCIOD.Where(x => x.IDLANCIOD == faseDaLavorare1.IDLANCIOD).FirstOrDefault();
+                                bPianificazione.FillUSR_PRD_LANCIOD(ds1, faseDaLavorare1.IDLANCIOD);
+                                PianificazioneDS.USR_PRD_LANCIODRow lancio = ds1.USR_PRD_LANCIOD.Where(x => x.IDLANCIOD == faseDaLavorare1.IDLANCIOD).FirstOrDefault();
                                 if (lancio == null)
                                     return;
                                 livello++;
-                                CreaRigaCatenaCommessa(lancio.NOMECOMMESSA, padre, IDPRDFASE_RIFERIMENTO, livello);
-                                TrovaOC(ds1, faseDaLavorare1, IDPRDFASE_RIFERIMENTO, livello, lancio.NOMECOMMESSA);
+                                int durata = CalcolaDurataCommessa(ds1, faseDaLavorare1);
+                                CreaRigaCatenaCommessa(lancio.NOMECOMMESSA, padre, IDPRDFASE_RIFERIMENTO, livello, durata, durata + durata_cumulativa_precedente, false);
+                                TrovaOC(ds1, faseDaLavorare1, IDPRDFASE_RIFERIMENTO, livello, lancio.NOMECOMMESSA, durata + durata_cumulativa_precedente);
                                 return;
                             }
 
@@ -626,16 +636,19 @@ namespace Pianificazione.Service
                                 if (faseDaLavorare2 == null) return;
                                 if (faseDaLavorare2.IDPRDFASE == fase.IDPRDFASE)
                                 {
-                                    SciviLog("WARNING", string.Format("Fase: {0} LOOP ACCANTONAMENTO", fase.IDPRDFASE));
+                                    SciviLog("WARNING", string.Format("Fase: {0} LOOP ACCANTONAMENTO", fase.IDPRDFASE), Applicazione);
                                     return;
                                 }
-                                bPianificazione.FillUSR_PRD_LANCIOD(ds, faseDaLavorare2.IDLANCIOD);
-                                PianificazioneDS.USR_PRD_LANCIODRow lancio = ds.USR_PRD_LANCIOD.Where(x => x.IDLANCIOD == faseDaLavorare2.IDLANCIOD).FirstOrDefault();
+                                bPianificazione.FillUSR_PRD_LANCIOD(ds1, faseDaLavorare2.IDLANCIOD);
+                                bPianificazione.FillUSR_PRD_FASIByIDLANCIOD(ds1, faseDaLavorare2.IDLANCIOD);
+                                PianificazioneDS.USR_PRD_LANCIODRow lancio = ds1.USR_PRD_LANCIOD.Where(x => x.IDLANCIOD == faseDaLavorare2.IDLANCIOD).FirstOrDefault();
                                 if (lancio == null)
                                     return;
                                 livello++;
-                                CreaRigaCatenaCommessa(lancio.NOMECOMMESSA, padre, IDPRDFASE_RIFERIMENTO, livello);
-                                TrovaOC(ds1, faseDaLavorare2, IDPRDFASE_RIFERIMENTO, livello, lancio.NOMECOMMESSA);
+                                int durata = CalcolaDurataCommessa(ds1, faseDaLavorare2);
+                                CreaRigaCatenaCommessa(lancio.NOMECOMMESSA, padre, IDPRDFASE_RIFERIMENTO, livello, durata, durata + durata_cumulativa_precedente, false);
+                                TrovaOC(ds1, faseDaLavorare2, IDPRDFASE_RIFERIMENTO, livello, lancio.NOMECOMMESSA, durata + durata_cumulativa_precedente);
+
                                 return;
                             }
                     }
@@ -644,6 +657,21 @@ namespace Pianificazione.Service
             }
         }
 
+        private int CalcolaDurataCommessa(PianificazioneDS ds, PianificazioneDS.USR_PRD_FASIRow faseDaLavorare)
+        {
+            decimal durata = 0;
+            PianificazioneDS.USR_PRD_FASIRow fase = faseDaLavorare;
+            if (!fase.IsOFFSETTIMENull())
+                durata = fase.OFFSETTIME;
+            while (!fase.IsIDPRDFASEPADRENull())
+            {
+                fase = ds.USR_PRD_FASI.Where(x => x.IDPRDFASE == fase.IDPRDFASEPADRE).FirstOrDefault();
+                if (!fase.IsOFFSETTIMENull())
+                    durata += fase.OFFSETTIME;
+            }
+
+            return (int)durata;
+        }
         private void EstraiDestinazione(PianificazioneDS.USR_PRD_FASIRow fase, PianificazioneDS.PIANIFICAZIONE_ODLRow pODL)
         {
             List<string> valori = new List<string>();
@@ -700,7 +728,7 @@ namespace Pianificazione.Service
             PianificazioneDS.PIANIFICAZIONE_ODLRow odlAperto = _ds.PIANIFICAZIONE_ODL.Where(x => x.IDPRDMOVFASE == odl.IDPRDMOVFASE && x.STATO == StatoFasePianificazione.APERTO).FirstOrDefault();
             if (odlAperto == null)
             {
-                SciviLog("ERRORE", string.Format("ODL: {0} IMPOSSIBILE TROVARE ODL APERTO PER CORREZIONE DATE", odl.IDPRDMOVFASE));
+                SciviLog("ERRORE", string.Format("ODL: {0} IMPOSSIBILE TROVARE ODL APERTO PER CORREZIONE DATE", odl.IDPRDMOVFASE), Applicazione);
                 return;
             }
 
@@ -836,6 +864,14 @@ namespace Pianificazione.Service
             if (fase.IsIDPRDFASEPADRENull())
             {
                 EstraiDestinazione(fase, pODL);
+
+                List<PianificazioneDS.PIAN_CATENA_COMMESSARow> listaCatenaCommessa = _ds.PIAN_CATENA_COMMESSA.Where(x => x.IDPRDFASE == fase.IDPRDFASE && x.OC == "1").OrderBy(x => x.DURATA_COMULATIVA).ToList();
+                if (listaCatenaCommessa.Count > 0)
+                {
+                    PianificazioneDS.PIAN_CATENA_COMMESSARow catenaCommessa = listaCatenaCommessa[0];
+                    pODL.ORDINECLIENTE = catenaCommessa.RIFERIMENTO;
+                    pODL.DURATA = catenaCommessa.DURATA_COMULATIVA;
+                }
             }
 
             _ds.PIANIFICAZIONE_ODL.AddPIANIFICAZIONE_ODLRow(pODL);

@@ -176,6 +176,17 @@ namespace Pianificazione.Data
 
         }
 
+        public void FillPIAN_CATENA_COMMESSA(PianificazioneDS ds)
+        {
+            string select = @"SELECT * from PIAN_CATENA_COMMESSA";
+
+            using (DbDataAdapter da = BuildDataAdapter(select))
+            {
+                da.Fill(ds.PIAN_CATENA_COMMESSA);
+            }
+
+        }
+
         public void FillUSR_PRD_FASIAperti(PianificazioneDS ds)
         {
             string select = @"SELECT DISTINCT TF.* FROM USR_PRD_FASI TF 
@@ -264,7 +275,7 @@ namespace Pianificazione.Data
             string select = @"select distinct fa.* from usr_prd_fasi fa 
                                 inner join usr_accto_con_doc doc on doc.iddestinazione = fa.idprdfase
                                 inner join usr_accto_con con on con.idacctocon = doc.idacctocon
-                                where idprdfasepadre is null and con.origine in (1,2)
+                                where idprdfasepadre is null and con.origine in (0,1,2)
                                 ";
 
             using (DbDataAdapter da = BuildDataAdapter(select))
@@ -319,7 +330,7 @@ inner join usr_prd_fasi fa1 on fa1.idlanciod = ma.idlanciod
 
         public long TruncateTable(string tabella)
         {
-            string select = @" TRUNCATE TABLE "+tabella;
+            string select = @" TRUNCATE TABLE " + tabella;
             using (IDbCommand da = BuildCommand(select))
             {
                 long lnNextVal = Convert.ToInt64(da.ExecuteNonQuery());
@@ -424,13 +435,14 @@ inner join usr_prd_fasi fa1 on fa1.idlanciod = ma.idlanciod
             }
         }
 
-        public void InsertPianificazioneLog(string Tipo, string Nota)
+        public void InsertPianificazioneLog(string Tipo, string Nota, string Applicazione)
         {
-            string insert = @"INSERT INTO PIANIFICAZIONE_LOG  ( IDLOG, DATA,TIPO,NOTA  ) VALUES (NULL,to_date('{0}','DD/MM/YYYY HH24:MI:SS'),$P<TIPO>,$P<NOTA>)";
+            string insert = @"INSERT INTO PIANIFICAZIONE_LOG  ( IDLOG, DATA,TIPO,NOTA,APPLICAZIONE  ) VALUES (NULL,to_date('{0}','DD/MM/YYYY HH24:MI:SS'),$P<TIPO>,$P<NOTA>,$P<APPLICAZIONE>)";
             insert = string.Format(insert, DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
             ParamSet ps = new ParamSet();
             ps.AddParam("TIPO", DbType.String, Tipo);
             ps.AddParam("NOTA", DbType.String, Nota);
+            ps.AddParam("APPLICAZIONE", DbType.String, Applicazione);
 
             using (DbCommand cmd = BuildCommand(insert, ps))
             {
