@@ -63,7 +63,7 @@ namespace PianificazioneService
             {
 #if DEBUG
                 Pianificazione.Service.PianificazioneService p = new Pianificazione.Service.PianificazioneService();
-        //        p.TrovaOCPerFasiAccantonate();
+                p.TrovaOCPerFasiAccantonate();
                 p.CreaPianificazioneSuBaseODL();
 #endif
                 ScheduleService.ScheduleService sCheduler = new ScheduleService.ScheduleService();
@@ -93,7 +93,7 @@ namespace PianificazioneService
                 {
                     Console.WriteLine("PIANIFICAZIONE_3");
                     Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
-                   // pianificazione.CreaPianificazione();
+                    // pianificazione.CreaPianificazione();
                     pianificazione.TrovaOCPerFasiAccantonate();
                     pianificazione.CreaPianificazioneSuBaseODL();
                     sCheduler.AggiornaSchedulazione(schedulazione);

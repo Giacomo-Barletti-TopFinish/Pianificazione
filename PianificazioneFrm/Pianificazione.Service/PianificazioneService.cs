@@ -419,6 +419,7 @@ namespace Pianificazione.Service
 
         public void CreaPianificazioneSuBaseODL()
         {
+            DateTime dtInizio = DateTime.Now;
             _ds = new PianificazioneDS();
             Applicazione = "Pianificazione base ODL";
             try
@@ -468,7 +469,7 @@ namespace Pianificazione.Service
                         }
 
                         decimal quantita = odl.QTA;
-                        CreaPianificazione_ODL(odl, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita);
+                        CreaPianificazione_ODL(odl, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita, false, false);
 
                         while (!fase.IsIDPRDFASEPADRENull())
                         {
@@ -486,7 +487,7 @@ namespace Pianificazione.Service
                                 break;
                             }
                             attendibilita++;
-                            CreaPianificazione_ODL(null, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita);
+                            CreaPianificazione_ODL(null, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita, false, false);
                         }
 
                         CorreggiDatePianificazioneODL(odl);
@@ -507,12 +508,14 @@ namespace Pianificazione.Service
                 }
             }
 
-            SciviLog("END", "Fine elaborazione", Applicazione);
-
+            double durata = (DateTime.Now - dtInizio).TotalMinutes;
+            string messaggio = string.Format("Fine elaborazione - {0}", durata);
+            SciviLog("END", messaggio, Applicazione);
         }
 
         public void TrovaOCPerFasiAccantonate()
         {
+            DateTime dtInizio = DateTime.Now;
             _ds = new PianificazioneDS();
             Applicazione = "OC per accantonati";
             try
@@ -557,7 +560,9 @@ namespace Pianificazione.Service
 
                 }
             }
-            SciviLog("END", "Fine elaborazione", Applicazione);
+            double durata = (DateTime.Now - dtInizio).TotalMinutes;
+            string messaggio = string.Format("Fine elaborazione - {0}", durata);
+            SciviLog("END", messaggio, Applicazione);
 
         }
 
@@ -747,7 +752,7 @@ namespace Pianificazione.Service
             }
         }
 
-        private void CreaPianificazione_ODL(PianificazioneDS.USR_PRD_MOVFASIRow odl, PianificazioneDS.USR_PRD_FASIRow fase, string IDPRDMOVFASE_ORIGINE, int attendibilita, decimal quantita)
+        private void CreaPianificazione_ODL(PianificazioneDS.USR_PRD_MOVFASIRow odl, PianificazioneDS.USR_PRD_FASIRow fase, string IDPRDMOVFASE_ORIGINE, int attendibilita, decimal quantita, bool daAccantonato, bool daInfragruppo)
         {
 
             PianificazioneDS.PIANIFICAZIONE_ODLRow pODL = _ds.PIANIFICAZIONE_ODL.NewPIANIFICAZIONE_ODLRow();
@@ -759,7 +764,11 @@ namespace Pianificazione.Service
             }
             pODL.IDLANCIOD = fase.IsIDLANCIODNull() ? string.Empty : fase.IDLANCIOD;
             pODL.AZIENDA = fase.AZIENDA;
+
             pODL.STATO = StatoFasePianificazione.PIANIFICATO;
+            if (daAccantonato) pODL.STATO = StatoFasePianificazione.ACCANTONATO;
+            if (daInfragruppo) pODL.STATO = StatoFasePianificazione.INFRAGRUPPO;
+
             pODL.IDPRDMOVFASE = IDPRDMOVFASE_ORIGINE;
             pODL.CODICECLIFO = fase.IsCODICECLIFONull() ? string.Empty : fase.CODICECLIFO;
             pODL.IDPRDFASE = fase.IsIDPRDFASENull() ? string.Empty : fase.IDPRDFASE;
@@ -878,6 +887,7 @@ namespace Pianificazione.Service
 
             }
             ContinuaPianificazioneODLDaAccantonato(fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita);
+            ContinuaPianificazioneODLDaInfragruppo(fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita);
 
             _ds.PIANIFICAZIONE_ODL.AddPIANIFICAZIONE_ODLRow(pODL);
 
@@ -902,7 +912,7 @@ namespace Pianificazione.Service
                             if (fase.IDLANCIOD == faseDaEstendere.IDLANCIOD) continue; // esclude il caso di accantonato naturale
 
                             attendibilita++;
-                            CreaPianificazione_ODL(null, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantitaDaLavorare);
+                            CreaPianificazione_ODL(null, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantitaDaLavorare, true, false);
 
                             while (!fase.IsIDPRDFASEPADRENull())
                             {
@@ -920,7 +930,7 @@ namespace Pianificazione.Service
                                     break;
                                 }
                                 attendibilita++;
-                                CreaPianificazione_ODL(null, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantitaDaLavorare);
+                                CreaPianificazione_ODL(null, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantitaDaLavorare, true, false);
                             }
                             quantitaDaLavorare = 0;
                         }
@@ -936,7 +946,7 @@ namespace Pianificazione.Service
                             PianificazioneDS.USR_PRD_FASIRow fase = ds1.USR_PRD_FASI.Where(x => x.IDPRDFASE == catenaCommessa.IDPRDFASERIPARTENZA).FirstOrDefault();
                             if (fase.IDLANCIOD == faseDaEstendere.IDLANCIOD) continue; // esclude il caso di accantonato naturale
                             attendibilita++;
-                            CreaPianificazione_ODL(null, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita);
+                            CreaPianificazione_ODL(null, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita, true, false);
 
                             while (!fase.IsIDPRDFASEPADRENull())
                             {
@@ -954,7 +964,7 @@ namespace Pianificazione.Service
                                     break;
                                 }
                                 attendibilita++;
-                                CreaPianificazione_ODL(null, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita);
+                                CreaPianificazione_ODL(null, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita, true, false);
                             }
                         }
                     }
@@ -962,6 +972,49 @@ namespace Pianificazione.Service
             }
 
         }
+
+        private void ContinuaPianificazioneODLDaInfragruppo(PianificazioneDS.USR_PRD_FASIRow faseDaEstendere, string IDPRDMOVFASE_ORIGINE, int attendibilita, decimal quantitaFasePartenza)
+        {
+            using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
+            {
+                using (PianificazioneDS ds1 = new PianificazioneDS())
+                {
+                    bPianificazione.FillUSR_PRD_FASI_INFRAGRUPPO(ds1, faseDaEstendere.IDPRDFASE);
+                    if (ds1.USR_PRD_FASI.Count > 0)
+                    {
+                        PianificazioneDS.USR_PRD_FASIRow faseInfragruppo = ds1.USR_PRD_FASI.FirstOrDefault();
+
+                        bPianificazione.FillUSR_PRD_FASI_Sorelle(ds1, faseInfragruppo.IDPRDFASE);
+                        if (faseInfragruppo.IDLANCIOD == faseDaEstendere.IDLANCIOD) return; // esclude il caso di accantonato naturale
+
+                        attendibilita++;
+                        CreaPianificazione_ODL(null, faseInfragruppo, IDPRDMOVFASE_ORIGINE, attendibilita, faseInfragruppo.QTA, false, true);
+
+                        while (!faseInfragruppo.IsIDPRDFASEPADRENull())
+                        {
+                            faseInfragruppo = _ds.USR_PRD_FASI.Where(x => x.IDPRDFASE == faseInfragruppo.IDPRDFASEPADRE).FirstOrDefault();
+
+                            if (
+                                faseInfragruppo.IDTABFAS == "0000000077" || // SALNDATURA
+                                faseInfragruppo.IDTABFAS == "0000000066" || // MONTAGGIO
+                                faseInfragruppo.IDTABFAS == "0000000173" || // MONTAGGIO CAMPIONI
+                                faseInfragruppo.IDTABFAS == "0000000203" || // MONTAGGIO SU FINITO
+                                faseInfragruppo.IDTABFAS == "0000000202"  // MONTAGGIO SU GREZZO
+                                )
+                            {
+                                faseInfragruppo = null;
+                                break;
+                            }
+                            attendibilita++;
+                            CreaPianificazione_ODL(null, faseInfragruppo, IDPRDMOVFASE_ORIGINE, attendibilita, faseInfragruppo.QTA, false, true);
+                        }
+                    }
+                }
+
+            }
+
+        }
+
     }
 
 }

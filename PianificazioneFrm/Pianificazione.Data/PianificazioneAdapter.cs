@@ -217,6 +217,21 @@ namespace Pianificazione.Data
             }
         }
 
+        public void FillUSR_PRD_FASI_INFRAGRUPPO(PianificazioneDS ds, string IDPRDFASE_FROM)
+        {
+            string select = @"select * from usr_prd_fasi fa
+                    inner join siglapp.usr_infra_fase_to_fase infra on infra.idprdfase_to = fa.idprdfase
+                    where infra.idprdfase_from =  $P{IDPRDFASE_FROM} ";
+
+            ParamSet ps = new ParamSet();
+            ps.AddParam("IDPRDFASE_FROM", DbType.String, IDPRDFASE_FROM);
+
+            using (DbDataAdapter da = BuildDataAdapter(select, ps))
+            {
+                da.Fill(ds.USR_PRD_FASI);
+            }
+        }
+
         public void FillUSR_PRD_FASIByIDLANCIOD(PianificazioneDS ds, string IDLANCIOD)
         {
             string select = @"SELECT * FROM USR_PRD_FASI WHERE IDLANCIOD = $P{IDLANCIOD}";

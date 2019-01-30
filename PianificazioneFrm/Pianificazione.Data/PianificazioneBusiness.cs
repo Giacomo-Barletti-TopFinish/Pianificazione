@@ -201,6 +201,14 @@ namespace Pianificazione.Data
         }
 
         [DataContext]
+        public void FillUSR_PRD_FASI_INFRAGRUPPO(PianificazioneDS ds, string IDPRDFASE_FROM)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.FillUSR_PRD_FASI_INFRAGRUPPO(ds, IDPRDFASE_FROM);
+
+
+        }
+        [DataContext]
         public List<string> GetDestinazioneOrdineCliente(string IDVENDITED)
         {
             PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
