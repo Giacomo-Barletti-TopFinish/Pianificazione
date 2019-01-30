@@ -202,6 +202,21 @@ namespace Pianificazione.Data
 
         }
 
+        public void FillUSR_PRD_FASI_Sorelle(PianificazioneDS ds, string IDPRDFASE)
+        {
+            string select = @"select FA.* FROM usr_prd_fasi fa
+                                inner join usr_prd_fasi ma on ma.idlanciod = fa.idlanciod
+                                where ma.IDPRDFASE =  $P{IDPRDFASE} ";
+
+            ParamSet ps = new ParamSet();
+            ps.AddParam("IDPRDFASE", DbType.String, IDPRDFASE);
+
+            using (DbDataAdapter da = BuildDataAdapter(select, ps))
+            {
+                da.Fill(ds.USR_PRD_FASI);
+            }
+        }
+
         public void FillUSR_PRD_FASIByIDLANCIOD(PianificazioneDS ds, string IDLANCIOD)
         {
             string select = @"SELECT * FROM USR_PRD_FASI WHERE IDLANCIOD = $P{IDLANCIOD}";
@@ -418,6 +433,21 @@ inner join usr_prd_fasi fa1 on fa1.idlanciod = ma.idlanciod
             return valori;
 
         }
+        public void FillUSR_PRD_FASIDaIDPRDMATE(PianificazioneDS ds, string IDPRDMATE)
+        {
+            string select = @" select * FROM usr_prd_fasi fa
+                                inner join usr_prd_mate ma on ma.idprdfase = fa.idprdfase
+                                where ma.idprdmate =  $P{IDPRDMATE}  ";
+
+            ParamSet ps = new ParamSet();
+            ps.AddParam("IDPRDMATE", DbType.String, IDPRDMATE);
+
+            using (DbDataAdapter da = BuildDataAdapter(select, ps))
+            {
+                da.Fill(ds.USR_PRD_FASI);
+            }
+        }
+
         public void FillUSR_ACCTO_CON(PianificazioneDS ds, string IDPRDFASE)
         {
 

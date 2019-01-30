@@ -38,9 +38,9 @@ namespace Pianificazione.Entities {
         
         private USR_ACCTO_CONDataTable tableUSR_ACCTO_CON;
         
-        private PIAN_CATENA_COMMESSADataTable tablePIAN_CATENA_COMMESSA;
-        
         private PIANIFICAZIONE_ODLDataTable tablePIANIFICAZIONE_ODL;
+        
+        private PIAN_CATENA_COMMESSADataTable tablePIAN_CATENA_COMMESSA;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -91,11 +91,11 @@ namespace Pianificazione.Entities {
                 if ((ds.Tables["USR_ACCTO_CON"] != null)) {
                     base.Tables.Add(new USR_ACCTO_CONDataTable(ds.Tables["USR_ACCTO_CON"]));
                 }
-                if ((ds.Tables["PIAN_CATENA_COMMESSA"] != null)) {
-                    base.Tables.Add(new PIAN_CATENA_COMMESSADataTable(ds.Tables["PIAN_CATENA_COMMESSA"]));
-                }
                 if ((ds.Tables["PIANIFICAZIONE_ODL"] != null)) {
                     base.Tables.Add(new PIANIFICAZIONE_ODLDataTable(ds.Tables["PIANIFICAZIONE_ODL"]));
+                }
+                if ((ds.Tables["PIAN_CATENA_COMMESSA"] != null)) {
+                    base.Tables.Add(new PIAN_CATENA_COMMESSADataTable(ds.Tables["PIAN_CATENA_COMMESSA"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -189,9 +189,9 @@ namespace Pianificazione.Entities {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public PIAN_CATENA_COMMESSADataTable PIAN_CATENA_COMMESSA {
+        public PIANIFICAZIONE_ODLDataTable PIANIFICAZIONE_ODL {
             get {
-                return this.tablePIAN_CATENA_COMMESSA;
+                return this.tablePIANIFICAZIONE_ODL;
             }
         }
         
@@ -199,9 +199,9 @@ namespace Pianificazione.Entities {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public PIANIFICAZIONE_ODLDataTable PIANIFICAZIONE_ODL {
+        public PIAN_CATENA_COMMESSADataTable PIAN_CATENA_COMMESSA {
             get {
-                return this.tablePIANIFICAZIONE_ODL;
+                return this.tablePIAN_CATENA_COMMESSA;
             }
         }
         
@@ -293,11 +293,11 @@ namespace Pianificazione.Entities {
                 if ((ds.Tables["USR_ACCTO_CON"] != null)) {
                     base.Tables.Add(new USR_ACCTO_CONDataTable(ds.Tables["USR_ACCTO_CON"]));
                 }
-                if ((ds.Tables["PIAN_CATENA_COMMESSA"] != null)) {
-                    base.Tables.Add(new PIAN_CATENA_COMMESSADataTable(ds.Tables["PIAN_CATENA_COMMESSA"]));
-                }
                 if ((ds.Tables["PIANIFICAZIONE_ODL"] != null)) {
                     base.Tables.Add(new PIANIFICAZIONE_ODLDataTable(ds.Tables["PIANIFICAZIONE_ODL"]));
+                }
+                if ((ds.Tables["PIAN_CATENA_COMMESSA"] != null)) {
+                    base.Tables.Add(new PIAN_CATENA_COMMESSADataTable(ds.Tables["PIAN_CATENA_COMMESSA"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -374,16 +374,16 @@ namespace Pianificazione.Entities {
                     this.tableUSR_ACCTO_CON.InitVars();
                 }
             }
-            this.tablePIAN_CATENA_COMMESSA = ((PIAN_CATENA_COMMESSADataTable)(base.Tables["PIAN_CATENA_COMMESSA"]));
-            if ((initTable == true)) {
-                if ((this.tablePIAN_CATENA_COMMESSA != null)) {
-                    this.tablePIAN_CATENA_COMMESSA.InitVars();
-                }
-            }
             this.tablePIANIFICAZIONE_ODL = ((PIANIFICAZIONE_ODLDataTable)(base.Tables["PIANIFICAZIONE_ODL"]));
             if ((initTable == true)) {
                 if ((this.tablePIANIFICAZIONE_ODL != null)) {
                     this.tablePIANIFICAZIONE_ODL.InitVars();
+                }
+            }
+            this.tablePIAN_CATENA_COMMESSA = ((PIAN_CATENA_COMMESSADataTable)(base.Tables["PIAN_CATENA_COMMESSA"]));
+            if ((initTable == true)) {
+                if ((this.tablePIAN_CATENA_COMMESSA != null)) {
+                    this.tablePIAN_CATENA_COMMESSA.InitVars();
                 }
             }
         }
@@ -410,10 +410,10 @@ namespace Pianificazione.Entities {
             base.Tables.Add(this.tablePIANIFICAZIONE_FASE);
             this.tableUSR_ACCTO_CON = new USR_ACCTO_CONDataTable();
             base.Tables.Add(this.tableUSR_ACCTO_CON);
-            this.tablePIAN_CATENA_COMMESSA = new PIAN_CATENA_COMMESSADataTable();
-            base.Tables.Add(this.tablePIAN_CATENA_COMMESSA);
             this.tablePIANIFICAZIONE_ODL = new PIANIFICAZIONE_ODLDataTable();
             base.Tables.Add(this.tablePIANIFICAZIONE_ODL);
+            this.tablePIAN_CATENA_COMMESSA = new PIAN_CATENA_COMMESSADataTable();
+            base.Tables.Add(this.tablePIAN_CATENA_COMMESSA);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -460,13 +460,13 @@ namespace Pianificazione.Entities {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-        private bool ShouldSerializePIAN_CATENA_COMMESSA() {
+        private bool ShouldSerializePIANIFICAZIONE_ODL() {
             return false;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-        private bool ShouldSerializePIANIFICAZIONE_ODL() {
+        private bool ShouldSerializePIAN_CATENA_COMMESSA() {
             return false;
         }
         
@@ -547,10 +547,10 @@ namespace Pianificazione.Entities {
         public delegate void USR_ACCTO_CONRowChangeEventHandler(object sender, USR_ACCTO_CONRowChangeEvent e);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-        public delegate void PIAN_CATENA_COMMESSARowChangeEventHandler(object sender, PIAN_CATENA_COMMESSARowChangeEvent e);
+        public delegate void PIANIFICAZIONE_ODLRowChangeEventHandler(object sender, PIANIFICAZIONE_ODLRowChangeEvent e);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-        public delegate void PIANIFICAZIONE_ODLRowChangeEventHandler(object sender, PIANIFICAZIONE_ODLRowChangeEvent e);
+        public delegate void PIAN_CATENA_COMMESSARowChangeEventHandler(object sender, PIAN_CATENA_COMMESSARowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -8554,355 +8554,6 @@ namespace Pianificazione.Entities {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class PIAN_CATENA_COMMESSADataTable : global::System.Data.TypedTableBase<PIAN_CATENA_COMMESSARow> {
-            
-            private global::System.Data.DataColumn columnIDCC;
-            
-            private global::System.Data.DataColumn columnIDPRDFASE;
-            
-            private global::System.Data.DataColumn columnRIFERIMENTO;
-            
-            private global::System.Data.DataColumn columnPADRE;
-            
-            private global::System.Data.DataColumn columnLIVELLO;
-            
-            private global::System.Data.DataColumn columnDURATA;
-            
-            private global::System.Data.DataColumn columnDURATA_COMULATIVA;
-            
-            private global::System.Data.DataColumn columnOC;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public PIAN_CATENA_COMMESSADataTable() {
-                this.TableName = "PIAN_CATENA_COMMESSA";
-                this.BeginInit();
-                this.InitClass();
-                this.EndInit();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            internal PIAN_CATENA_COMMESSADataTable(global::System.Data.DataTable table) {
-                this.TableName = table.TableName;
-                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
-                    this.CaseSensitive = table.CaseSensitive;
-                }
-                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
-                    this.Locale = table.Locale;
-                }
-                if ((table.Namespace != table.DataSet.Namespace)) {
-                    this.Namespace = table.Namespace;
-                }
-                this.Prefix = table.Prefix;
-                this.MinimumCapacity = table.MinimumCapacity;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            protected PIAN_CATENA_COMMESSADataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
-                    base(info, context) {
-                this.InitVars();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public global::System.Data.DataColumn IDCCColumn {
-                get {
-                    return this.columnIDCC;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public global::System.Data.DataColumn IDPRDFASEColumn {
-                get {
-                    return this.columnIDPRDFASE;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public global::System.Data.DataColumn RIFERIMENTOColumn {
-                get {
-                    return this.columnRIFERIMENTO;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public global::System.Data.DataColumn PADREColumn {
-                get {
-                    return this.columnPADRE;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public global::System.Data.DataColumn LIVELLOColumn {
-                get {
-                    return this.columnLIVELLO;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public global::System.Data.DataColumn DURATAColumn {
-                get {
-                    return this.columnDURATA;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public global::System.Data.DataColumn DURATA_COMULATIVAColumn {
-                get {
-                    return this.columnDURATA_COMULATIVA;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public global::System.Data.DataColumn OCColumn {
-                get {
-                    return this.columnOC;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            [global::System.ComponentModel.Browsable(false)]
-            public int Count {
-                get {
-                    return this.Rows.Count;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public PIAN_CATENA_COMMESSARow this[int index] {
-                get {
-                    return ((PIAN_CATENA_COMMESSARow)(this.Rows[index]));
-                }
-            }
-            
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public event PIAN_CATENA_COMMESSARowChangeEventHandler PIAN_CATENA_COMMESSARowChanging;
-            
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public event PIAN_CATENA_COMMESSARowChangeEventHandler PIAN_CATENA_COMMESSARowChanged;
-            
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public event PIAN_CATENA_COMMESSARowChangeEventHandler PIAN_CATENA_COMMESSARowDeleting;
-            
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public event PIAN_CATENA_COMMESSARowChangeEventHandler PIAN_CATENA_COMMESSARowDeleted;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public void AddPIAN_CATENA_COMMESSARow(PIAN_CATENA_COMMESSARow row) {
-                this.Rows.Add(row);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public PIAN_CATENA_COMMESSARow AddPIAN_CATENA_COMMESSARow(decimal IDCC, string IDPRDFASE, string RIFERIMENTO, string PADRE, decimal LIVELLO, decimal DURATA, decimal DURATA_COMULATIVA, string OC) {
-                PIAN_CATENA_COMMESSARow rowPIAN_CATENA_COMMESSARow = ((PIAN_CATENA_COMMESSARow)(this.NewRow()));
-                object[] columnValuesArray = new object[] {
-                        IDCC,
-                        IDPRDFASE,
-                        RIFERIMENTO,
-                        PADRE,
-                        LIVELLO,
-                        DURATA,
-                        DURATA_COMULATIVA,
-                        OC};
-                rowPIAN_CATENA_COMMESSARow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowPIAN_CATENA_COMMESSARow);
-                return rowPIAN_CATENA_COMMESSARow;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public override global::System.Data.DataTable Clone() {
-                PIAN_CATENA_COMMESSADataTable cln = ((PIAN_CATENA_COMMESSADataTable)(base.Clone()));
-                cln.InitVars();
-                return cln;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            protected override global::System.Data.DataTable CreateInstance() {
-                return new PIAN_CATENA_COMMESSADataTable();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            internal void InitVars() {
-                this.columnIDCC = base.Columns["IDCC"];
-                this.columnIDPRDFASE = base.Columns["IDPRDFASE"];
-                this.columnRIFERIMENTO = base.Columns["RIFERIMENTO"];
-                this.columnPADRE = base.Columns["PADRE"];
-                this.columnLIVELLO = base.Columns["LIVELLO"];
-                this.columnDURATA = base.Columns["DURATA"];
-                this.columnDURATA_COMULATIVA = base.Columns["DURATA_COMULATIVA"];
-                this.columnOC = base.Columns["OC"];
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            private void InitClass() {
-                this.columnIDCC = new global::System.Data.DataColumn("IDCC", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIDCC);
-                this.columnIDPRDFASE = new global::System.Data.DataColumn("IDPRDFASE", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIDPRDFASE);
-                this.columnRIFERIMENTO = new global::System.Data.DataColumn("RIFERIMENTO", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnRIFERIMENTO);
-                this.columnPADRE = new global::System.Data.DataColumn("PADRE", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnPADRE);
-                this.columnLIVELLO = new global::System.Data.DataColumn("LIVELLO", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnLIVELLO);
-                this.columnDURATA = new global::System.Data.DataColumn("DURATA", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDURATA);
-                this.columnDURATA_COMULATIVA = new global::System.Data.DataColumn("DURATA_COMULATIVA", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDURATA_COMULATIVA);
-                this.columnOC = new global::System.Data.DataColumn("OC", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnOC);
-                this.columnIDPRDFASE.MaxLength = 25;
-                this.columnRIFERIMENTO.MaxLength = 300;
-                this.columnPADRE.MaxLength = 300;
-                this.columnOC.MaxLength = 1;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public PIAN_CATENA_COMMESSARow NewPIAN_CATENA_COMMESSARow() {
-                return ((PIAN_CATENA_COMMESSARow)(this.NewRow()));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new PIAN_CATENA_COMMESSARow(builder);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            protected override global::System.Type GetRowType() {
-                return typeof(PIAN_CATENA_COMMESSARow);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowChanged(e);
-                if ((this.PIAN_CATENA_COMMESSARowChanged != null)) {
-                    this.PIAN_CATENA_COMMESSARowChanged(this, new PIAN_CATENA_COMMESSARowChangeEvent(((PIAN_CATENA_COMMESSARow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowChanging(e);
-                if ((this.PIAN_CATENA_COMMESSARowChanging != null)) {
-                    this.PIAN_CATENA_COMMESSARowChanging(this, new PIAN_CATENA_COMMESSARowChangeEvent(((PIAN_CATENA_COMMESSARow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowDeleted(e);
-                if ((this.PIAN_CATENA_COMMESSARowDeleted != null)) {
-                    this.PIAN_CATENA_COMMESSARowDeleted(this, new PIAN_CATENA_COMMESSARowChangeEvent(((PIAN_CATENA_COMMESSARow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowDeleting(e);
-                if ((this.PIAN_CATENA_COMMESSARowDeleting != null)) {
-                    this.PIAN_CATENA_COMMESSARowDeleting(this, new PIAN_CATENA_COMMESSARowChangeEvent(((PIAN_CATENA_COMMESSARow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public void RemovePIAN_CATENA_COMMESSARow(PIAN_CATENA_COMMESSARow row) {
-                this.Rows.Remove(row);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
-                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                PianificazioneDS ds = new PianificazioneDS();
-                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
-                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
-                any1.MinOccurs = new decimal(0);
-                any1.MaxOccurs = decimal.MaxValue;
-                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
-                sequence.Items.Add(any1);
-                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
-                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
-                any2.MinOccurs = new decimal(1);
-                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
-                sequence.Items.Add(any2);
-                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
-                attribute1.Name = "namespace";
-                attribute1.FixedValue = ds.Namespace;
-                type.Attributes.Add(attribute1);
-                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
-                attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "PIAN_CATENA_COMMESSADataTable";
-                type.Attributes.Add(attribute2);
-                type.Particle = sequence;
-                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
-                if (xs.Contains(dsSchema.TargetNamespace)) {
-                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
-                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
-                    try {
-                        global::System.Xml.Schema.XmlSchema schema = null;
-                        dsSchema.Write(s1);
-                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
-                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
-                            s2.SetLength(0);
-                            schema.Write(s2);
-                            if ((s1.Length == s2.Length)) {
-                                s1.Position = 0;
-                                s2.Position = 0;
-                                for (; ((s1.Position != s1.Length) 
-                                            && (s1.ReadByte() == s2.ReadByte())); ) {
-                                    ;
-                                }
-                                if ((s1.Position == s1.Length)) {
-                                    return type;
-                                }
-                            }
-                        }
-                    }
-                    finally {
-                        if ((s1 != null)) {
-                            s1.Close();
-                        }
-                        if ((s2 != null)) {
-                            s2.Close();
-                        }
-                    }
-                }
-                xs.Add(dsSchema);
-                return type;
-            }
-        }
-        
-        /// <summary>
-        ///Represents the strongly named DataTable class.
-        ///</summary>
-        [global::System.Serializable()]
-        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class PIANIFICAZIONE_ODLDataTable : global::System.Data.TypedTableBase<PIANIFICAZIONE_ODLRow> {
             
             private global::System.Data.DataColumn columnIDODL;
@@ -9612,6 +9263,412 @@ namespace Pianificazione.Entities {
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
                 attribute2.FixedValue = "PIANIFICAZIONE_ODLDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class PIAN_CATENA_COMMESSADataTable : global::System.Data.TypedTableBase<PIAN_CATENA_COMMESSARow> {
+            
+            private global::System.Data.DataColumn columnIDCC;
+            
+            private global::System.Data.DataColumn columnIDPRDFASE;
+            
+            private global::System.Data.DataColumn columnRIFERIMENTO;
+            
+            private global::System.Data.DataColumn columnPADRE;
+            
+            private global::System.Data.DataColumn columnLIVELLO;
+            
+            private global::System.Data.DataColumn columnDURATA;
+            
+            private global::System.Data.DataColumn columnDURATA_COMULATIVA;
+            
+            private global::System.Data.DataColumn columnOC;
+            
+            private global::System.Data.DataColumn columnQTA_ACCANTONATA;
+            
+            private global::System.Data.DataColumn columnQTA_LAVORATA;
+            
+            private global::System.Data.DataColumn columnIDPRDFASERIPARTENZA;
+            
+            private global::System.Data.DataColumn columnDATAACCANTONATO;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public PIAN_CATENA_COMMESSADataTable() {
+                this.TableName = "PIAN_CATENA_COMMESSA";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal PIAN_CATENA_COMMESSADataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected PIAN_CATENA_COMMESSADataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn IDCCColumn {
+                get {
+                    return this.columnIDCC;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn IDPRDFASEColumn {
+                get {
+                    return this.columnIDPRDFASE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn RIFERIMENTOColumn {
+                get {
+                    return this.columnRIFERIMENTO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PADREColumn {
+                get {
+                    return this.columnPADRE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn LIVELLOColumn {
+                get {
+                    return this.columnLIVELLO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn DURATAColumn {
+                get {
+                    return this.columnDURATA;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn DURATA_COMULATIVAColumn {
+                get {
+                    return this.columnDURATA_COMULATIVA;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OCColumn {
+                get {
+                    return this.columnOC;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn QTA_ACCANTONATAColumn {
+                get {
+                    return this.columnQTA_ACCANTONATA;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn QTA_LAVORATAColumn {
+                get {
+                    return this.columnQTA_LAVORATA;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn IDPRDFASERIPARTENZAColumn {
+                get {
+                    return this.columnIDPRDFASERIPARTENZA;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn DATAACCANTONATOColumn {
+                get {
+                    return this.columnDATAACCANTONATO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public PIAN_CATENA_COMMESSARow this[int index] {
+                get {
+                    return ((PIAN_CATENA_COMMESSARow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event PIAN_CATENA_COMMESSARowChangeEventHandler PIAN_CATENA_COMMESSARowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event PIAN_CATENA_COMMESSARowChangeEventHandler PIAN_CATENA_COMMESSARowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event PIAN_CATENA_COMMESSARowChangeEventHandler PIAN_CATENA_COMMESSARowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event PIAN_CATENA_COMMESSARowChangeEventHandler PIAN_CATENA_COMMESSARowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void AddPIAN_CATENA_COMMESSARow(PIAN_CATENA_COMMESSARow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public PIAN_CATENA_COMMESSARow AddPIAN_CATENA_COMMESSARow(decimal IDCC, string IDPRDFASE, string RIFERIMENTO, string PADRE, decimal LIVELLO, decimal DURATA, decimal DURATA_COMULATIVA, string OC, decimal QTA_ACCANTONATA, decimal QTA_LAVORATA, string IDPRDFASERIPARTENZA, System.DateTime DATAACCANTONATO) {
+                PIAN_CATENA_COMMESSARow rowPIAN_CATENA_COMMESSARow = ((PIAN_CATENA_COMMESSARow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        IDCC,
+                        IDPRDFASE,
+                        RIFERIMENTO,
+                        PADRE,
+                        LIVELLO,
+                        DURATA,
+                        DURATA_COMULATIVA,
+                        OC,
+                        QTA_ACCANTONATA,
+                        QTA_LAVORATA,
+                        IDPRDFASERIPARTENZA,
+                        DATAACCANTONATO};
+                rowPIAN_CATENA_COMMESSARow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowPIAN_CATENA_COMMESSARow);
+                return rowPIAN_CATENA_COMMESSARow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                PIAN_CATENA_COMMESSADataTable cln = ((PIAN_CATENA_COMMESSADataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new PIAN_CATENA_COMMESSADataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal void InitVars() {
+                this.columnIDCC = base.Columns["IDCC"];
+                this.columnIDPRDFASE = base.Columns["IDPRDFASE"];
+                this.columnRIFERIMENTO = base.Columns["RIFERIMENTO"];
+                this.columnPADRE = base.Columns["PADRE"];
+                this.columnLIVELLO = base.Columns["LIVELLO"];
+                this.columnDURATA = base.Columns["DURATA"];
+                this.columnDURATA_COMULATIVA = base.Columns["DURATA_COMULATIVA"];
+                this.columnOC = base.Columns["OC"];
+                this.columnQTA_ACCANTONATA = base.Columns["QTA_ACCANTONATA"];
+                this.columnQTA_LAVORATA = base.Columns["QTA_LAVORATA"];
+                this.columnIDPRDFASERIPARTENZA = base.Columns["IDPRDFASERIPARTENZA"];
+                this.columnDATAACCANTONATO = base.Columns["DATAACCANTONATO"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            private void InitClass() {
+                this.columnIDCC = new global::System.Data.DataColumn("IDCC", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIDCC);
+                this.columnIDPRDFASE = new global::System.Data.DataColumn("IDPRDFASE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIDPRDFASE);
+                this.columnRIFERIMENTO = new global::System.Data.DataColumn("RIFERIMENTO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRIFERIMENTO);
+                this.columnPADRE = new global::System.Data.DataColumn("PADRE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPADRE);
+                this.columnLIVELLO = new global::System.Data.DataColumn("LIVELLO", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLIVELLO);
+                this.columnDURATA = new global::System.Data.DataColumn("DURATA", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDURATA);
+                this.columnDURATA_COMULATIVA = new global::System.Data.DataColumn("DURATA_COMULATIVA", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDURATA_COMULATIVA);
+                this.columnOC = new global::System.Data.DataColumn("OC", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOC);
+                this.columnQTA_ACCANTONATA = new global::System.Data.DataColumn("QTA_ACCANTONATA", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnQTA_ACCANTONATA);
+                this.columnQTA_LAVORATA = new global::System.Data.DataColumn("QTA_LAVORATA", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnQTA_LAVORATA);
+                this.columnIDPRDFASERIPARTENZA = new global::System.Data.DataColumn("IDPRDFASERIPARTENZA", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIDPRDFASERIPARTENZA);
+                this.columnDATAACCANTONATO = new global::System.Data.DataColumn("DATAACCANTONATO", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDATAACCANTONATO);
+                this.columnIDPRDFASE.MaxLength = 25;
+                this.columnRIFERIMENTO.MaxLength = 300;
+                this.columnPADRE.MaxLength = 300;
+                this.columnOC.MaxLength = 1;
+                this.columnIDPRDFASERIPARTENZA.MaxLength = 25;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public PIAN_CATENA_COMMESSARow NewPIAN_CATENA_COMMESSARow() {
+                return ((PIAN_CATENA_COMMESSARow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new PIAN_CATENA_COMMESSARow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(PIAN_CATENA_COMMESSARow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.PIAN_CATENA_COMMESSARowChanged != null)) {
+                    this.PIAN_CATENA_COMMESSARowChanged(this, new PIAN_CATENA_COMMESSARowChangeEvent(((PIAN_CATENA_COMMESSARow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.PIAN_CATENA_COMMESSARowChanging != null)) {
+                    this.PIAN_CATENA_COMMESSARowChanging(this, new PIAN_CATENA_COMMESSARowChangeEvent(((PIAN_CATENA_COMMESSARow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.PIAN_CATENA_COMMESSARowDeleted != null)) {
+                    this.PIAN_CATENA_COMMESSARowDeleted(this, new PIAN_CATENA_COMMESSARowChangeEvent(((PIAN_CATENA_COMMESSARow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.PIAN_CATENA_COMMESSARowDeleting != null)) {
+                    this.PIAN_CATENA_COMMESSARowDeleting(this, new PIAN_CATENA_COMMESSARowChangeEvent(((PIAN_CATENA_COMMESSARow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void RemovePIAN_CATENA_COMMESSARow(PIAN_CATENA_COMMESSARow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                PianificazioneDS ds = new PianificazioneDS();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "PIAN_CATENA_COMMESSADataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -20250,246 +20307,6 @@ namespace Pianificazione.Entities {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class PIAN_CATENA_COMMESSARow : global::System.Data.DataRow {
-            
-            private PIAN_CATENA_COMMESSADataTable tablePIAN_CATENA_COMMESSA;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            internal PIAN_CATENA_COMMESSARow(global::System.Data.DataRowBuilder rb) : 
-                    base(rb) {
-                this.tablePIAN_CATENA_COMMESSA = ((PIAN_CATENA_COMMESSADataTable)(this.Table));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public decimal IDCC {
-                get {
-                    try {
-                        return ((decimal)(this[this.tablePIAN_CATENA_COMMESSA.IDCCColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'IDCC\' in table \'PIAN_CATENA_COMMESSA\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePIAN_CATENA_COMMESSA.IDCCColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string IDPRDFASE {
-                get {
-                    try {
-                        return ((string)(this[this.tablePIAN_CATENA_COMMESSA.IDPRDFASEColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'IDPRDFASE\' in table \'PIAN_CATENA_COMMESSA\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePIAN_CATENA_COMMESSA.IDPRDFASEColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string RIFERIMENTO {
-                get {
-                    try {
-                        return ((string)(this[this.tablePIAN_CATENA_COMMESSA.RIFERIMENTOColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'RIFERIMENTO\' in table \'PIAN_CATENA_COMMESSA\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePIAN_CATENA_COMMESSA.RIFERIMENTOColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string PADRE {
-                get {
-                    try {
-                        return ((string)(this[this.tablePIAN_CATENA_COMMESSA.PADREColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'PADRE\' in table \'PIAN_CATENA_COMMESSA\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePIAN_CATENA_COMMESSA.PADREColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public decimal LIVELLO {
-                get {
-                    try {
-                        return ((decimal)(this[this.tablePIAN_CATENA_COMMESSA.LIVELLOColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'LIVELLO\' in table \'PIAN_CATENA_COMMESSA\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePIAN_CATENA_COMMESSA.LIVELLOColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public decimal DURATA {
-                get {
-                    try {
-                        return ((decimal)(this[this.tablePIAN_CATENA_COMMESSA.DURATAColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'DURATA\' in table \'PIAN_CATENA_COMMESSA\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePIAN_CATENA_COMMESSA.DURATAColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public decimal DURATA_COMULATIVA {
-                get {
-                    try {
-                        return ((decimal)(this[this.tablePIAN_CATENA_COMMESSA.DURATA_COMULATIVAColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'DURATA_COMULATIVA\' in table \'PIAN_CATENA_COMMESSA\' is DBNul" +
-                                "l.", e);
-                    }
-                }
-                set {
-                    this[this.tablePIAN_CATENA_COMMESSA.DURATA_COMULATIVAColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string OC {
-                get {
-                    try {
-                        return ((string)(this[this.tablePIAN_CATENA_COMMESSA.OCColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'OC\' in table \'PIAN_CATENA_COMMESSA\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePIAN_CATENA_COMMESSA.OCColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public bool IsIDCCNull() {
-                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.IDCCColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public void SetIDCCNull() {
-                this[this.tablePIAN_CATENA_COMMESSA.IDCCColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public bool IsIDPRDFASENull() {
-                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.IDPRDFASEColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public void SetIDPRDFASENull() {
-                this[this.tablePIAN_CATENA_COMMESSA.IDPRDFASEColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public bool IsRIFERIMENTONull() {
-                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.RIFERIMENTOColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public void SetRIFERIMENTONull() {
-                this[this.tablePIAN_CATENA_COMMESSA.RIFERIMENTOColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public bool IsPADRENull() {
-                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.PADREColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public void SetPADRENull() {
-                this[this.tablePIAN_CATENA_COMMESSA.PADREColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public bool IsLIVELLONull() {
-                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.LIVELLOColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public void SetLIVELLONull() {
-                this[this.tablePIAN_CATENA_COMMESSA.LIVELLOColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public bool IsDURATANull() {
-                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.DURATAColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public void SetDURATANull() {
-                this[this.tablePIAN_CATENA_COMMESSA.DURATAColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public bool IsDURATA_COMULATIVANull() {
-                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.DURATA_COMULATIVAColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public void SetDURATA_COMULATIVANull() {
-                this[this.tablePIAN_CATENA_COMMESSA.DURATA_COMULATIVAColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public bool IsOCNull() {
-                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.OCColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public void SetOCNull() {
-                this[this.tablePIAN_CATENA_COMMESSA.OCColumn] = global::System.Convert.DBNull;
-            }
-        }
-        
-        /// <summary>
-        ///Represents strongly named DataRow class.
-        ///</summary>
         public partial class PIANIFICAZIONE_ODLRow : global::System.Data.DataRow {
             
             private PIANIFICAZIONE_ODLDataTable tablePIANIFICAZIONE_ODL;
@@ -21174,6 +20991,361 @@ namespace Pianificazione.Entities {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class PIAN_CATENA_COMMESSARow : global::System.Data.DataRow {
+            
+            private PIAN_CATENA_COMMESSADataTable tablePIAN_CATENA_COMMESSA;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal PIAN_CATENA_COMMESSARow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tablePIAN_CATENA_COMMESSA = ((PIAN_CATENA_COMMESSADataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal IDCC {
+                get {
+                    try {
+                        return ((decimal)(this[this.tablePIAN_CATENA_COMMESSA.IDCCColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IDCC\' in table \'PIAN_CATENA_COMMESSA\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePIAN_CATENA_COMMESSA.IDCCColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string IDPRDFASE {
+                get {
+                    try {
+                        return ((string)(this[this.tablePIAN_CATENA_COMMESSA.IDPRDFASEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IDPRDFASE\' in table \'PIAN_CATENA_COMMESSA\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePIAN_CATENA_COMMESSA.IDPRDFASEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string RIFERIMENTO {
+                get {
+                    try {
+                        return ((string)(this[this.tablePIAN_CATENA_COMMESSA.RIFERIMENTOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RIFERIMENTO\' in table \'PIAN_CATENA_COMMESSA\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePIAN_CATENA_COMMESSA.RIFERIMENTOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string PADRE {
+                get {
+                    try {
+                        return ((string)(this[this.tablePIAN_CATENA_COMMESSA.PADREColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PADRE\' in table \'PIAN_CATENA_COMMESSA\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePIAN_CATENA_COMMESSA.PADREColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal LIVELLO {
+                get {
+                    try {
+                        return ((decimal)(this[this.tablePIAN_CATENA_COMMESSA.LIVELLOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LIVELLO\' in table \'PIAN_CATENA_COMMESSA\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePIAN_CATENA_COMMESSA.LIVELLOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal DURATA {
+                get {
+                    try {
+                        return ((decimal)(this[this.tablePIAN_CATENA_COMMESSA.DURATAColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DURATA\' in table \'PIAN_CATENA_COMMESSA\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePIAN_CATENA_COMMESSA.DURATAColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal DURATA_COMULATIVA {
+                get {
+                    try {
+                        return ((decimal)(this[this.tablePIAN_CATENA_COMMESSA.DURATA_COMULATIVAColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DURATA_COMULATIVA\' in table \'PIAN_CATENA_COMMESSA\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tablePIAN_CATENA_COMMESSA.DURATA_COMULATIVAColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OC {
+                get {
+                    try {
+                        return ((string)(this[this.tablePIAN_CATENA_COMMESSA.OCColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OC\' in table \'PIAN_CATENA_COMMESSA\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePIAN_CATENA_COMMESSA.OCColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal QTA_ACCANTONATA {
+                get {
+                    try {
+                        return ((decimal)(this[this.tablePIAN_CATENA_COMMESSA.QTA_ACCANTONATAColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'QTA_ACCANTONATA\' in table \'PIAN_CATENA_COMMESSA\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tablePIAN_CATENA_COMMESSA.QTA_ACCANTONATAColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal QTA_LAVORATA {
+                get {
+                    try {
+                        return ((decimal)(this[this.tablePIAN_CATENA_COMMESSA.QTA_LAVORATAColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'QTA_LAVORATA\' in table \'PIAN_CATENA_COMMESSA\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePIAN_CATENA_COMMESSA.QTA_LAVORATAColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string IDPRDFASERIPARTENZA {
+                get {
+                    try {
+                        return ((string)(this[this.tablePIAN_CATENA_COMMESSA.IDPRDFASERIPARTENZAColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IDPRDFASERIPARTENZA\' in table \'PIAN_CATENA_COMMESSA\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePIAN_CATENA_COMMESSA.IDPRDFASERIPARTENZAColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public System.DateTime DATAACCANTONATO {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tablePIAN_CATENA_COMMESSA.DATAACCANTONATOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DATAACCANTONATO\' in table \'PIAN_CATENA_COMMESSA\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tablePIAN_CATENA_COMMESSA.DATAACCANTONATOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsIDCCNull() {
+                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.IDCCColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetIDCCNull() {
+                this[this.tablePIAN_CATENA_COMMESSA.IDCCColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsIDPRDFASENull() {
+                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.IDPRDFASEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetIDPRDFASENull() {
+                this[this.tablePIAN_CATENA_COMMESSA.IDPRDFASEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsRIFERIMENTONull() {
+                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.RIFERIMENTOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetRIFERIMENTONull() {
+                this[this.tablePIAN_CATENA_COMMESSA.RIFERIMENTOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPADRENull() {
+                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.PADREColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPADRENull() {
+                this[this.tablePIAN_CATENA_COMMESSA.PADREColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsLIVELLONull() {
+                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.LIVELLOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetLIVELLONull() {
+                this[this.tablePIAN_CATENA_COMMESSA.LIVELLOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsDURATANull() {
+                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.DURATAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetDURATANull() {
+                this[this.tablePIAN_CATENA_COMMESSA.DURATAColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsDURATA_COMULATIVANull() {
+                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.DURATA_COMULATIVAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetDURATA_COMULATIVANull() {
+                this[this.tablePIAN_CATENA_COMMESSA.DURATA_COMULATIVAColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOCNull() {
+                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.OCColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOCNull() {
+                this[this.tablePIAN_CATENA_COMMESSA.OCColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsQTA_ACCANTONATANull() {
+                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.QTA_ACCANTONATAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetQTA_ACCANTONATANull() {
+                this[this.tablePIAN_CATENA_COMMESSA.QTA_ACCANTONATAColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsQTA_LAVORATANull() {
+                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.QTA_LAVORATAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetQTA_LAVORATANull() {
+                this[this.tablePIAN_CATENA_COMMESSA.QTA_LAVORATAColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsIDPRDFASERIPARTENZANull() {
+                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.IDPRDFASERIPARTENZAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetIDPRDFASERIPARTENZANull() {
+                this[this.tablePIAN_CATENA_COMMESSA.IDPRDFASERIPARTENZAColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsDATAACCANTONATONull() {
+                return this.IsNull(this.tablePIAN_CATENA_COMMESSA.DATAACCANTONATOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetDATAACCANTONATONull() {
+                this[this.tablePIAN_CATENA_COMMESSA.DATAACCANTONATOColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
@@ -21415,22 +21587,22 @@ namespace Pianificazione.Entities {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-        public class PIAN_CATENA_COMMESSARowChangeEvent : global::System.EventArgs {
+        public class PIANIFICAZIONE_ODLRowChangeEvent : global::System.EventArgs {
             
-            private PIAN_CATENA_COMMESSARow eventRow;
+            private PIANIFICAZIONE_ODLRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public PIAN_CATENA_COMMESSARowChangeEvent(PIAN_CATENA_COMMESSARow row, global::System.Data.DataRowAction action) {
+            public PIANIFICAZIONE_ODLRowChangeEvent(PIANIFICAZIONE_ODLRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public PIAN_CATENA_COMMESSARow Row {
+            public PIANIFICAZIONE_ODLRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -21449,22 +21621,22 @@ namespace Pianificazione.Entities {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-        public class PIANIFICAZIONE_ODLRowChangeEvent : global::System.EventArgs {
+        public class PIAN_CATENA_COMMESSARowChangeEvent : global::System.EventArgs {
             
-            private PIANIFICAZIONE_ODLRow eventRow;
+            private PIAN_CATENA_COMMESSARow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public PIANIFICAZIONE_ODLRowChangeEvent(PIANIFICAZIONE_ODLRow row, global::System.Data.DataRowAction action) {
+            public PIAN_CATENA_COMMESSARowChangeEvent(PIAN_CATENA_COMMESSARow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public PIANIFICAZIONE_ODLRow Row {
+            public PIAN_CATENA_COMMESSARow Row {
                 get {
                     return this.eventRow;
                 }

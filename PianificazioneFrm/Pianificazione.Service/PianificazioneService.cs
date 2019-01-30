@@ -561,7 +561,7 @@ namespace Pianificazione.Service
 
         }
 
-        private void CreaRigaCatenaCommessa(string riferimento, string padre, string IDPRDFASE, int livello, int durata, int durata_cumulativa, bool OC)
+        private void CreaRigaCatenaCommessa(string riferimento, string padre, string IDPRDFASE, int livello, int durata, int durata_cumulativa, bool OC, decimal quatita_accantonata, string idFaseRipartenza, DateTime dataAccantonato)
         {
             using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
             {
@@ -575,7 +575,10 @@ namespace Pianificazione.Service
                 cc.DURATA = durata;
                 cc.DURATA_COMULATIVA = durata_cumulativa;
                 cc.OC = OC ? "1" : "0";
-                
+                cc.QTA_ACCANTONATA = quatita_accantonata;
+                cc.QTA_LAVORATA = 0;
+                cc.IDPRDFASERIPARTENZA = idFaseRipartenza;
+                cc.DATAACCANTONATO = dataAccantonato;
                 _ds.PIAN_CATENA_COMMESSA.AddPIAN_CATENA_COMMESSARow(cc);
                 bPianificazione.SalvaTemporanea(_ds);
                 _ds.PIAN_CATENA_COMMESSA.AcceptChanges();
@@ -598,7 +601,7 @@ namespace Pianificazione.Service
                             List<string> OC = bPianificazione.GetDestinazioneOrdineCliente(accantonato.IDORIGINE);
                             foreach (string oc in OC)
                             {
-                                CreaRigaCatenaCommessa(oc, padre, IDPRDFASE_RIFERIMENTO, livello, 0, durata_cumulativa_precedente, true);
+                                CreaRigaCatenaCommessa(oc, padre, IDPRDFASE_RIFERIMENTO, livello, 0, durata_cumulativa_precedente, true, accantonato.QUANTITA_ORI, string.Empty, accantonato.DATACONSEGNA_DEST);
                             }
                             return;
 
@@ -621,7 +624,7 @@ namespace Pianificazione.Service
                                     return;
                                 livello++;
                                 int durata = CalcolaDurataCommessa(ds1, faseDaLavorare1);
-                                CreaRigaCatenaCommessa(lancio.NOMECOMMESSA, padre, IDPRDFASE_RIFERIMENTO, livello, durata, durata + durata_cumulativa_precedente, false);
+                                CreaRigaCatenaCommessa(lancio.NOMECOMMESSA, padre, IDPRDFASE_RIFERIMENTO, livello, durata, durata + durata_cumulativa_precedente, false, accantonato.QUANTITA_ORI, faseDaLavorare1.IDPRDFASE, accantonato.DATACONSEGNA_DEST);
                                 TrovaOC(ds1, faseDaLavorare1, IDPRDFASE_RIFERIMENTO, livello, lancio.NOMECOMMESSA, durata + durata_cumulativa_precedente);
                                 return;
                             }
@@ -646,7 +649,7 @@ namespace Pianificazione.Service
                                     return;
                                 livello++;
                                 int durata = CalcolaDurataCommessa(ds1, faseDaLavorare2);
-                                CreaRigaCatenaCommessa(lancio.NOMECOMMESSA, padre, IDPRDFASE_RIFERIMENTO, livello, durata, durata + durata_cumulativa_precedente, false);
+                                CreaRigaCatenaCommessa(lancio.NOMECOMMESSA, padre, IDPRDFASE_RIFERIMENTO, livello, durata, durata + durata_cumulativa_precedente, false, accantonato.QUANTITA_ORI, faseDaLavorare2.IDPRDFASE, accantonato.DATACONSEGNA_DEST);
                                 TrovaOC(ds1, faseDaLavorare2, IDPRDFASE_RIFERIMENTO, livello, lancio.NOMECOMMESSA, durata + durata_cumulativa_precedente);
 
                                 return;
@@ -872,9 +875,91 @@ namespace Pianificazione.Service
                     pODL.ORDINECLIENTE = catenaCommessa.RIFERIMENTO;
                     pODL.DURATA = catenaCommessa.DURATA_COMULATIVA;
                 }
+
             }
+            ContinuaPianificazioneODLDaAccantonato(fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita);
 
             _ds.PIANIFICAZIONE_ODL.AddPIANIFICAZIONE_ODLRow(pODL);
+
+        }
+
+        private void ContinuaPianificazioneODLDaAccantonato(PianificazioneDS.USR_PRD_FASIRow faseDaEstendere, string IDPRDMOVFASE_ORIGINE, int attendibilita, decimal quantitaFasePartenza)
+        {
+            using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
+            {
+                decimal quantitaDaLavorare = quantitaFasePartenza;
+                foreach (PianificazioneDS.PIAN_CATENA_COMMESSARow catenaCommessa in _ds.PIAN_CATENA_COMMESSA.Where(x => x.IDPRDFASE == faseDaEstendere.IDPRDFASE && x.QTA_ACCANTONATA > x.QTA_LAVORATA && x.OC == "0").OrderBy(x => x.DATAACCANTONATO))
+                {
+                    if (quantitaDaLavorare <= 0) continue;
+                    if (quantitaDaLavorare <= (catenaCommessa.QTA_ACCANTONATA - catenaCommessa.QTA_LAVORATA))
+                    {
+                        catenaCommessa.QTA_LAVORATA += quantitaDaLavorare;
+                        using (PianificazioneDS ds1 = new PianificazioneDS())
+                        {
+                            bPianificazione.FillUSR_PRD_FASI_Sorelle(ds1, catenaCommessa.IDPRDFASERIPARTENZA);
+                            PianificazioneDS.USR_PRD_FASIRow fase = ds1.USR_PRD_FASI.Where(x => x.IDPRDFASE == catenaCommessa.IDPRDFASERIPARTENZA).FirstOrDefault();
+
+                            if (fase.IDLANCIOD == faseDaEstendere.IDLANCIOD) continue; // esclude il caso di accantonato naturale
+
+                            attendibilita++;
+                            CreaPianificazione_ODL(null, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantitaDaLavorare);
+
+                            while (!fase.IsIDPRDFASEPADRENull())
+                            {
+                                fase = _ds.USR_PRD_FASI.Where(x => x.IDPRDFASE == fase.IDPRDFASEPADRE).FirstOrDefault();
+
+                                if (
+                                    fase.IDTABFAS == "0000000077" || // SALNDATURA
+                                    fase.IDTABFAS == "0000000066" || // MONTAGGIO
+                                    fase.IDTABFAS == "0000000173" || // MONTAGGIO CAMPIONI
+                                    fase.IDTABFAS == "0000000203" || // MONTAGGIO SU FINITO
+                                    fase.IDTABFAS == "0000000202"  // MONTAGGIO SU GREZZO
+                                    )
+                                {
+                                    fase = null;
+                                    break;
+                                }
+                                attendibilita++;
+                                CreaPianificazione_ODL(null, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantitaDaLavorare);
+                            }
+                            quantitaDaLavorare = 0;
+                        }
+                    }
+                    else
+                    {
+                        decimal quantita = (catenaCommessa.QTA_ACCANTONATA - catenaCommessa.QTA_LAVORATA);
+                        quantitaDaLavorare -= quantita;
+                        catenaCommessa.QTA_LAVORATA += quantitaDaLavorare;
+                        using (PianificazioneDS ds1 = new PianificazioneDS())
+                        {
+                            bPianificazione.FillUSR_PRD_FASI_Sorelle(ds1, catenaCommessa.IDPRDFASERIPARTENZA);
+                            PianificazioneDS.USR_PRD_FASIRow fase = ds1.USR_PRD_FASI.Where(x => x.IDPRDFASE == catenaCommessa.IDPRDFASERIPARTENZA).FirstOrDefault();
+                            if (fase.IDLANCIOD == faseDaEstendere.IDLANCIOD) continue; // esclude il caso di accantonato naturale
+                            attendibilita++;
+                            CreaPianificazione_ODL(null, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita);
+
+                            while (!fase.IsIDPRDFASEPADRENull())
+                            {
+                                fase = _ds.USR_PRD_FASI.Where(x => x.IDPRDFASE == fase.IDPRDFASEPADRE).FirstOrDefault();
+
+                                if (
+                                    fase.IDTABFAS == "0000000077" || // SALNDATURA
+                                    fase.IDTABFAS == "0000000066" || // MONTAGGIO
+                                    fase.IDTABFAS == "0000000173" || // MONTAGGIO CAMPIONI
+                                    fase.IDTABFAS == "0000000203" || // MONTAGGIO SU FINITO
+                                    fase.IDTABFAS == "0000000202"  // MONTAGGIO SU GREZZO
+                                    )
+                                {
+                                    fase = null;
+                                    break;
+                                }
+                                attendibilita++;
+                                CreaPianificazione_ODL(null, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita);
+                            }
+                        }
+                    }
+                }
+            }
 
         }
     }

@@ -185,6 +185,22 @@ namespace Pianificazione.Data
         }
 
         [DataContext]
+        public void FillUSR_PRD_FASIDaIDPRDMATE(PianificazioneDS ds, string IDPRDMATE)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.FillUSR_PRD_FASIDaIDPRDMATE(ds, IDPRDMATE);
+
+        }
+
+        [DataContext]
+        public void FillUSR_PRD_FASI_Sorelle(PianificazioneDS ds, string IDPRDFASE)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.FillUSR_PRD_FASI_Sorelle(ds, IDPRDFASE);
+
+        }
+
+        [DataContext]
         public List<string> GetDestinazioneOrdineCliente(string IDVENDITED)
         {
             PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
