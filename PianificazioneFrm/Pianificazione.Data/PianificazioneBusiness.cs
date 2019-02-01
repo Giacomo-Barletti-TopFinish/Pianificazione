@@ -151,6 +151,13 @@ namespace Pianificazione.Data
             a.UpdateTable(ds.PIANIFICAZIONE_ODL.TableName, ds);
         }
         [DataContext(true)]
+        public void CopiaPianificazioneSuRuntime()
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.CopiaPianificazioneSuRuntime();
+        }
+
+        [DataContext(true)]
         public void SalvaTemporanea(PianificazioneDS ds)
         {
             PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
@@ -213,6 +220,13 @@ namespace Pianificazione.Data
         {
             PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
             return a.GetDestinazioneOrdineCliente(IDVENDITED);
+        }
+
+        [DataContext]
+        public void FillUSR_INFRA_FASE_TO_FASE(PianificazioneDS ds, DateTime dataLimiteRicerche)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.FillUSR_INFRA_FASE_TO_FASE(ds, dataLimiteRicerche);
         }
 
         [DataContext]

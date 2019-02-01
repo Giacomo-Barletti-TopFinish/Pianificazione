@@ -11,7 +11,34 @@ namespace Pianificazione.Service
     public class PianificazioneService
     {
         private PianificazioneDS _ds;
+        private PianificazioneDS _dsInfragruppo;
+        private PianificazioneDS _dsAccantonato;
+        private List<string> _elencoIDPRDFASI_to_infragruppo = new List<string>();
+        private List<string> _elencoIDPRDFASI_to_accantonato = new List<string>();
         private string Applicazione;
+        private DateTime _dataLimiteRicerche;
+
+        public PianificazioneService(string dataLimiteRicerche)
+        {
+            DateTime dataInizioStandard = new DateTime(2018, 9, 1);
+            if (string.IsNullOrEmpty(dataLimiteRicerche)) _dataLimiteRicerche = dataInizioStandard;
+
+            string[] str = dataLimiteRicerche.Split('/');
+            if (str.Length < 3) _dataLimiteRicerche = dataInizioStandard;
+            try
+            {
+                int giorno = int.Parse(str[0]);
+                int mese = int.Parse(str[1]);
+                int anno = int.Parse(str[2]);
+                _dataLimiteRicerche = new DateTime(anno, mese, giorno);
+            }
+            catch
+            {
+                _dataLimiteRicerche = dataInizioStandard;
+                SciviLog("ERRORE", "ERRORE nella conversione della dataLimiteRicerche", "");
+            }
+        }
+
         private void CaricaListaLanciAperti()
         {
             using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
@@ -421,6 +448,10 @@ namespace Pianificazione.Service
         {
             DateTime dtInizio = DateTime.Now;
             _ds = new PianificazioneDS();
+            _dsInfragruppo = new PianificazioneDS();
+            _dsAccantonato= new PianificazioneDS();
+            _elencoIDPRDFASI_to_infragruppo = new List<string>();
+            _elencoIDPRDFASI_to_accantonato = new List<string>();
             Applicazione = "Pianificazione base ODL";
             try
             {
@@ -431,6 +462,8 @@ namespace Pianificazione.Service
                     bPianificazione.FillUSR_PRD_FASIAperti(_ds);
                     bPianificazione.FillUSR_PRD_LANCIODAperti(_ds);
                     bPianificazione.FillPIAN_CATENA_COMMESSA(_ds);
+
+                    bPianificazione.FillUSR_INFRA_FASE_TO_FASE(_ds, _dataLimiteRicerche);
                 }
             }
             catch (Exception ex)
@@ -506,6 +539,11 @@ namespace Pianificazione.Service
                     }
 
                 }
+            }
+            using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
+            {
+                bPianificazione.TruncateTable("PIANIFICAZIONE_RUNTIME");
+                bPianificazione.CopiaPianificazioneSuRuntime();
             }
 
             double durata = (DateTime.Now - dtInizio).TotalMinutes;
@@ -904,10 +942,20 @@ namespace Pianificazione.Service
                     if (quantitaDaLavorare <= (catenaCommessa.QTA_ACCANTONATA - catenaCommessa.QTA_LAVORATA))
                     {
                         catenaCommessa.QTA_LAVORATA += quantitaDaLavorare;
-                        using (PianificazioneDS ds1 = new PianificazioneDS())
+                      //  using (PianificazioneDS ds1 = new PianificazioneDS())
                         {
-                            bPianificazione.FillUSR_PRD_FASI_Sorelle(ds1, catenaCommessa.IDPRDFASERIPARTENZA);
-                            PianificazioneDS.USR_PRD_FASIRow fase = ds1.USR_PRD_FASI.Where(x => x.IDPRDFASE == catenaCommessa.IDPRDFASERIPARTENZA).FirstOrDefault();
+
+                            if (!_elencoIDPRDFASI_to_accantonato.Contains(catenaCommessa.IDPRDFASERIPARTENZA))
+                            {
+                                bPianificazione.FillUSR_PRD_FASI_Sorelle(_dsAccantonato, catenaCommessa.IDPRDFASERIPARTENZA);
+                                _elencoIDPRDFASI_to_infragruppo.Add(catenaCommessa.IDPRDFASERIPARTENZA);
+                            }
+                            else
+                            {
+                                SciviLog("INFO", string.Format("ACCANTONATO: {0} TROVATA !", catenaCommessa.IDPRDFASERIPARTENZA), Applicazione);
+                            }
+
+                            PianificazioneDS.USR_PRD_FASIRow fase = _dsAccantonato.USR_PRD_FASI.Where(x => x.IDPRDFASE == catenaCommessa.IDPRDFASERIPARTENZA).FirstOrDefault();
 
                             if (fase.IDLANCIOD == faseDaEstendere.IDLANCIOD) continue; // esclude il caso di accantonato naturale
 
@@ -940,10 +988,19 @@ namespace Pianificazione.Service
                         decimal quantita = (catenaCommessa.QTA_ACCANTONATA - catenaCommessa.QTA_LAVORATA);
                         quantitaDaLavorare -= quantita;
                         catenaCommessa.QTA_LAVORATA += quantitaDaLavorare;
-                        using (PianificazioneDS ds1 = new PianificazioneDS())
+                      //  using (PianificazioneDS ds1 = new PianificazioneDS())
                         {
-                            bPianificazione.FillUSR_PRD_FASI_Sorelle(ds1, catenaCommessa.IDPRDFASERIPARTENZA);
-                            PianificazioneDS.USR_PRD_FASIRow fase = ds1.USR_PRD_FASI.Where(x => x.IDPRDFASE == catenaCommessa.IDPRDFASERIPARTENZA).FirstOrDefault();
+                            if (!_elencoIDPRDFASI_to_accantonato.Contains(catenaCommessa.IDPRDFASERIPARTENZA))
+                            {
+                                bPianificazione.FillUSR_PRD_FASI_Sorelle(_dsAccantonato, catenaCommessa.IDPRDFASERIPARTENZA);
+                                _elencoIDPRDFASI_to_infragruppo.Add(catenaCommessa.IDPRDFASERIPARTENZA);
+                            }
+                            else
+                            {
+                                SciviLog("INFO", string.Format("ACCANTONATO: {0} TROVATA !", catenaCommessa.IDPRDFASERIPARTENZA), Applicazione);
+                            }
+
+                            PianificazioneDS.USR_PRD_FASIRow fase = _dsAccantonato.USR_PRD_FASI.Where(x => x.IDPRDFASE == catenaCommessa.IDPRDFASERIPARTENZA).FirstOrDefault();
                             if (fase.IDLANCIOD == faseDaEstendere.IDLANCIOD) continue; // esclude il caso di accantonato naturale
                             attendibilita++;
                             CreaPianificazione_ODL(null, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita, true, false);
@@ -977,14 +1034,25 @@ namespace Pianificazione.Service
         {
             using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
             {
-                using (PianificazioneDS ds1 = new PianificazioneDS())
+                //    using (PianificazioneDS ds1 = new PianificazioneDS())
                 {
-                    bPianificazione.FillUSR_PRD_FASI_INFRAGRUPPO(ds1, faseDaEstendere.IDPRDFASE);
-                    if (ds1.USR_PRD_FASI.Count > 0)
+                    PianificazioneDS.USR_INFRA_FASE_TO_FASERow infra = _ds.USR_INFRA_FASE_TO_FASE.Where(x => x.IDPRDFASE_FROM == faseDaEstendere.IDPRDFASE).FirstOrDefault();
+                    if (infra != null)
                     {
-                        PianificazioneDS.USR_PRD_FASIRow faseInfragruppo = ds1.USR_PRD_FASI.FirstOrDefault();
+                        if (!_elencoIDPRDFASI_to_infragruppo.Contains(infra.IDPRDFASE_TO))
+                        {
+                            bPianificazione.FillUSR_PRD_FASI_Sorelle(_dsInfragruppo, infra.IDPRDFASE_TO);
+                            _elencoIDPRDFASI_to_infragruppo.Add(infra.IDPRDFASE_TO);
+                        }
+                        else
+                        {
+                            SciviLog("INFO", string.Format("INFRAGRUPPO TO: {0} TROVATA !", infra.IDPRDFASE_TO), Applicazione);
+                        }
 
-                        bPianificazione.FillUSR_PRD_FASI_Sorelle(ds1, faseInfragruppo.IDPRDFASE);
+                        PianificazioneDS.USR_PRD_FASIRow faseInfragruppo = _dsInfragruppo.USR_PRD_FASI.Where(x => x.IDPRDFASE == infra.IDPRDFASE_TO).FirstOrDefault();
+
+                        if (faseInfragruppo == null) return;
+
                         if (faseInfragruppo.IDLANCIOD == faseDaEstendere.IDLANCIOD) return; // esclude il caso di accantonato naturale
 
                         attendibilita++;
@@ -992,7 +1060,7 @@ namespace Pianificazione.Service
 
                         while (!faseInfragruppo.IsIDPRDFASEPADRENull())
                         {
-                            faseInfragruppo = _ds.USR_PRD_FASI.Where(x => x.IDPRDFASE == faseInfragruppo.IDPRDFASEPADRE).FirstOrDefault();
+                            faseInfragruppo = _dsInfragruppo.USR_PRD_FASI.Where(x => x.IDPRDFASE == faseInfragruppo.IDPRDFASEPADRE).FirstOrDefault();
 
                             if (
                                 faseInfragruppo.IDTABFAS == "0000000077" || // SALNDATURA

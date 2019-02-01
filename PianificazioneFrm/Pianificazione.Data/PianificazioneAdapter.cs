@@ -232,6 +232,20 @@ namespace Pianificazione.Data
             }
         }
 
+        public void FillUSR_INFRA_FASE_TO_FASE(PianificazioneDS ds, DateTime dataLimiteRicerche)
+        {
+            string select = @"select * from siglapp.usr_infra_fase_to_fase where datavr >  $P{DATALIMITE} ";
+
+            ParamSet ps = new ParamSet();
+            ps.AddParam("DATALIMITE", DbType.DateTime, dataLimiteRicerche);
+
+            using (DbDataAdapter da = BuildDataAdapter(select, ps))
+            {
+                da.Fill(ds.USR_INFRA_FASE_TO_FASE);
+            }
+        }
+
+
         public void FillUSR_PRD_FASIByIDLANCIOD(PianificazioneDS ds, string IDLANCIOD)
         {
             string select = @"SELECT * FROM USR_PRD_FASI WHERE IDLANCIOD = $P{IDLANCIOD}";
@@ -490,6 +504,16 @@ inner join usr_prd_fasi fa1 on fa1.idlanciod = ma.idlanciod
             ps.AddParam("APPLICAZIONE", DbType.String, Applicazione);
 
             using (DbCommand cmd = BuildCommand(insert, ps))
+            {
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void CopiaPianificazioneSuRuntime()
+        {
+            string insert = @"insert into PIANIFICAZIONE_RUNTIME select * from pianificazione_odl";
+
+            using (DbCommand cmd = BuildCommand(insert))
             {
                 cmd.ExecuteNonQuery();
             }

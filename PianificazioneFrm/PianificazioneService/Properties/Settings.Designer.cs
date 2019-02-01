@@ -25,10 +25,19 @@ namespace PianificazioneService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        [global::System.Configuration.DefaultSettingValueAttribute("240")]
         public int TimerPeriod {
             get {
                 return ((int)(this["TimerPeriod"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("01/10/2018")]
+        public string DataLimiteRicerche {
+            get {
+                return ((string)(this["DataLimiteRicerche"]));
             }
         }
     }

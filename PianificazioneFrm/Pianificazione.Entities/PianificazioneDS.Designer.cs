@@ -42,6 +42,8 @@ namespace Pianificazione.Entities {
         
         private PIAN_CATENA_COMMESSADataTable tablePIAN_CATENA_COMMESSA;
         
+        private USR_INFRA_FASE_TO_FASEDataTable tableUSR_INFRA_FASE_TO_FASE;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -96,6 +98,9 @@ namespace Pianificazione.Entities {
                 }
                 if ((ds.Tables["PIAN_CATENA_COMMESSA"] != null)) {
                     base.Tables.Add(new PIAN_CATENA_COMMESSADataTable(ds.Tables["PIAN_CATENA_COMMESSA"]));
+                }
+                if ((ds.Tables["USR_INFRA_FASE_TO_FASE"] != null)) {
+                    base.Tables.Add(new USR_INFRA_FASE_TO_FASEDataTable(ds.Tables["USR_INFRA_FASE_TO_FASE"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -207,6 +212,16 @@ namespace Pianificazione.Entities {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public USR_INFRA_FASE_TO_FASEDataTable USR_INFRA_FASE_TO_FASE {
+            get {
+                return this.tableUSR_INFRA_FASE_TO_FASE;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         [global::System.ComponentModel.BrowsableAttribute(true)]
         [global::System.ComponentModel.DesignerSerializationVisibilityAttribute(global::System.ComponentModel.DesignerSerializationVisibility.Visible)]
         public override global::System.Data.SchemaSerializationMode SchemaSerializationMode {
@@ -299,6 +314,9 @@ namespace Pianificazione.Entities {
                 if ((ds.Tables["PIAN_CATENA_COMMESSA"] != null)) {
                     base.Tables.Add(new PIAN_CATENA_COMMESSADataTable(ds.Tables["PIAN_CATENA_COMMESSA"]));
                 }
+                if ((ds.Tables["USR_INFRA_FASE_TO_FASE"] != null)) {
+                    base.Tables.Add(new USR_INFRA_FASE_TO_FASEDataTable(ds.Tables["USR_INFRA_FASE_TO_FASE"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -386,6 +404,12 @@ namespace Pianificazione.Entities {
                     this.tablePIAN_CATENA_COMMESSA.InitVars();
                 }
             }
+            this.tableUSR_INFRA_FASE_TO_FASE = ((USR_INFRA_FASE_TO_FASEDataTable)(base.Tables["USR_INFRA_FASE_TO_FASE"]));
+            if ((initTable == true)) {
+                if ((this.tableUSR_INFRA_FASE_TO_FASE != null)) {
+                    this.tableUSR_INFRA_FASE_TO_FASE.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -414,6 +438,8 @@ namespace Pianificazione.Entities {
             base.Tables.Add(this.tablePIANIFICAZIONE_ODL);
             this.tablePIAN_CATENA_COMMESSA = new PIAN_CATENA_COMMESSADataTable();
             base.Tables.Add(this.tablePIAN_CATENA_COMMESSA);
+            this.tableUSR_INFRA_FASE_TO_FASE = new USR_INFRA_FASE_TO_FASEDataTable();
+            base.Tables.Add(this.tableUSR_INFRA_FASE_TO_FASE);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -467,6 +493,12 @@ namespace Pianificazione.Entities {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         private bool ShouldSerializePIAN_CATENA_COMMESSA() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        private bool ShouldSerializeUSR_INFRA_FASE_TO_FASE() {
             return false;
         }
         
@@ -551,6 +583,9 @@ namespace Pianificazione.Entities {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         public delegate void PIAN_CATENA_COMMESSARowChangeEventHandler(object sender, PIAN_CATENA_COMMESSARowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public delegate void USR_INFRA_FASE_TO_FASERowChangeEventHandler(object sender, USR_INFRA_FASE_TO_FASERowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -9669,6 +9704,368 @@ namespace Pianificazione.Entities {
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
                 attribute2.FixedValue = "PIAN_CATENA_COMMESSADataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class USR_INFRA_FASE_TO_FASEDataTable : global::System.Data.TypedTableBase<USR_INFRA_FASE_TO_FASERow> {
+            
+            private global::System.Data.DataColumn columnIDINFRAFASEFASE;
+            
+            private global::System.Data.DataColumn columnCODDITTA_FROM;
+            
+            private global::System.Data.DataColumn columnCODDITTA_TO;
+            
+            private global::System.Data.DataColumn columnIDPRDFASE_FROM;
+            
+            private global::System.Data.DataColumn columnIDPRDFASE_TO;
+            
+            private global::System.Data.DataColumn columnDATACR;
+            
+            private global::System.Data.DataColumn columnDATAVR;
+            
+            private global::System.Data.DataColumn columnUTENTE;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public USR_INFRA_FASE_TO_FASEDataTable() {
+                this.TableName = "USR_INFRA_FASE_TO_FASE";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal USR_INFRA_FASE_TO_FASEDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected USR_INFRA_FASE_TO_FASEDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn IDINFRAFASEFASEColumn {
+                get {
+                    return this.columnIDINFRAFASEFASE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn CODDITTA_FROMColumn {
+                get {
+                    return this.columnCODDITTA_FROM;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn CODDITTA_TOColumn {
+                get {
+                    return this.columnCODDITTA_TO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn IDPRDFASE_FROMColumn {
+                get {
+                    return this.columnIDPRDFASE_FROM;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn IDPRDFASE_TOColumn {
+                get {
+                    return this.columnIDPRDFASE_TO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn DATACRColumn {
+                get {
+                    return this.columnDATACR;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn DATAVRColumn {
+                get {
+                    return this.columnDATAVR;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn UTENTEColumn {
+                get {
+                    return this.columnUTENTE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public USR_INFRA_FASE_TO_FASERow this[int index] {
+                get {
+                    return ((USR_INFRA_FASE_TO_FASERow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event USR_INFRA_FASE_TO_FASERowChangeEventHandler USR_INFRA_FASE_TO_FASERowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event USR_INFRA_FASE_TO_FASERowChangeEventHandler USR_INFRA_FASE_TO_FASERowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event USR_INFRA_FASE_TO_FASERowChangeEventHandler USR_INFRA_FASE_TO_FASERowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event USR_INFRA_FASE_TO_FASERowChangeEventHandler USR_INFRA_FASE_TO_FASERowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void AddUSR_INFRA_FASE_TO_FASERow(USR_INFRA_FASE_TO_FASERow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public USR_INFRA_FASE_TO_FASERow AddUSR_INFRA_FASE_TO_FASERow(string IDINFRAFASEFASE, string CODDITTA_FROM, string CODDITTA_TO, string IDPRDFASE_FROM, string IDPRDFASE_TO, System.DateTime DATACR, System.DateTime DATAVR, string UTENTE) {
+                USR_INFRA_FASE_TO_FASERow rowUSR_INFRA_FASE_TO_FASERow = ((USR_INFRA_FASE_TO_FASERow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        IDINFRAFASEFASE,
+                        CODDITTA_FROM,
+                        CODDITTA_TO,
+                        IDPRDFASE_FROM,
+                        IDPRDFASE_TO,
+                        DATACR,
+                        DATAVR,
+                        UTENTE};
+                rowUSR_INFRA_FASE_TO_FASERow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowUSR_INFRA_FASE_TO_FASERow);
+                return rowUSR_INFRA_FASE_TO_FASERow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public USR_INFRA_FASE_TO_FASERow FindByIDINFRAFASEFASE(string IDINFRAFASEFASE) {
+                return ((USR_INFRA_FASE_TO_FASERow)(this.Rows.Find(new object[] {
+                            IDINFRAFASEFASE})));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                USR_INFRA_FASE_TO_FASEDataTable cln = ((USR_INFRA_FASE_TO_FASEDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new USR_INFRA_FASE_TO_FASEDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal void InitVars() {
+                this.columnIDINFRAFASEFASE = base.Columns["IDINFRAFASEFASE"];
+                this.columnCODDITTA_FROM = base.Columns["CODDITTA_FROM"];
+                this.columnCODDITTA_TO = base.Columns["CODDITTA_TO"];
+                this.columnIDPRDFASE_FROM = base.Columns["IDPRDFASE_FROM"];
+                this.columnIDPRDFASE_TO = base.Columns["IDPRDFASE_TO"];
+                this.columnDATACR = base.Columns["DATACR"];
+                this.columnDATAVR = base.Columns["DATAVR"];
+                this.columnUTENTE = base.Columns["UTENTE"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            private void InitClass() {
+                this.columnIDINFRAFASEFASE = new global::System.Data.DataColumn("IDINFRAFASEFASE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIDINFRAFASEFASE);
+                this.columnCODDITTA_FROM = new global::System.Data.DataColumn("CODDITTA_FROM", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCODDITTA_FROM);
+                this.columnCODDITTA_TO = new global::System.Data.DataColumn("CODDITTA_TO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCODDITTA_TO);
+                this.columnIDPRDFASE_FROM = new global::System.Data.DataColumn("IDPRDFASE_FROM", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIDPRDFASE_FROM);
+                this.columnIDPRDFASE_TO = new global::System.Data.DataColumn("IDPRDFASE_TO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIDPRDFASE_TO);
+                this.columnDATACR = new global::System.Data.DataColumn("DATACR", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDATACR);
+                this.columnDATAVR = new global::System.Data.DataColumn("DATAVR", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDATAVR);
+                this.columnUTENTE = new global::System.Data.DataColumn("UTENTE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnUTENTE);
+                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
+                                this.columnIDINFRAFASEFASE}, true));
+                this.columnIDINFRAFASEFASE.AllowDBNull = false;
+                this.columnIDINFRAFASEFASE.Unique = true;
+                this.columnIDINFRAFASEFASE.MaxLength = 25;
+                this.columnCODDITTA_FROM.MaxLength = 5;
+                this.columnCODDITTA_TO.MaxLength = 5;
+                this.columnIDPRDFASE_FROM.MaxLength = 25;
+                this.columnIDPRDFASE_TO.MaxLength = 25;
+                this.columnUTENTE.MaxLength = 10;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public USR_INFRA_FASE_TO_FASERow NewUSR_INFRA_FASE_TO_FASERow() {
+                return ((USR_INFRA_FASE_TO_FASERow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new USR_INFRA_FASE_TO_FASERow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(USR_INFRA_FASE_TO_FASERow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.USR_INFRA_FASE_TO_FASERowChanged != null)) {
+                    this.USR_INFRA_FASE_TO_FASERowChanged(this, new USR_INFRA_FASE_TO_FASERowChangeEvent(((USR_INFRA_FASE_TO_FASERow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.USR_INFRA_FASE_TO_FASERowChanging != null)) {
+                    this.USR_INFRA_FASE_TO_FASERowChanging(this, new USR_INFRA_FASE_TO_FASERowChangeEvent(((USR_INFRA_FASE_TO_FASERow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.USR_INFRA_FASE_TO_FASERowDeleted != null)) {
+                    this.USR_INFRA_FASE_TO_FASERowDeleted(this, new USR_INFRA_FASE_TO_FASERowChangeEvent(((USR_INFRA_FASE_TO_FASERow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.USR_INFRA_FASE_TO_FASERowDeleting != null)) {
+                    this.USR_INFRA_FASE_TO_FASERowDeleting(this, new USR_INFRA_FASE_TO_FASERowChangeEvent(((USR_INFRA_FASE_TO_FASERow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void RemoveUSR_INFRA_FASE_TO_FASERow(USR_INFRA_FASE_TO_FASERow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                PianificazioneDS ds = new PianificazioneDS();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "USR_INFRA_FASE_TO_FASEDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -21346,6 +21743,230 @@ namespace Pianificazione.Entities {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class USR_INFRA_FASE_TO_FASERow : global::System.Data.DataRow {
+            
+            private USR_INFRA_FASE_TO_FASEDataTable tableUSR_INFRA_FASE_TO_FASE;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal USR_INFRA_FASE_TO_FASERow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableUSR_INFRA_FASE_TO_FASE = ((USR_INFRA_FASE_TO_FASEDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string IDINFRAFASEFASE {
+                get {
+                    return ((string)(this[this.tableUSR_INFRA_FASE_TO_FASE.IDINFRAFASEFASEColumn]));
+                }
+                set {
+                    this[this.tableUSR_INFRA_FASE_TO_FASE.IDINFRAFASEFASEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string CODDITTA_FROM {
+                get {
+                    try {
+                        return ((string)(this[this.tableUSR_INFRA_FASE_TO_FASE.CODDITTA_FROMColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CODDITTA_FROM\' in table \'USR_INFRA_FASE_TO_FASE\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableUSR_INFRA_FASE_TO_FASE.CODDITTA_FROMColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string CODDITTA_TO {
+                get {
+                    try {
+                        return ((string)(this[this.tableUSR_INFRA_FASE_TO_FASE.CODDITTA_TOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CODDITTA_TO\' in table \'USR_INFRA_FASE_TO_FASE\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableUSR_INFRA_FASE_TO_FASE.CODDITTA_TOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string IDPRDFASE_FROM {
+                get {
+                    try {
+                        return ((string)(this[this.tableUSR_INFRA_FASE_TO_FASE.IDPRDFASE_FROMColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IDPRDFASE_FROM\' in table \'USR_INFRA_FASE_TO_FASE\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableUSR_INFRA_FASE_TO_FASE.IDPRDFASE_FROMColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string IDPRDFASE_TO {
+                get {
+                    try {
+                        return ((string)(this[this.tableUSR_INFRA_FASE_TO_FASE.IDPRDFASE_TOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IDPRDFASE_TO\' in table \'USR_INFRA_FASE_TO_FASE\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableUSR_INFRA_FASE_TO_FASE.IDPRDFASE_TOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public System.DateTime DATACR {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableUSR_INFRA_FASE_TO_FASE.DATACRColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DATACR\' in table \'USR_INFRA_FASE_TO_FASE\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableUSR_INFRA_FASE_TO_FASE.DATACRColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public System.DateTime DATAVR {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableUSR_INFRA_FASE_TO_FASE.DATAVRColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DATAVR\' in table \'USR_INFRA_FASE_TO_FASE\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableUSR_INFRA_FASE_TO_FASE.DATAVRColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string UTENTE {
+                get {
+                    try {
+                        return ((string)(this[this.tableUSR_INFRA_FASE_TO_FASE.UTENTEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'UTENTE\' in table \'USR_INFRA_FASE_TO_FASE\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableUSR_INFRA_FASE_TO_FASE.UTENTEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsCODDITTA_FROMNull() {
+                return this.IsNull(this.tableUSR_INFRA_FASE_TO_FASE.CODDITTA_FROMColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetCODDITTA_FROMNull() {
+                this[this.tableUSR_INFRA_FASE_TO_FASE.CODDITTA_FROMColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsCODDITTA_TONull() {
+                return this.IsNull(this.tableUSR_INFRA_FASE_TO_FASE.CODDITTA_TOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetCODDITTA_TONull() {
+                this[this.tableUSR_INFRA_FASE_TO_FASE.CODDITTA_TOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsIDPRDFASE_FROMNull() {
+                return this.IsNull(this.tableUSR_INFRA_FASE_TO_FASE.IDPRDFASE_FROMColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetIDPRDFASE_FROMNull() {
+                this[this.tableUSR_INFRA_FASE_TO_FASE.IDPRDFASE_FROMColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsIDPRDFASE_TONull() {
+                return this.IsNull(this.tableUSR_INFRA_FASE_TO_FASE.IDPRDFASE_TOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetIDPRDFASE_TONull() {
+                this[this.tableUSR_INFRA_FASE_TO_FASE.IDPRDFASE_TOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsDATACRNull() {
+                return this.IsNull(this.tableUSR_INFRA_FASE_TO_FASE.DATACRColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetDATACRNull() {
+                this[this.tableUSR_INFRA_FASE_TO_FASE.DATACRColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsDATAVRNull() {
+                return this.IsNull(this.tableUSR_INFRA_FASE_TO_FASE.DATAVRColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetDATAVRNull() {
+                this[this.tableUSR_INFRA_FASE_TO_FASE.DATAVRColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsUTENTENull() {
+                return this.IsNull(this.tableUSR_INFRA_FASE_TO_FASE.UTENTEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetUTENTENull() {
+                this[this.tableUSR_INFRA_FASE_TO_FASE.UTENTEColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
@@ -21637,6 +22258,40 @@ namespace Pianificazione.Entities {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public PIAN_CATENA_COMMESSARow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public class USR_INFRA_FASE_TO_FASERowChangeEvent : global::System.EventArgs {
+            
+            private USR_INFRA_FASE_TO_FASERow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public USR_INFRA_FASE_TO_FASERowChangeEvent(USR_INFRA_FASE_TO_FASERow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public USR_INFRA_FASE_TO_FASERow Row {
                 get {
                     return this.eventRow;
                 }

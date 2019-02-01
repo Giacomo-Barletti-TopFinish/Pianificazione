@@ -2,9 +2,10 @@
 <xs:schema id="PianificazioneDS" targetNamespace="http://tempuri.org/PianificazioneDS.xsd" xmlns:mstns="http://tempuri.org/PianificazioneDS.xsd" xmlns="http://tempuri.org/PianificazioneDS.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
   <xs:annotation>
     <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
-      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="1" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
         <Connections>
           <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="ConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="ConnectionString (Settings)" PropertyReference="ApplicationSettings.Pianificazione.Entities.Properties.Settings.GlobalReference.Default.ConnectionString" Provider="System.Data.OracleClient" />
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="ConnectionString1" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="ConnectionString1 (Settings)" PropertyReference="ApplicationSettings.Pianificazione.Entities.Properties.Settings.GlobalReference.Default.ConnectionString1" Provider="System.Data.OracleClient" />
         </Connections>
         <Tables />
         <Sources />
@@ -1899,11 +1900,65 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="USR_INFRA_FASE_TO_FASE" msprop:Generator_TableClassName="USR_INFRA_FASE_TO_FASEDataTable" msprop:Generator_TableVarName="tableUSR_INFRA_FASE_TO_FASE" msprop:Generator_RowChangedName="USR_INFRA_FASE_TO_FASERowChanged" msprop:Generator_TablePropName="USR_INFRA_FASE_TO_FASE" msprop:Generator_RowDeletingName="USR_INFRA_FASE_TO_FASERowDeleting" msprop:Generator_RowChangingName="USR_INFRA_FASE_TO_FASERowChanging" msprop:Generator_RowEvHandlerName="USR_INFRA_FASE_TO_FASERowChangeEventHandler" msprop:Generator_RowDeletedName="USR_INFRA_FASE_TO_FASERowDeleted" msprop:Generator_RowClassName="USR_INFRA_FASE_TO_FASERow" msprop:Generator_UserTableName="USR_INFRA_FASE_TO_FASE" msprop:Generator_RowEvArgName="USR_INFRA_FASE_TO_FASERowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="IDINFRAFASEFASE" msprop:Generator_ColumnVarNameInTable="columnIDINFRAFASEFASE" msprop:Generator_ColumnPropNameInRow="IDINFRAFASEFASE" msprop:Generator_ColumnPropNameInTable="IDINFRAFASEFASEColumn" msprop:Generator_UserColumnName="IDINFRAFASEFASE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="25" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CODDITTA_FROM" msprop:Generator_ColumnVarNameInTable="columnCODDITTA_FROM" msprop:Generator_ColumnPropNameInRow="CODDITTA_FROM" msprop:Generator_ColumnPropNameInTable="CODDITTA_FROMColumn" msprop:Generator_UserColumnName="CODDITTA_FROM" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="5" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CODDITTA_TO" msprop:Generator_ColumnVarNameInTable="columnCODDITTA_TO" msprop:Generator_ColumnPropNameInRow="CODDITTA_TO" msprop:Generator_ColumnPropNameInTable="CODDITTA_TOColumn" msprop:Generator_UserColumnName="CODDITTA_TO" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="5" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="IDPRDFASE_FROM" msprop:Generator_ColumnVarNameInTable="columnIDPRDFASE_FROM" msprop:Generator_ColumnPropNameInRow="IDPRDFASE_FROM" msprop:Generator_ColumnPropNameInTable="IDPRDFASE_FROMColumn" msprop:Generator_UserColumnName="IDPRDFASE_FROM" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="25" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="IDPRDFASE_TO" msprop:Generator_ColumnVarNameInTable="columnIDPRDFASE_TO" msprop:Generator_ColumnPropNameInRow="IDPRDFASE_TO" msprop:Generator_ColumnPropNameInTable="IDPRDFASE_TOColumn" msprop:Generator_UserColumnName="IDPRDFASE_TO" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="25" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DATACR" msprop:Generator_ColumnVarNameInTable="columnDATACR" msprop:Generator_ColumnPropNameInRow="DATACR" msprop:Generator_ColumnPropNameInTable="DATACRColumn" msprop:Generator_UserColumnName="DATACR" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DATAVR" msprop:Generator_ColumnVarNameInTable="columnDATAVR" msprop:Generator_ColumnPropNameInRow="DATAVR" msprop:Generator_ColumnPropNameInTable="DATAVRColumn" msprop:Generator_UserColumnName="DATAVR" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="UTENTE" msprop:Generator_ColumnVarNameInTable="columnUTENTE" msprop:Generator_ColumnPropNameInRow="UTENTE" msprop:Generator_ColumnPropNameInTable="UTENTEColumn" msprop:Generator_UserColumnName="UTENTE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:choice>
     </xs:complexType>
     <xs:unique name="Constraint1" msdata:PrimaryKey="true">
       <xs:selector xpath=".//mstns:MAGAZZ" />
       <xs:field xpath="mstns:IDMAGAZZ" />
+    </xs:unique>
+    <xs:unique name="USR_INFRA_FASE_TO_FASE_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:USR_INFRA_FASE_TO_FASE" />
+      <xs:field xpath="mstns:IDINFRAFASEFASE" />
     </xs:unique>
   </xs:element>
 </xs:schema>

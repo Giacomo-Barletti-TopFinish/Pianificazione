@@ -62,8 +62,8 @@ namespace PianificazioneService
             try
             {
 #if DEBUG
-                Pianificazione.Service.PianificazioneService p = new Pianificazione.Service.PianificazioneService();
-                //p.TrovaOCPerFasiAccantonate();
+                Pianificazione.Service.PianificazioneService p = new Pianificazione.Service.PianificazioneService(Settings.Default.DataLimiteRicerche);
+              //  p.TrovaOCPerFasiAccantonate();
                 p.CreaPianificazioneSuBaseODL();
 #endif
                 ScheduleService.ScheduleService sCheduler = new ScheduleService.ScheduleService();
@@ -72,7 +72,7 @@ namespace PianificazioneService
                 if (sCheduler.VerificaEsecuzione("PIANIFICAZIONE_1", out schedulazione))
                 {
                     Console.WriteLine("PIANIFICAZIONE_1");
-                    Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
+                    Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService(Settings.Default.DataLimiteRicerche);
                     //   pianificazione.CreaPianificazione();
                     pianificazione.TrovaOCPerFasiAccantonate();
                     pianificazione.CreaPianificazioneSuBaseODL();
@@ -82,7 +82,7 @@ namespace PianificazioneService
                 if (sCheduler.VerificaEsecuzione("PIANIFICAZIONE_2", out schedulazione))
                 {
                     Console.WriteLine("PIANIFICAZIONE_2");
-                    Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
+                    Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService(Settings.Default.DataLimiteRicerche);
                     //     pianificazione.CreaPianificazione();
                     pianificazione.TrovaOCPerFasiAccantonate();
                     pianificazione.CreaPianificazioneSuBaseODL();
@@ -92,7 +92,7 @@ namespace PianificazioneService
                 if (sCheduler.VerificaEsecuzione("PIANIFICAZIONE_3", out schedulazione))
                 {
                     Console.WriteLine("PIANIFICAZIONE_3");
-                    Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
+                    Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService(Settings.Default.DataLimiteRicerche);
                     // pianificazione.CreaPianificazione();
                     pianificazione.TrovaOCPerFasiAccantonate();
                     pianificazione.CreaPianificazioneSuBaseODL();
@@ -102,7 +102,7 @@ namespace PianificazioneService
                 if (sCheduler.VerificaEsecuzione("PIANIFICAZIONE_4", out schedulazione))
                 {
                     Console.WriteLine("PIANIFICAZIONE_4");
-                    Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService();
+                    Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService(Settings.Default.DataLimiteRicerche);
                     //pianificazione.CreaPianificazione();
                     pianificazione.TrovaOCPerFasiAccantonate();
                     pianificazione.CreaPianificazioneSuBaseODL();

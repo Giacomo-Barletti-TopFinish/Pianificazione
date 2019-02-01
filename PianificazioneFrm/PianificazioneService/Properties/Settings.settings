@@ -3,7 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="TimerPeriod" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">60</Value>
+      <Value Profile="(Default)">240</Value>
+    </Setting>
+    <Setting Name="DataLimiteRicerche" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">01/10/2018</Value>
     </Setting>
   </Settings>
 </SettingsFile>
