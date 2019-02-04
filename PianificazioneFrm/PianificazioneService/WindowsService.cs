@@ -63,7 +63,7 @@ namespace PianificazioneService
             {
 #if DEBUG
                 Pianificazione.Service.PianificazioneService p = new Pianificazione.Service.PianificazioneService(Settings.Default.DataLimiteRicerche);
-              //  p.TrovaOCPerFasiAccantonate();
+                p.TrovaOCPerFasiAccantonate();
                 p.CreaPianificazioneSuBaseODL();
 #endif
                 ScheduleService.ScheduleService sCheduler = new ScheduleService.ScheduleService();
@@ -98,16 +98,17 @@ namespace PianificazioneService
                     pianificazione.CreaPianificazioneSuBaseODL();
                     sCheduler.AggiornaSchedulazione(schedulazione);
                 }
+               
+                //if (sCheduler.VerificaEsecuzione("PIANIFICAZIONE_4", out schedulazione))
+                //{
+                //    Console.WriteLine("PIANIFICAZIONE_4");
+                //    Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService(Settings.Default.DataLimiteRicerche);
+                //    //pianificazione.CreaPianificazione();
+                //    pianificazione.TrovaOCPerFasiAccantonate();
+                //    pianificazione.CreaPianificazioneSuBaseODL();
+                //    sCheduler.AggiornaSchedulazione(schedulazione);
+                //}
                 Console.WriteLine("** Timercallback END");
-                if (sCheduler.VerificaEsecuzione("PIANIFICAZIONE_4", out schedulazione))
-                {
-                    Console.WriteLine("PIANIFICAZIONE_4");
-                    Pianificazione.Service.PianificazioneService pianificazione = new Pianificazione.Service.PianificazioneService(Settings.Default.DataLimiteRicerche);
-                    //pianificazione.CreaPianificazione();
-                    pianificazione.TrovaOCPerFasiAccantonate();
-                    pianificazione.CreaPianificazioneSuBaseODL();
-                    sCheduler.AggiornaSchedulazione(schedulazione);
-                }
 
             }
             catch (Exception ex)
