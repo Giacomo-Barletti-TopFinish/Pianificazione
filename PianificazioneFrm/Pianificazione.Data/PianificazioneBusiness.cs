@@ -241,12 +241,24 @@ namespace Pianificazione.Data
             PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
             a.FillUSR_PRD_FASI_FaseFinaleCommessaDaIDORIGINE_Tipo_1(ds, IDPRDMOVMATE);
         }
+        [DataContext]
+        public void FillUSR_PRD_FASI_FaseRipartenzaCommessaDaIDORIGINE_Tipo_1(PianificazioneDS ds, string IDPRDMOVMATE)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.FillUSR_PRD_FASI_FaseRipartenzaCommessaDaIDORIGINE_Tipo_1(ds, IDPRDMOVMATE);
+        }
 
         [DataContext]
         public void FillUSR_PRD_FASI_FaseFinaleCommessaDaIDORIGINE_Tipo_2(PianificazioneDS ds, string IDORIGINE)
         {
             PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
             a.FillUSR_PRD_FASI_FaseFinaleCommessaDaIDORIGINE_Tipo_2(ds, IDORIGINE);
+        }
+        [DataContext]
+        public void FillUSR_PRD_FASI_FaseRipartenzaCommessaDaIDORIGINE_Tipo_2(PianificazioneDS ds, string IDORIGINE)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.FillUSR_PRD_FASI_FaseRipartenzaCommessaDaIDORIGINE_Tipo_2(ds, IDORIGINE);
         }
 
     }

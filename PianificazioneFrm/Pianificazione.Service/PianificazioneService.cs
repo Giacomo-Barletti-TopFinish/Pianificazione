@@ -478,7 +478,6 @@ namespace Pianificazione.Service
 
             foreach (PianificazioneDS.USR_PRD_MOVFASIRow odl in _ds.USR_PRD_MOVFASI)
             {
-
                 string IDPRDMOVFASE_ORIGINE = odl.IDPRDMOVFASE;
                 int attendibilita = 1;
                 using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
@@ -509,7 +508,7 @@ namespace Pianificazione.Service
                         if (odl.AZIENDA == "MP" && odl.CODICECLIFO == "02350     ")
                         {
                             abilitaVerificaInfragruppo = false;
-                            SciviLog("INFO", string.Format("ODL: {0} NESSUNA VERIFICA INFRAGRUPPO", IDPRDMOVFASE_ORIGINE), Applicazione);
+             //               SciviLog("INFO", string.Format("ODL: {0} NESSUNA VERIFICA INFRAGRUPPO", IDPRDMOVFASE_ORIGINE), Applicazione);
                         }
                         CreaPianificazione_ODL(odl, fase, IDPRDMOVFASE_ORIGINE, attendibilita, quantita, false, false, abilitaVerificaInfragruppo);
 
@@ -663,6 +662,13 @@ namespace Pianificazione.Service
                             PianificazioneDS.USR_PRD_FASIRow faseDaLavorare1;
                             using (PianificazioneDS ds1 = new PianificazioneDS())
                             {
+
+                                bPianificazione.FillUSR_PRD_FASI_FaseRipartenzaCommessaDaIDORIGINE_Tipo_1(ds1, accantonato.IDORIGINE);
+                                PianificazioneDS.USR_PRD_FASIRow faseRipartenza = ds1.USR_PRD_FASI.FirstOrDefault();
+                                if (faseRipartenza == null) return;
+                                string idprdFaseRipartenza = faseRipartenza.IDPRDFASE;
+
+                                ds1.USR_PRD_FASI.Clear();
                                 bPianificazione.FillUSR_PRD_FASI_FaseFinaleCommessaDaIDORIGINE_Tipo_1(ds1, accantonato.IDORIGINE);
                                 faseDaLavorare1 = ds1.USR_PRD_FASI.FirstOrDefault();
                                 if (faseDaLavorare1 == null) return;
@@ -677,7 +683,9 @@ namespace Pianificazione.Service
                                     return;
                                 livello++;
                                 int durata = CalcolaDurataCommessa(ds1, faseDaLavorare1);
-                                CreaRigaCatenaCommessa(lancio.NOMECOMMESSA, padre, IDPRDFASE_RIFERIMENTO, livello, durata, durata + durata_cumulativa_precedente, false, accantonato.QUANTITA_ORI, faseDaLavorare1.IDPRDFASE, accantonato.DATACONSEGNA_DEST);
+                                CreaRigaCatenaCommessa(lancio.NOMECOMMESSA, padre, IDPRDFASE_RIFERIMENTO, livello, durata, durata + durata_cumulativa_precedente, 
+                                    false, accantonato.QUANTITA_ORI, idprdFaseRipartenza, accantonato.DATACONSEGNA_DEST);
+
                                 TrovaOC(ds1, faseDaLavorare1, IDPRDFASE_RIFERIMENTO, livello, lancio.NOMECOMMESSA, durata + durata_cumulativa_precedente);
                                 return;
                             }
@@ -687,6 +695,12 @@ namespace Pianificazione.Service
                             PianificazioneDS.USR_PRD_FASIRow faseDaLavorare2;
                             using (PianificazioneDS ds1 = new PianificazioneDS())
                             {
+                                bPianificazione.FillUSR_PRD_FASI_FaseRipartenzaCommessaDaIDORIGINE_Tipo_2(ds1, accantonato.IDORIGINE);
+                                PianificazioneDS.USR_PRD_FASIRow faseRipartenza = ds1.USR_PRD_FASI.FirstOrDefault();
+                                if (faseRipartenza == null) return;
+                                string idprdFaseRipartenza = faseRipartenza.IDPRDFASE;
+
+                                ds1.USR_PRD_FASI.Clear();
                                 bPianificazione.FillUSR_PRD_FASI_FaseFinaleCommessaDaIDORIGINE_Tipo_2(ds1, accantonato.IDORIGINE);
                                 faseDaLavorare2 = ds1.USR_PRD_FASI.FirstOrDefault();
                                 if (faseDaLavorare2 == null) return;
@@ -702,7 +716,8 @@ namespace Pianificazione.Service
                                     return;
                                 livello++;
                                 int durata = CalcolaDurataCommessa(ds1, faseDaLavorare2);
-                                CreaRigaCatenaCommessa(lancio.NOMECOMMESSA, padre, IDPRDFASE_RIFERIMENTO, livello, durata, durata + durata_cumulativa_precedente, false, accantonato.QUANTITA_ORI, faseDaLavorare2.IDPRDFASE, accantonato.DATACONSEGNA_DEST);
+                                CreaRigaCatenaCommessa(lancio.NOMECOMMESSA, padre, IDPRDFASE_RIFERIMENTO, livello, durata, durata + durata_cumulativa_precedente, 
+                                    false, accantonato.QUANTITA_ORI, idprdFaseRipartenza, accantonato.DATACONSEGNA_DEST);
                                 TrovaOC(ds1, faseDaLavorare2, IDPRDFASE_RIFERIMENTO, livello, lancio.NOMECOMMESSA, durata + durata_cumulativa_precedente);
 
                                 return;
@@ -965,7 +980,7 @@ namespace Pianificazione.Service
                             if (!_elencoIDPRDFASI_to_accantonato.Contains(catenaCommessa.IDPRDFASERIPARTENZA))
                             {
                                 bPianificazione.FillUSR_PRD_FASI_Sorelle(_dsAccantonato, catenaCommessa.IDPRDFASERIPARTENZA);
-                                _elencoIDPRDFASI_to_infragruppo.Add(catenaCommessa.IDPRDFASERIPARTENZA);
+                                _elencoIDPRDFASI_to_accantonato.Add(catenaCommessa.IDPRDFASERIPARTENZA);
                             }
                             //else
                             //{
@@ -981,7 +996,7 @@ namespace Pianificazione.Service
 
                             while (!fase.IsIDPRDFASEPADRENull())
                             {
-                                fase = _ds.USR_PRD_FASI.Where(x => x.IDPRDFASE == fase.IDPRDFASEPADRE).FirstOrDefault();
+                                fase = _dsAccantonato.USR_PRD_FASI.Where(x => x.IDPRDFASE == fase.IDPRDFASEPADRE).FirstOrDefault();
 
                                 if (
                                     fase.IDTABFAS == "0000000077" || // SALNDATURA
@@ -1024,7 +1039,7 @@ namespace Pianificazione.Service
 
                             while (!fase.IsIDPRDFASEPADRENull())
                             {
-                                fase = _ds.USR_PRD_FASI.Where(x => x.IDPRDFASE == fase.IDPRDFASEPADRE).FirstOrDefault();
+                                fase = _dsAccantonato.USR_PRD_FASI.Where(x => x.IDPRDFASE == fase.IDPRDFASEPADRE).FirstOrDefault();
 
                                 if (
                                     fase.IDTABFAS == "0000000077" || // SALNDATURA
@@ -1084,7 +1099,7 @@ namespace Pianificazione.Service
                         PianificazioneDS.USR_PRD_FASIRow faseInizialeInfragruppo = fasiInizialeInfragruppo.FirstOrDefault();
 
                         attendibilita++;
-                        CreaPianificazione_ODL(null, faseInizialeInfragruppo, IDPRDMOVFASE_ORIGINE, attendibilita, faseInizialeInfragruppo.QTA, false, true, abilitaVerificaInfragruppo);
+                        CreaPianificazione_ODL(null, faseInizialeInfragruppo, IDPRDMOVFASE_ORIGINE, attendibilita, quantitaFasePartenza, false, true, abilitaVerificaInfragruppo);
 
                         while (!faseInizialeInfragruppo.IsIDPRDFASEPADRENull())
                         {
@@ -1102,14 +1117,14 @@ namespace Pianificazione.Service
                                 break;
                             }
                             attendibilita++;
-                            CreaPianificazione_ODL(null, faseInizialeInfragruppo, IDPRDMOVFASE_ORIGINE, attendibilita, faseInizialeInfragruppo.QTA, false, true, abilitaVerificaInfragruppo);
+                            CreaPianificazione_ODL(null, faseInizialeInfragruppo, IDPRDMOVFASE_ORIGINE, attendibilita, quantitaFasePartenza, false, true, abilitaVerificaInfragruppo);
                         }
                     }
                 }
 
             }
 
-        }
+        }      
 
     }
 
