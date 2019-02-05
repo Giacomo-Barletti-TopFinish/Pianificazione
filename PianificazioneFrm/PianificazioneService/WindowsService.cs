@@ -98,7 +98,7 @@ namespace PianificazioneService
                     pianificazione.CreaPianificazioneSuBaseODL();
                     sCheduler.AggiornaSchedulazione(schedulazione);
                 }
-               
+
                 //if (sCheduler.VerificaEsecuzione("PIANIFICAZIONE_4", out schedulazione))
                 //{
                 //    Console.WriteLine("PIANIFICAZIONE_4");
