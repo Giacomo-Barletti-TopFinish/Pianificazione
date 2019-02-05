@@ -506,7 +506,7 @@ namespace Pianificazione.Service
                         decimal quantita = odl.QTA;
 
                         bool abilitaVerificaInfragruppo = true;
-                        if (odl.AZIENDA == "MP" && odl.CODICECLIFO == "02350")
+                        if (odl.AZIENDA == "MP" && odl.CODICECLIFO == "02350     ")
                         {
                             abilitaVerificaInfragruppo = false;
                             SciviLog("INFO", string.Format("ODL: {0} NESSUNA VERIFICA INFRAGRUPPO", IDPRDMOVFASE_ORIGINE), Applicazione);
@@ -1078,7 +1078,8 @@ namespace Pianificazione.Service
                         List<string> idPrdFasePadri = fasiSorelle.Where(x => !x.IsIDPRDFASEPADRENull()).Select(x => x.IDPRDFASEPADRE).ToList();
 
                         List<PianificazioneDS.USR_PRD_FASIRow> fasiInizialeInfragruppo = fasiSorelle.Where(x => !idPrdFasePadri.Contains(x.IDPRDFASE)).ToList();
-                        SciviLog("INFO", string.Format("Trovate {0} fasi iniziali per fase infragrupo {1}", fasiInizialeInfragruppo.Count, faseArrivoInfragruppo.IDPRDFASE), Applicazione);
+                        if (fasiInizialeInfragruppo.Count > 1)
+                            SciviLog("INFO", string.Format("Trovate {0} fasi iniziali per fase infragrupo {1}", fasiInizialeInfragruppo.Count, faseArrivoInfragruppo.IDPRDFASE), Applicazione);
 
                         PianificazioneDS.USR_PRD_FASIRow faseInizialeInfragruppo = fasiInizialeInfragruppo.FirstOrDefault();
 
