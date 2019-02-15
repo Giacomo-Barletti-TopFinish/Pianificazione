@@ -502,7 +502,8 @@ namespace Pianificazione.Service
                             continue;
                         }
 
-                        decimal quantita = odl.QTA;
+                   //     decimal quantita = odl.QTA;
+                        decimal quantita = odl.QTADATER;
 
                         bool abilitaVerificaInfragruppo = true;
                         if (odl.AZIENDA == "MP" && odl.CODICECLIFO == "02350     ")
