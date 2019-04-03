@@ -131,7 +131,7 @@ namespace PianificazioneFrm
 
             for (int i = 0; i < numeroGiorni; i++)
             {
-                dtGriglia.Columns.Add(dtDal.Value.AddDays(i).ToShortDateString(), Type.GetType("System.String")).ReadOnly = true;
+                dtGriglia.Columns.Add(dtDal.Value.AddDays(i).ToShortDateString(), Type.GetType("System.Decimal")).ReadOnly = true;
                 dtGriglia.Columns.Add(dtDal.Value.AddDays(i).ToShortDateString() + " s", Type.GetType("System.String"));
             }
 
@@ -169,6 +169,7 @@ namespace PianificazioneFrm
                 riga[(int)Colonne.Finitura] = gruppo.FINITURA;
                 riga[(int)Colonne.PezziBarra] = gruppo.PEZZI.ToString();
                 riga[(int)Colonne.Gruppo] = gruppo.GRUPPO.ToString();
+
                 decimal totale = 0;
                 for (int i = 0; i < numeroGiorni; i++)
                 {
@@ -207,11 +208,12 @@ namespace PianificazioneFrm
                          x.CODICEFASE == gruppo.CODICEFASE &&
                          x.DATAINIZIO == dtDal.Value.AddDays(i)).Sum(x => x.QTA);
                         totale += aux;
-                        riga[(int)Colonne.NumeroPezzi + 1 + i * 2] = aux.ToString();
+                        riga[(int)Colonne.NumeroPezzi + 1 + i * 2] = aux;
                         riga[(int)Colonne.NumeroPezzi + 1 + i * 2 + 1] = valoreStatico;
                     }
                 }
-                riga[(int)Colonne.NumeroPezzi] = totale;
+                if (totale > 0)
+                    riga[(int)Colonne.NumeroPezzi] = totale;
 
                 dtGriglia.Rows.Add(riga);
             }
@@ -265,57 +267,68 @@ namespace PianificazioneFrm
 
         private void btnSalva_Click(object sender, EventArgs e)
         {
-            int numeroGiorni = GetNumeroGiorni();
-            foreach (DataRow riga in _dsGriglia.Tables[_nomeTabella].Rows)
+            try
             {
-                string IDMAGAZZLancio = (string)riga[(int)Colonne.IDMAGAZZLancio];
-                string IDMAGAZZFase = (string)riga[(int)Colonne.IDMAGAZZFASE];
-                string reparto = (string)riga[(int)Colonne.Reparto];
-                string fase = (string)riga[(int)Colonne.Fase];
-
-                for (int i = 0; i < numeroGiorni; i++)
+                int numeroGiorni = GetNumeroGiorni();
+                foreach (DataRow riga in _dsGriglia.Tables[_nomeTabella].Rows)
                 {
-                    string valore = (string)riga[(int)Colonne.NumeroPezzi + 1 + 2 * i + 1];
-                    valore = valore.Trim();
-                    string data = dgvGriglia.Columns[(int)Colonne.NumeroPezzi + 1 + 2 * i].Name;
-                    DateTime dt = DateTime.Parse(data);
+                    string IDMAGAZZLancio = (string)riga[(int)Colonne.IDMAGAZZLancio];
+                    string IDMAGAZZFase = (string)riga[(int)Colonne.IDMAGAZZFASE];
+                    string reparto = (string)riga[(int)Colonne.Reparto];
+                    string fase = (string)riga[(int)Colonne.Fase];
 
-                    PianificazioneDS.PIANIFICAZIONE_STATICARow rigaDaInserire = _dsPianificazione.PIANIFICAZIONE_STATICA.Where(x =>
-                    x.IDMAGAZZ == IDMAGAZZLancio &&
-                    x.IDMAGAZZ_FASE == IDMAGAZZFase &&
-                    x.CODICEFASE == fase &&
-                    x.REPARTO == reparto &&
-                    x.DATA == dt).FirstOrDefault();
-
-                    if (!string.IsNullOrEmpty(valore))
+                    for (int i = 0; i < numeroGiorni; i++)
                     {
-                        if (rigaDaInserire == null)
+                        string valore = (string)riga[(int)Colonne.NumeroPezzi + 1 + 2 * i + 1];
+                        valore = valore.Trim();
+                        string data = dgvGriglia.Columns[(int)Colonne.NumeroPezzi + 1 + 2 * i].Name;
+                        DateTime dt = DateTime.Parse(data);
+
+                        PianificazioneDS.PIANIFICAZIONE_STATICARow rigaDaInserire = _dsPianificazione.PIANIFICAZIONE_STATICA.Where(x =>
+                        x.IDMAGAZZ == IDMAGAZZLancio &&
+                        x.IDMAGAZZ_FASE == IDMAGAZZFase &&
+                        x.CODICEFASE == fase &&
+                        x.REPARTO == reparto &&
+                        x.DATA == dt).FirstOrDefault();
+
+                        if (!string.IsNullOrEmpty(valore))
                         {
-                            rigaDaInserire = _dsPianificazione.PIANIFICAZIONE_STATICA.NewPIANIFICAZIONE_STATICARow();
-                            rigaDaInserire.CODICEFASE = fase;
-                            rigaDaInserire.DATA = dt;
-                            rigaDaInserire.IDMAGAZZ = IDMAGAZZLancio;
-                            rigaDaInserire.IDMAGAZZ_FASE = IDMAGAZZFase;
-                            rigaDaInserire.QTA = valore;
-                            rigaDaInserire.REPARTO = reparto;
-                            _dsPianificazione.PIANIFICAZIONE_STATICA.AddPIANIFICAZIONE_STATICARow(rigaDaInserire);
+                            if (rigaDaInserire == null)
+                            {
+                                rigaDaInserire = _dsPianificazione.PIANIFICAZIONE_STATICA.NewPIANIFICAZIONE_STATICARow();
+                                rigaDaInserire.CODICEFASE = fase;
+                                rigaDaInserire.DATA = dt;
+                                rigaDaInserire.IDMAGAZZ = IDMAGAZZLancio;
+                                rigaDaInserire.IDMAGAZZ_FASE = IDMAGAZZFase;
+                                rigaDaInserire.QTA = valore;
+                                rigaDaInserire.REPARTO = reparto;
+                                _dsPianificazione.PIANIFICAZIONE_STATICA.AddPIANIFICAZIONE_STATICARow(rigaDaInserire);
+                            }
+                            else
+                                rigaDaInserire.QTA = valore;
                         }
                         else
-                            rigaDaInserire.QTA = valore;
-                    }
-                    else
-                    {
-                        if (rigaDaInserire != null)
-                            rigaDaInserire.Delete();
+                        {
+                            if (rigaDaInserire != null)
+                                rigaDaInserire.Delete();
+                        }
                     }
                 }
+
+                using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
+                {
+                    bPianificazione.SalvaPianificazioneStatica(_dsPianificazione);
+                    _dsPianificazione.AcceptChanges();
+                }
+
+                MessageBox.Show("Salvataggio riuscito", "Informazione", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ERRORE", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
             }
 
-            using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
-            {
-                bPianificazione.SalvaPianificazioneStatica(_dsPianificazione);
-                _dsPianificazione.AcceptChanges();
-            }
         }
 
         private void btnEsporta_Click(object sender, EventArgs e)
