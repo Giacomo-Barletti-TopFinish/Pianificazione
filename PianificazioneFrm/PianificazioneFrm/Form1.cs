@@ -46,7 +46,7 @@ namespace PianificazioneFrm
 
                 using (PianificazioneBusiness bPianificazione = new PianificazioneBusiness())
                 {
-                    bPianificazione.FillV_PIAN_AGGR_2(_dsPianificazione, dtDal.Value, dtAl.Value, reparto, fase);
+                    bPianificazione.FillV_PIAN_AGGR_2(_dsPianificazione, dtDal.Value, dtAl.Value, reparto, fase, (string)ddlTipoODL.SelectedItem);
                     bPianificazione.FillPIANIFICAZIONE_STATICA(_dsPianificazione, dtDal.Value, dtAl.Value);
 
                 }
@@ -125,7 +125,7 @@ namespace PianificazioneFrm
             dtGriglia.Columns.Add("Finitura", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("Pezzi x barra", Type.GetType("System.String"));
             dtGriglia.Columns.Add("Gruppo", Type.GetType("System.String"));
-            dtGriglia.Columns.Add("Numero pezzi", Type.GetType("System.String"));
+            dtGriglia.Columns.Add("Numero pezzi", Type.GetType("System.Decimal"));
 
             int numeroGiorni = GetNumeroGiorni();
 
@@ -211,7 +211,7 @@ namespace PianificazioneFrm
                         riga[(int)Colonne.NumeroPezzi + 1 + i * 2 + 1] = valoreStatico;
                     }
                 }
-                riga[(int)Colonne.NumeroPezzi] = totale.ToString();
+                riga[(int)Colonne.NumeroPezzi] = totale;
 
                 dtGriglia.Rows.Add(riga);
             }
@@ -238,6 +238,11 @@ namespace PianificazioneFrm
 
                 ddlReparto.Items.AddRange(reparti.ToArray());
             }
+
+            ddlTipoODL.Items.Add(" ");
+            ddlTipoODL.Items.Add("PIANIFICATO");
+            ddlTipoODL.Items.Add("APERTO");
+            ddlTipoODL.SelectedIndex = 0;
         }
 
         private void CaricaFasi(string reparto)

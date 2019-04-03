@@ -524,7 +524,7 @@ inner join usr_prd_fasi fa1 on fa1.idlanciod = ma.idlanciod
             }
         }
 
-        public void FillV_PIAN_AGGR_2(PianificazioneDS ds, DateTime dataInizio, DateTime dataFine, string reparto, string fase)
+        public void FillV_PIAN_AGGR_2(PianificazioneDS ds, DateTime dataInizio, DateTime dataFine, string reparto, string fase, string tipoODL)
         {
             string dtIizio = dataInizio.ToString("dd/MM/yyyy");
             string dtFine = dataFine.ToString("dd/MM/yyyy");
@@ -532,7 +532,7 @@ inner join usr_prd_fasi fa1 on fa1.idlanciod = ma.idlanciod
             string select = string.Format(@" 
                             select la.idmagazz,fa.idmagazz idmagazz_fase,nvl(TRIM(SE.RAGIONESOC),' ') AS SEGNALATORE,pf.modello as modellolancio,ar.modello ,fa.datainizio,
                                 fa.datafine,fa.codiceclifo as reparto,tf.codicefase,nvl(pb.FINITURA,' ') finitura,nvl(pb.materiale,' ')materiale,nvl(pb.pezzi,'0')pezzi,
-                                fa.stato,fa.qta, nvl(pb.gruppo,-1) gruppo   
+                                fa.stato,fa.qtadater as qta, nvl(pb.gruppo,-1) gruppo   
                                 from PIANIFICAZIONE_RUNTIME fa
                                 inner join gruppo.magazz ar on ar.idmagazz=fa.idmagazz
                                 inner join usr_prd_lanciod la on la.idlanciod = fa.idlanciod
@@ -542,14 +542,23 @@ inner join usr_prd_fasi fa1 on fa1.idlanciod = ma.idlanciod
                                 LEFT JOIN GRUPPO.CLIFO SE ON SE.CODICE = LA.SEGNALATORE 
                                 left join gruppo.tabtipm mat on mat.idtabtipm = pf.idtabtipm
                                 LEFT JOIN PEZZI_BARRA PB ON PB.IDMAGAZZ = fa.IDMAGAZZ AND PB.IDMAGAZZLANCIO=LA.IDMAGAZZ
-                                where ((fa.datainizio <= TO_DATE('{0}','DD/MM/YYYY') AND fa.DATAFINE>= TO_DATE('{0}','DD/MM/YYYY'))
-                                or (fa.datainizio >TO_DATE('{0}','DD/MM/YYYY') and fa.datainizio <=TO_DATE('{1}','DD/MM/YYYY'))) ", dtIizio, dtFine);
+                                where fa.qtadater>0 and fa.datainizio <=TO_DATE('{1}','DD/MM/YYYY') ", dtIizio, dtFine);
 
             if (!string.IsNullOrEmpty(reparto.Trim()))
             {
                 select = select + string.Format(" AND fa.codiceclifo = '{0}'", reparto);
                 if (!string.IsNullOrEmpty(fase.Trim()))
                     select = select + string.Format(" AND tf.codicefase = '{0}'", fase);
+            }
+
+            if (tipoODL=="APERTO")
+            {
+                select = select + string.Format(" AND fa.STATO = '{0}'", tipoODL);
+            }
+
+            if (tipoODL == "PIANIFICATO")
+            {
+                select = select + " AND fa.STATO <> 'APERTO'";
             }
 
             using (DbDataAdapter da = BuildDataAdapter(select))

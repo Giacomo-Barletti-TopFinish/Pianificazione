@@ -152,10 +152,10 @@ namespace Pianificazione.Data
         }
 
         [DataContext]
-        public void FillV_PIAN_AGGR_2(PianificazioneDS ds, DateTime dataInizio, DateTime dataFine, string reparto, string fase)
+        public void FillV_PIAN_AGGR_2(PianificazioneDS ds, DateTime dataInizio, DateTime dataFine, string reparto, string fase, string tipoODL)
         {
             PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
-            a.FillV_PIAN_AGGR_2(ds, dataInizio, dataFine, reparto, fase);
+            a.FillV_PIAN_AGGR_2(ds, dataInizio, dataFine, reparto, fase,tipoODL);
         }
 
         [DataContext]

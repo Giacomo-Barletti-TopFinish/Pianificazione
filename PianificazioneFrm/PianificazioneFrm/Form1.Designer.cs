@@ -41,13 +41,15 @@
             this.ddlFase = new System.Windows.Forms.ComboBox();
             this.btnSalva = new System.Windows.Forms.Button();
             this.btnEsporta = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.ddlTipoODL = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGriglia)).BeginInit();
             this.SuspendLayout();
             // 
             // btnTrova
             // 
             this.btnTrova.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTrova.Location = new System.Drawing.Point(690, 8);
+            this.btnTrova.Location = new System.Drawing.Point(697, 8);
             this.btnTrova.Name = "btnTrova";
             this.btnTrova.Size = new System.Drawing.Size(75, 32);
             this.btnTrova.TabIndex = 5;
@@ -76,7 +78,7 @@
             this.lblMessage.AutoSize = true;
             this.lblMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMessage.ForeColor = System.Drawing.Color.Red;
-            this.lblMessage.Location = new System.Drawing.Point(791, 15);
+            this.lblMessage.Location = new System.Drawing.Point(1028, 15);
             this.lblMessage.Name = "lblMessage";
             this.lblMessage.Size = new System.Drawing.Size(46, 18);
             this.lblMessage.TabIndex = 9;
@@ -115,7 +117,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(31, 50);
+            this.label3.Location = new System.Drawing.Point(31, 51);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(61, 18);
             this.label3.TabIndex = 11;
@@ -126,7 +128,7 @@
             this.ddlReparto.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlReparto.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ddlReparto.FormattingEnabled = true;
-            this.ddlReparto.Location = new System.Drawing.Point(108, 49);
+            this.ddlReparto.Location = new System.Drawing.Point(108, 47);
             this.ddlReparto.Name = "ddlReparto";
             this.ddlReparto.Size = new System.Drawing.Size(215, 26);
             this.ddlReparto.TabIndex = 12;
@@ -136,7 +138,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(373, 50);
+            this.label4.Location = new System.Drawing.Point(373, 51);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(41, 18);
             this.label4.TabIndex = 11;
@@ -147,7 +149,7 @@
             this.ddlFase.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlFase.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ddlFase.FormattingEnabled = true;
-            this.ddlFase.Location = new System.Drawing.Point(437, 49);
+            this.ddlFase.Location = new System.Drawing.Point(437, 47);
             this.ddlFase.Name = "ddlFase";
             this.ddlFase.Size = new System.Drawing.Size(215, 26);
             this.ddlFase.TabIndex = 12;
@@ -155,7 +157,7 @@
             // btnSalva
             // 
             this.btnSalva.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSalva.Location = new System.Drawing.Point(690, 45);
+            this.btnSalva.Location = new System.Drawing.Point(804, 8);
             this.btnSalva.Name = "btnSalva";
             this.btnSalva.Size = new System.Drawing.Size(75, 32);
             this.btnSalva.TabIndex = 5;
@@ -166,7 +168,7 @@
             // btnEsporta
             // 
             this.btnEsporta.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEsporta.Location = new System.Drawing.Point(785, 45);
+            this.btnEsporta.Location = new System.Drawing.Point(912, 8);
             this.btnEsporta.Name = "btnEsporta";
             this.btnEsporta.Size = new System.Drawing.Size(94, 32);
             this.btnEsporta.TabIndex = 5;
@@ -174,13 +176,35 @@
             this.btnEsporta.UseVisualStyleBackColor = true;
             this.btnEsporta.Click += new System.EventHandler(this.btnEsporta_Click);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(677, 51);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(72, 18);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Tipo ODL";
+            // 
+            // ddlTipoODL
+            // 
+            this.ddlTipoODL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlTipoODL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ddlTipoODL.FormattingEnabled = true;
+            this.ddlTipoODL.Location = new System.Drawing.Point(760, 47);
+            this.ddlTipoODL.Name = "ddlTipoODL";
+            this.ddlTipoODL.Size = new System.Drawing.Size(215, 26);
+            this.ddlTipoODL.TabIndex = 12;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1532, 756);
             this.Controls.Add(this.dgvGriglia);
+            this.Controls.Add(this.ddlTipoODL);
             this.Controls.Add(this.ddlFase);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.ddlReparto);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label2);
@@ -193,7 +217,7 @@
             this.Controls.Add(this.dtAl);
             this.Controls.Add(this.dtDal);
             this.Name = "Form1";
-            this.Text = "Pianificazione";
+            this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvGriglia)).EndInit();
             this.ResumeLayout(false);
@@ -216,6 +240,8 @@
         private System.Windows.Forms.ComboBox ddlFase;
         private System.Windows.Forms.Button btnSalva;
         private System.Windows.Forms.Button btnEsporta;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox ddlTipoODL;
     }
 }
 
