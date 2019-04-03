@@ -145,6 +145,34 @@ namespace Pianificazione.Data
         }
 
         [DataContext(true)]
+        public void SalvaPianificazioneStatica(PianificazioneDS ds)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.UpdateTable(ds.PIANIFICAZIONE_STATICA.TableName, ds);
+        }
+
+        [DataContext]
+        public void FillV_PIAN_AGGR_2(PianificazioneDS ds, DateTime dataInizio, DateTime dataFine, string reparto, string fase)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.FillV_PIAN_AGGR_2(ds, dataInizio, dataFine, reparto, fase);
+        }
+
+        [DataContext]
+        public void FillPIANIFICAZIONE_STATICA(PianificazioneDS ds, DateTime dataInizio, DateTime dataFine)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.FillPIANIFICAZIONE_STATICA(ds, dataInizio, dataFine);
+        }
+
+        [DataContext]
+        public void FillTABFAS(PianificazioneDS ds)
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.FillTABFAS(ds);
+        }
+
+        [DataContext(true)]
         public void SalvaPianificazione_ODL(PianificazioneDS ds)
         {
             PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
@@ -156,7 +184,12 @@ namespace Pianificazione.Data
             PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
             a.CopiaPianificazioneSuRuntime();
         }
-
+        [DataContext(true)]
+        public void CopiaPianificazioneAggregata()
+        {
+            PianificazioneAdapter a = new PianificazioneAdapter(DbConnection, DbTransaction);
+            a.CopiaPianificazioneAggregata();
+        }
         [DataContext(true)]
         public void SalvaTemporanea(PianificazioneDS ds)
         {

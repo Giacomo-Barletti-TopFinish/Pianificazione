@@ -553,6 +553,10 @@ namespace Pianificazione.Service
             {
                 bPianificazione.TruncateTable("PIANIFICAZIONE_RUNTIME");
                 bPianificazione.CopiaPianificazioneSuRuntime();
+
+                bPianificazione.TruncateTable("V_PIAN_AGGR_2");
+                bPianificazione.CopiaPianificazioneAggregata();
+
             }
 
             double durata = (DateTime.Now - dtInizio).TotalMinutes;

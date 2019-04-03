@@ -524,6 +524,66 @@ inner join usr_prd_fasi fa1 on fa1.idlanciod = ma.idlanciod
             }
         }
 
+        public void FillV_PIAN_AGGR_2(PianificazioneDS ds, DateTime dataInizio, DateTime dataFine, string reparto, string fase)
+        {
+            string dtIizio = dataInizio.ToString("dd/MM/yyyy");
+            string dtFine = dataFine.ToString("dd/MM/yyyy");
+
+            string select = string.Format(@" 
+                            select la.idmagazz,fa.idmagazz idmagazz_fase,nvl(TRIM(SE.RAGIONESOC),' ') AS SEGNALATORE,pf.modello as modellolancio,ar.modello ,fa.datainizio,
+                                fa.datafine,fa.codiceclifo as reparto,tf.codicefase,nvl(pb.FINITURA,' ') finitura,nvl(pb.materiale,' ')materiale,nvl(pb.pezzi,'0')pezzi,
+                                fa.stato,fa.qta, nvl(pb.gruppo,-1) gruppo   
+                                from PIANIFICAZIONE_RUNTIME fa
+                                inner join gruppo.magazz ar on ar.idmagazz=fa.idmagazz
+                                inner join usr_prd_lanciod la on la.idlanciod = fa.idlanciod
+                                inner join gruppo.magazz pf on pf.idmagazz=la.idmagazz
+                                inner join usr_prd_fasi prfa on fa.idprdfase = prfa.idprdfase
+                                inner join gruppo.tabfas tf on tf.idtabfas = prfa.idtabfas
+                                LEFT JOIN GRUPPO.CLIFO SE ON SE.CODICE = LA.SEGNALATORE 
+                                left join gruppo.tabtipm mat on mat.idtabtipm = pf.idtabtipm
+                                LEFT JOIN PEZZI_BARRA PB ON PB.IDMAGAZZ = fa.IDMAGAZZ AND PB.IDMAGAZZLANCIO=LA.IDMAGAZZ
+                                where ((fa.datainizio <= TO_DATE('{0}','DD/MM/YYYY') AND fa.DATAFINE>= TO_DATE('{0}','DD/MM/YYYY'))
+                                or (fa.datainizio >TO_DATE('{0}','DD/MM/YYYY') and fa.datainizio <=TO_DATE('{1}','DD/MM/YYYY'))) ", dtIizio, dtFine);
+
+            if (!string.IsNullOrEmpty(reparto.Trim()))
+            {
+                select = select + string.Format(" AND fa.codiceclifo = '{0}'", reparto);
+                if (!string.IsNullOrEmpty(fase.Trim()))
+                    select = select + string.Format(" AND tf.codicefase = '{0}'", fase);
+            }
+
+            using (DbDataAdapter da = BuildDataAdapter(select))
+            {
+                da.Fill(ds.V_PIAN_AGGR_2);
+            }
+        }
+
+        public void FillPIANIFICAZIONE_STATICA(PianificazioneDS ds, DateTime dataInizio, DateTime dataFine)
+        {
+            string dtIizio = dataInizio.ToString("dd/MM/yyyy");
+            string dtFine = dataFine.ToString("dd/MM/yyyy");
+
+            string select = string.Format(@" 
+                            select * from PIANIFICAZIONE_STATICA
+                                where data >=TO_DATE('{0}','DD/MM/YYYY') and data <=TO_DATE('{1}','DD/MM/YYYY') ", dtIizio, dtFine);
+
+            using (DbDataAdapter da = BuildDataAdapter(select))
+            {
+                da.Fill(ds.PIANIFICAZIONE_STATICA);
+            }
+        }
+
+
+        public void FillTABFAS(PianificazioneDS ds)
+        {
+            string select = @" select * from gruppo.TABFAS ";
+
+            using (DbDataAdapter da = BuildDataAdapter(select))
+            {
+                da.Fill(ds.TABFAS);
+            }
+        }
+
         public void InsertPianificazioneLog(string Tipo, string Nota, string Applicazione)
         {
             string insert = @"INSERT INTO PIANIFICAZIONE_LOG  ( IDLOG, DATA,TIPO,NOTA,APPLICAZIONE  ) VALUES (NULL,to_date('{0}','DD/MM/YYYY HH24:MI:SS'),$P<TIPO>,$P<NOTA>,$P<APPLICAZIONE>)";
@@ -534,6 +594,28 @@ inner join usr_prd_fasi fa1 on fa1.idlanciod = ma.idlanciod
             ps.AddParam("APPLICAZIONE", DbType.String, Applicazione);
 
             using (DbCommand cmd = BuildCommand(insert, ps))
+            {
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void CopiaPianificazioneAggregata()
+        {
+            string insert = @"INSERT INTO V_PIAN_AGGR_2
+                                select la.idmagazz,fa.idmagazz idmagazz_fase,TRIM(SE.RAGIONESOC) AS SEGNALATORE,pf.modello as modellolancio,ar.modello ,fa.datainizio,
+                                fa.datafine,fa.codiceclifo as reparto,tf.codicefase,pb.FINITURA,pb.materiale,pb.pezzi,
+                                fa.stato,fa.qta, pb.gruppo  
+                                from PIANIFICAZIONE_RUNTIME fa
+                                inner join gruppo.magazz ar on ar.idmagazz=fa.idmagazz
+                                inner join usr_prd_lanciod la on la.idlanciod = fa.idlanciod
+                                inner join gruppo.magazz pf on pf.idmagazz=la.idmagazz
+                                inner join usr_prd_fasi prfa on fa.idprdfase = prfa.idprdfase
+                                inner join gruppo.tabfas tf on tf.idtabfas = prfa.idtabfas
+                                LEFT JOIN GRUPPO.CLIFO SE ON SE.CODICE = LA.SEGNALATORE 
+                                left join gruppo.tabtipm mat on mat.idtabtipm = pf.idtabtipm
+                                LEFT JOIN PEZZI_BARRA PB ON PB.IDMAGAZZ = fa.IDMAGAZZ AND PB.IDMAGAZZLANCIO=LA.IDMAGAZZ";
+
+            using (DbCommand cmd = BuildCommand(insert))
             {
                 cmd.ExecuteNonQuery();
             }
