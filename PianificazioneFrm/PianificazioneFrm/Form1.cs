@@ -22,6 +22,7 @@ namespace PianificazioneFrm
         private string _nomeTabella = "Griglia";
         private PianificazioneDS _dsPianificazione;
         List<PianificazioneDS.TABFASRow> _fasi;
+        private enum Colonne { IDMAGAZZFASE, IDMAGAZZLancio, Segnalatore, ModelloLancio, Modello, Reparto, Fase, Materiale, Finitura, PezziBarra, Gruppo, PezziPianificati, NumeroPezzi }
 
         public Form1()
         {
@@ -77,18 +78,25 @@ namespace PianificazioneFrm
                 dgvGriglia.Columns[(int)Colonne.Gruppo].Frozen = true;
                 dgvGriglia.Columns[(int)Colonne.Gruppo].Width = 50;
 
+                dgvGriglia.Columns[(int)Colonne.PezziPianificati].Frozen = true;
+                dgvGriglia.Columns[(int)Colonne.PezziPianificati].Width = 50;
+                dgvGriglia.Columns[(int)Colonne.PezziPianificati].DefaultCellStyle.BackColor = Color.DarkRed;
+                dgvGriglia.Columns[(int)Colonne.PezziPianificati].DefaultCellStyle.ForeColor = Color.White;
+
                 dgvGriglia.Columns[(int)Colonne.NumeroPezzi].Frozen = true;
                 dgvGriglia.Columns[(int)Colonne.NumeroPezzi].Width = 50;
-                dgvGriglia.Columns[(int)Colonne.NumeroPezzi].DefaultCellStyle.BackColor = Color.DarkRed;
+                dgvGriglia.Columns[(int)Colonne.NumeroPezzi].DefaultCellStyle.BackColor = Color.DarkGreen;
                 dgvGriglia.Columns[(int)Colonne.NumeroPezzi].DefaultCellStyle.ForeColor = Color.White;
 
                 int numeroGiorni = GetNumeroGiorni();
                 for (int i = 0; i < numeroGiorni; i++)
                 {
-                    dgvGriglia.Columns[(int)Colonne.NumeroPezzi + 1 + 2 * i].Width = 70;
-                    dgvGriglia.Columns[(int)Colonne.NumeroPezzi + 1 + 2 * i + 1].Width = 70;
-                    dgvGriglia.Columns[(int)Colonne.NumeroPezzi + 1 + 2 * i].DefaultCellStyle.ForeColor = Color.Red;
-                    dgvGriglia.Columns[(int)Colonne.NumeroPezzi + 1 + 2 * i + 1].DefaultCellStyle.ForeColor = Color.Green;
+                    dgvGriglia.Columns[(int)Colonne.NumeroPezzi + 1 + 3 * i].Width = 70;
+                    dgvGriglia.Columns[(int)Colonne.NumeroPezzi + 1 + 3 * i + 1].Width = 70;
+                    dgvGriglia.Columns[(int)Colonne.NumeroPezzi + 1 + 3 * i + 2].Width = 70;
+                    dgvGriglia.Columns[(int)Colonne.NumeroPezzi + 1 + 3 * i].DefaultCellStyle.ForeColor = Color.DarkRed;
+                    dgvGriglia.Columns[(int)Colonne.NumeroPezzi + 1 + 3 * i + 1].DefaultCellStyle.ForeColor = Color.DarkGreen;
+                    dgvGriglia.Columns[(int)Colonne.NumeroPezzi + 1 + 3 * i + 2].DefaultCellStyle.ForeColor = Color.DarkBlue;
                 }
             }
             catch (Exception ex)
@@ -106,7 +114,6 @@ namespace PianificazioneFrm
         {
             return (((TimeSpan)(dtAl.Value - dtDal.Value)).Days) + 1;
         }
-        private enum Colonne { IDMAGAZZFASE, IDMAGAZZLancio, Segnalatore, ModelloLancio, Modello, Reparto, Fase, Materiale, Finitura, PezziBarra, Gruppo, NumeroPezzi }
         private void CreaDSGriglia()
         {
 
@@ -125,6 +132,7 @@ namespace PianificazioneFrm
             dtGriglia.Columns.Add("Finitura", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("Pezzi x barra", Type.GetType("System.String"));
             dtGriglia.Columns.Add("Gruppo", Type.GetType("System.String"));
+            dtGriglia.Columns.Add("Pezzi pianificati", Type.GetType("System.Decimal"));
             dtGriglia.Columns.Add("Numero pezzi", Type.GetType("System.Decimal"));
 
             int numeroGiorni = GetNumeroGiorni();
@@ -132,7 +140,8 @@ namespace PianificazioneFrm
             for (int i = 0; i < numeroGiorni; i++)
             {
                 dtGriglia.Columns.Add(dtDal.Value.AddDays(i).ToShortDateString(), Type.GetType("System.Decimal")).ReadOnly = true;
-                dtGriglia.Columns.Add(dtDal.Value.AddDays(i).ToShortDateString() + " s", Type.GetType("System.String"));
+                dtGriglia.Columns.Add(dtDal.Value.AddDays(i).ToShortDateString() + " statico", Type.GetType("System.String"));
+                dtGriglia.Columns.Add(dtDal.Value.AddDays(i).ToShortDateString() + " barre", Type.GetType("System.String"));
             }
 
             var gruppi =
@@ -171,6 +180,7 @@ namespace PianificazioneFrm
                 riga[(int)Colonne.Gruppo] = gruppo.GRUPPO.ToString();
 
                 decimal totale = 0;
+                decimal totaleStatico = 0;
                 for (int i = 0; i < numeroGiorni; i++)
                 {
                     PianificazioneDS.PIANIFICAZIONE_STATICARow statico = _dsPianificazione.PIANIFICAZIONE_STATICA.Where(x =>
@@ -195,8 +205,16 @@ namespace PianificazioneFrm
                         x.DATAINIZIO <= dtDal.Value).Sum(x => x.QTA);
 
                         totale += aux;
+                        decimal auxStatico;
+                        if (decimal.TryParse(valoreStatico, out auxStatico))
+                            totaleStatico += auxStatico;
+
                         riga[(int)Colonne.NumeroPezzi + 1] = aux.ToString();
                         riga[(int)Colonne.NumeroPezzi + 1 + 1] = valoreStatico;
+                        if (statico != null)
+                            riga[(int)Colonne.NumeroPezzi + 1 + i * 3 + 2] = CalcolaBarre(gruppo.PEZZI.ToString(), decimal.Parse(statico.QTA));
+                        else
+                            riga[(int)Colonne.NumeroPezzi + 1 + i * 3 + 2] = string.Empty;
                     }
                     else
                     {
@@ -207,13 +225,24 @@ namespace PianificazioneFrm
                          x.REPARTO == gruppo.REPARTO &&
                          x.CODICEFASE == gruppo.CODICEFASE &&
                          x.DATAINIZIO == dtDal.Value.AddDays(i)).Sum(x => x.QTA);
+
                         totale += aux;
-                        riga[(int)Colonne.NumeroPezzi + 1 + i * 2] = aux;
-                        riga[(int)Colonne.NumeroPezzi + 1 + i * 2 + 1] = valoreStatico;
+                        decimal auxStatico;
+                        if (decimal.TryParse(valoreStatico, out auxStatico))
+                            totaleStatico += auxStatico;
+
+                        riga[(int)Colonne.NumeroPezzi + 1 + i * 3] = aux;
+                        riga[(int)Colonne.NumeroPezzi + 1 + i * 3 + 1] = valoreStatico;
+                        if (statico != null)
+                            riga[(int)Colonne.NumeroPezzi + 1 + i * 3 + 2] = CalcolaBarre(gruppo.PEZZI.ToString(), decimal.Parse(statico.QTA));
+                        else
+                            riga[(int)Colonne.NumeroPezzi + 1 + i * 3 + 2] = string.Empty;
                     }
                 }
                 if (totale > 0)
-                    riga[(int)Colonne.NumeroPezzi] = totale;
+                    riga[(int)Colonne.PezziPianificati] = totale;
+                if (totaleStatico > 0)
+                    riga[(int)Colonne.NumeroPezzi] = totaleStatico;
 
                 dtGriglia.Rows.Add(riga);
             }
@@ -279,12 +308,14 @@ namespace PianificazioneFrm
 
                     for (int i = 0; i < numeroGiorni; i++)
                     {
-                        string valore = (string)riga[(int)Colonne.NumeroPezzi + 1 + 2 * i + 1];
+                        string barra = (string)riga[(int)Colonne.NumeroPezzi + 1 + 3 * i + 2].ToString();
+                        string valore = (string)riga[(int)Colonne.NumeroPezzi + 1 + 3 * i + 1].ToString();
                         valore = valore.Trim();
-                        string data = dgvGriglia.Columns[(int)Colonne.NumeroPezzi + 1 + 2 * i].Name;
+                        string data = dgvGriglia.Columns[(int)Colonne.NumeroPezzi + 1 + 3 * i].Name;
                         DateTime dt = DateTime.Parse(data);
 
                         PianificazioneDS.PIANIFICAZIONE_STATICARow rigaDaInserire = _dsPianificazione.PIANIFICAZIONE_STATICA.Where(x =>
+                        x.RowState != DataRowState.Deleted &&
                         x.IDMAGAZZ == IDMAGAZZLancio &&
                         x.IDMAGAZZ_FASE == IDMAGAZZFase &&
                         x.CODICEFASE == fase &&
@@ -368,5 +399,79 @@ namespace PianificazioneFrm
             }
 
         }
+
+        private void dgvGriglia_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            int indiceColonnaTotale = (int)Colonne.NumeroPezzi;
+
+            int indiceColonna = e.ColumnIndex - indiceColonnaTotale;
+            int identificativo = indiceColonna % 3;
+
+            if (identificativo == 1)
+            {
+                // pianificato
+                return;
+            }
+            if (identificativo == 0)
+            {
+                // barre
+                return;
+            }
+
+            if (identificativo == 2)
+            {
+                AggiornaTotalePezziStatici(e.RowIndex);
+                // statico
+                decimal valore;
+                if (dgvGriglia.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == DBNull.Value)
+                {
+                    dgvGriglia.Rows[e.RowIndex].Cells[e.ColumnIndex + 1].Value = string.Empty;
+                    return;
+                }
+
+                string o = (string)dgvGriglia.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+                if (decimal.TryParse(o, out valore))
+                {
+                    string oPezziBarra = (string)dgvGriglia.Rows[e.RowIndex].Cells[(int)Colonne.PezziBarra].Value;
+                    dgvGriglia.Rows[e.RowIndex].Cells[e.ColumnIndex + 1].Value = CalcolaBarre(oPezziBarra, valore);
+                //    AggiornaTotalePezziStatici(e.RowIndex);
+
+                }
+            }
+        }
+
+        private void AggiornaTotalePezziStatici(int indiceRiga)
+        {
+            decimal totale = 0;
+            int numeroGiorni = GetNumeroGiorni();
+            for (int i = 0; i < numeroGiorni; i++)
+            {
+                if (dgvGriglia.Rows[indiceRiga].Cells[(int)Colonne.NumeroPezzi + 1 + 3 * i + 1].Value == DBNull.Value) continue;
+                string o = (string)dgvGriglia.Rows[indiceRiga].Cells[(int)Colonne.NumeroPezzi + 1 + 3 * i + 1].Value;
+                decimal aux;
+                if (decimal.TryParse(o, out aux))
+                    totale += aux;
+            }
+            dgvGriglia.Rows[indiceRiga].Cells[(int)Colonne.NumeroPezzi].Value = totale;
+        }
+
+        private string CalcolaBarre(string strPezziBarra, decimal pezzi)
+        {
+            decimal pezziBarra;
+            if (decimal.TryParse(strPezziBarra, out pezziBarra))
+            {
+                decimal numeroBarre = 0;
+                if (pezziBarra != 0)
+                    numeroBarre = Math.Round(pezzi / pezziBarra, 1);
+
+                if (numeroBarre == 0)
+                    return string.Empty;
+
+                return numeroBarre.ToString();
+
+            }
+            return string.Empty;
+        }
+
     }
 }

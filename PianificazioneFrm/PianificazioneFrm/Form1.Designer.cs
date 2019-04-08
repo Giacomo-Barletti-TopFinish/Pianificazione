@@ -92,6 +92,7 @@
             this.dgvGriglia.Name = "dgvGriglia";
             this.dgvGriglia.Size = new System.Drawing.Size(1508, 617);
             this.dgvGriglia.TabIndex = 10;
+            this.dgvGriglia.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGriglia_CellValueChanged);
             // 
             // label1
             // 
