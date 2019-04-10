@@ -10248,6 +10248,8 @@ namespace Pianificazione.Entities {
             
             private global::System.Data.DataColumn columnGRUPPO;
             
+            private global::System.Data.DataColumn columnDESCRIZIONE;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public V_PIAN_AGGR_2DataTable() {
@@ -10403,6 +10405,14 @@ namespace Pianificazione.Entities {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn DESCRIZIONEColumn {
+                get {
+                    return this.columnDESCRIZIONE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -10438,7 +10448,23 @@ namespace Pianificazione.Entities {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public V_PIAN_AGGR_2Row AddV_PIAN_AGGR_2Row(string IDMAGAZZ, string IDMAGAZZ_FASE, string SEGNALATORE, string MODELLOLANCIO, string MODELLO, System.DateTime DATAINIZIO, System.DateTime DATAFINE, string REPARTO, string CODICEFASE, string FINITURA, string MATERIALE, decimal PEZZI, string STATO, decimal QTA, decimal GRUPPO) {
+            public V_PIAN_AGGR_2Row AddV_PIAN_AGGR_2Row(
+                        string IDMAGAZZ, 
+                        string IDMAGAZZ_FASE, 
+                        string SEGNALATORE, 
+                        string MODELLOLANCIO, 
+                        string MODELLO, 
+                        System.DateTime DATAINIZIO, 
+                        System.DateTime DATAFINE, 
+                        string REPARTO, 
+                        string CODICEFASE, 
+                        string FINITURA, 
+                        string MATERIALE, 
+                        decimal PEZZI, 
+                        string STATO, 
+                        decimal QTA, 
+                        decimal GRUPPO, 
+                        string DESCRIZIONE) {
                 V_PIAN_AGGR_2Row rowV_PIAN_AGGR_2Row = ((V_PIAN_AGGR_2Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         IDMAGAZZ,
@@ -10455,7 +10481,8 @@ namespace Pianificazione.Entities {
                         PEZZI,
                         STATO,
                         QTA,
-                        GRUPPO};
+                        GRUPPO,
+                        DESCRIZIONE};
                 rowV_PIAN_AGGR_2Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowV_PIAN_AGGR_2Row);
                 return rowV_PIAN_AGGR_2Row;
@@ -10493,6 +10520,7 @@ namespace Pianificazione.Entities {
                 this.columnSTATO = base.Columns["STATO"];
                 this.columnQTA = base.Columns["QTA"];
                 this.columnGRUPPO = base.Columns["GRUPPO"];
+                this.columnDESCRIZIONE = base.Columns["DESCRIZIONE"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -10528,6 +10556,8 @@ namespace Pianificazione.Entities {
                 base.Columns.Add(this.columnQTA);
                 this.columnGRUPPO = new global::System.Data.DataColumn("GRUPPO", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGRUPPO);
+                this.columnDESCRIZIONE = new global::System.Data.DataColumn("DESCRIZIONE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDESCRIZIONE);
                 this.columnIDMAGAZZ.MaxLength = 10;
                 this.columnIDMAGAZZ_FASE.MaxLength = 10;
                 this.columnSEGNALATORE.MaxLength = 254;
@@ -10542,6 +10572,7 @@ namespace Pianificazione.Entities {
                 this.columnMATERIALE.MaxLength = 9;
                 this.columnSTATO.MaxLength = 20;
                 this.columnQTA.AllowDBNull = false;
+                this.columnDESCRIZIONE.MaxLength = 100;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -24040,6 +24071,22 @@ namespace Pianificazione.Entities {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string DESCRIZIONE {
+                get {
+                    try {
+                        return ((string)(this[this.tableV_PIAN_AGGR_2.DESCRIZIONEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DESCRIZIONE\' in table \'V_PIAN_AGGR_2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableV_PIAN_AGGR_2.DESCRIZIONEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsIDMAGAZZNull() {
                 return this.IsNull(this.tableV_PIAN_AGGR_2.IDMAGAZZColumn);
             }
@@ -24168,6 +24215,18 @@ namespace Pianificazione.Entities {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetGRUPPONull() {
                 this[this.tableV_PIAN_AGGR_2.GRUPPOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsDESCRIZIONENull() {
+                return this.IsNull(this.tableV_PIAN_AGGR_2.DESCRIZIONEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetDESCRIZIONENull() {
+                this[this.tableV_PIAN_AGGR_2.DESCRIZIONEColumn] = global::System.Convert.DBNull;
             }
         }
         
