@@ -530,7 +530,7 @@ inner join usr_prd_fasi fa1 on fa1.idlanciod = ma.idlanciod
             string dtFine = dataFine.ToString("dd/MM/yyyy");
 
             string select = string.Format(@" 
-                            select la.idmagazz,fa.idmagazz idmagazz_fase,nvl(TRIM(SE.RAGIONESOC),' ') AS SEGNALATORE,pf.modello as modellolancio,ar.modello ,AR.DESMAGAZZ AS descrizione,fa.datainizio,
+                            select la.idmagazz,fa.idmagazz idmagazz_fase,nvl(TRIM(SE.RAGIONESOC),' ') AS SEGNALATORE,pf.modello as modellolancio,ar.modello ,pf.DESMAGAZZ AS descrizione,fa.datainizio,
                                 fa.datafine,fa.codiceclifo as reparto,tf.codicefase,nvl(pb.FINITURA,' ') finitura,nvl(pb.materiale,' ')materiale,nvl(pb.pezzi,'0')pezzi,
                                 fa.stato,fa.qtadater as qta, nvl(pb.gruppo,-1) gruppo   
                                 from PIANIFICAZIONE_RUNTIME fa

@@ -22,7 +22,7 @@ namespace PianificazioneFrm
         private string _nomeTabella = "Griglia";
         private PianificazioneDS _dsPianificazione;
         List<PianificazioneDS.TABFASRow> _fasi;
-        private enum Colonne { IDMAGAZZFASE, IDMAGAZZLancio, Segnalatore, ModelloLancio, Modello, Descrizione,Reparto, Fase, Materiale, Finitura, PezziBarra, Gruppo, PezziPianificati, NumeroPezzi }
+        private enum Colonne { IDMAGAZZFASE, IDMAGAZZLancio, Segnalatore, ModelloLancio, Descrizione,Modello, Reparto, Fase, Materiale, Finitura, PezziBarra, Gruppo, PezziPianificati, NumeroPezzi }
 
         public Form1()
         {
@@ -62,10 +62,10 @@ namespace PianificazioneFrm
                 dgvGriglia.Columns[(int)Colonne.IDMAGAZZLancio].Visible = false;
                 dgvGriglia.Columns[(int)Colonne.Segnalatore].Frozen = true;
                 dgvGriglia.Columns[(int)Colonne.ModelloLancio].Frozen = true;
-                dgvGriglia.Columns[(int)Colonne.Modello].Frozen = true;
-                dgvGriglia.Columns[(int)Colonne.Modello].Width = 70;
                 dgvGriglia.Columns[(int)Colonne.Descrizione].Frozen = true;
                 dgvGriglia.Columns[(int)Colonne.Descrizione].Width = 120;
+                dgvGriglia.Columns[(int)Colonne.Modello].Frozen = true;
+                dgvGriglia.Columns[(int)Colonne.Modello].Width = 70;
                 dgvGriglia.Columns[(int)Colonne.Reparto].Frozen = true;
                 dgvGriglia.Columns[(int)Colonne.Reparto].Width = 70;
                 dgvGriglia.Columns[(int)Colonne.Fase].Frozen = true;
@@ -127,8 +127,8 @@ namespace PianificazioneFrm
             dtGriglia.Columns.Add("Segnalatore", Type.GetType("System.String")).ReadOnly = true;
 
             dtGriglia.Columns.Add("Modello lancio", Type.GetType("System.String")).ReadOnly = true;
-            dtGriglia.Columns.Add("Modello", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("Descrizione", Type.GetType("System.String")).ReadOnly = true;
+            dtGriglia.Columns.Add("Modello", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("Reparto", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("Fase", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("Materiale", Type.GetType("System.String")).ReadOnly = true;
