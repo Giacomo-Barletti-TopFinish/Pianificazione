@@ -86,7 +86,8 @@ namespace PrioritaFrm
             ddlSegnalatore.Items.AddRange(_dsAnagrafica.SEGNALATORI.Select(x => x.RAGIONESOC).ToArray());
 
             ddlReparto.Items.Add(string.Empty);
-            ddlReparto.Items.AddRange(_dsAnagrafica.REPARTI.Select(x => x.RAGIONESOC).ToArray());
+            //            ddlReparto.Items.AddRange(_dsAnagrafica.REPARTI.Select(x => x.RAGIONESOC).ToArray());
+            ddlReparto.Items.AddRange(_dsAnagrafica.CLIFO.Where(x => !x.IsRAGIONESOCNull() && x.TIPO == "F").Select(x => x.RAGIONESOC).ToArray());
 
         }
 
@@ -109,8 +110,10 @@ namespace PrioritaFrm
                 if (ddlReparto.SelectedIndex != -1)
                 {
                     codiceReparto = ddlReparto.SelectedItem as string;
-                    if (_dsAnagrafica.REPARTI.Any(x => x.RAGIONESOC == codiceReparto))
-                        codiceReparto = _dsAnagrafica.REPARTI.Where(x => x.RAGIONESOC == codiceReparto).Select(x => x.CODICE).FirstOrDefault();
+                    //if (_dsAnagrafica.REPARTI.Any(x => x.RAGIONESOC == codiceReparto))
+                    //    codiceReparto = _dsAnagrafica.REPARTI.Where(x => x.RAGIONESOC == codiceReparto).Select(x => x.CODICE).FirstOrDefault();
+                    if (_dsAnagrafica.CLIFO.Any(x => !x.IsRAGIONESOCNull() && x.RAGIONESOC == codiceReparto))
+                        codiceReparto = _dsAnagrafica.CLIFO.Where(x => !x.IsRAGIONESOCNull() && x.RAGIONESOC == codiceReparto && x.TIPO == "F").Select(x => x.CODICE).FirstOrDefault();
                 }
                 _dsPriorita = new PrioritaDS();
                 using (PrioritaBusiness bPriorita = new PrioritaBusiness())
