@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -123,6 +124,18 @@ namespace Priorita.Data
             }
         }
 
+        public void FillRW_SCADENZE(PrioritaDS ds, List<string> IDPRDMOVFASE)
+        {
+            string inCOndition = ConvertToStringForInCondition(IDPRDMOVFASE);
+
+            string select = @"SELECT DISTINCT * FROM RW_SCADENZE WHERE IDPRDMOVFASE in ( {0} )";
+            select = string.Format(select, inCOndition);
+
+            using (DbDataAdapter da = BuildDataAdapter(select))
+            {
+                da.Fill(ds.RW_SCADENZE);
+            }
+        }
         public void FillUSR_PRD_LANCIOD(PrioritaDS ds, List<string> IDLANCIOD)
         {
             string inCOndition = ConvertToStringForInCondition(IDLANCIOD);
@@ -151,5 +164,33 @@ namespace Priorita.Data
                 da.Fill(ds.USR_PRD_FLUSSO_MOVFASI);
             }
         }
+
+        public void UpdateTable(string tablename, PrioritaDS ds)
+        {
+            string query = string.Format(CultureInfo.InvariantCulture, "SELECT * FROM {0}", tablename);
+
+            using (DbDataAdapter a = BuildDataAdapter(query))
+            {
+                try
+                {
+                    a.ContinueUpdateOnError = false;
+                    DataTable dt = ds.Tables[tablename];
+                    DbCommandBuilder cmd = BuildCommandBuilder(a);
+                    a.UpdateCommand = cmd.GetUpdateCommand();
+                    a.DeleteCommand = cmd.GetDeleteCommand();
+                    a.InsertCommand = cmd.GetInsertCommand();
+                    a.Update(dt);
+                }
+                catch (DBConcurrencyException ex)
+                {
+
+                }
+                catch
+                {
+                    throw;
+                }
+            }
+        }
+
     }
 }

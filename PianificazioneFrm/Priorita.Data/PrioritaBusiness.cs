@@ -93,6 +93,27 @@ namespace Priorita.Data
         }
 
         [DataContext]
+        public void FillRW_SCADENZE(PrioritaDS ds, List<string> IDPRDMOVFASE)
+        {
+            PrioritaAdapter a = new PrioritaAdapter(DbConnection, DbTransaction);
+            while (IDPRDMOVFASE.Count > 0)
+            {
+                List<string> articoliDaCaricare;
+                if (IDPRDMOVFASE.Count > 999)
+                {
+                    articoliDaCaricare = IDPRDMOVFASE.GetRange(0, 999);
+                    IDPRDMOVFASE.RemoveRange(0, 999);
+                }
+                else
+                {
+                    articoliDaCaricare = IDPRDMOVFASE.GetRange(0, IDPRDMOVFASE.Count);
+                    IDPRDMOVFASE.RemoveRange(0, IDPRDMOVFASE.Count);
+                }
+                a.FillRW_SCADENZE(ds, articoliDaCaricare);
+            }
+        }
+
+        [DataContext]
         public void FillUSR_PRD_LANCIOD(PrioritaDS ds, List<string> idIDLANCIOD)
         {
             PrioritaAdapter a = new PrioritaAdapter(DbConnection, DbTransaction);
@@ -118,6 +139,13 @@ namespace Priorita.Data
         {
             PrioritaAdapter a = new PrioritaAdapter(DbConnection, DbTransaction);
             a.FillUSR_PRD_FLUSSO_MOVFASI(ds, IDPRMOVFASE);
+        }
+
+        [DataContext(true)]
+        public void UpdateRW_SCADENZE(PrioritaDS ds)
+        {
+            PrioritaAdapter a = new PrioritaAdapter(DbConnection, DbTransaction);
+            a.UpdateTable("RW_SCADENZE", ds);
         }
     }
 }
