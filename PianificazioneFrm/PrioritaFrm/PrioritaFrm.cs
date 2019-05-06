@@ -20,6 +20,7 @@ namespace PrioritaFrm
         IDPRDFASE,
         IDPRDMOVFASE,
         IDMAGAZZ,
+        AZIENDA,
         SEGNALATORE,
         COMMESSA,
         DATACOMMESSA,
@@ -27,7 +28,9 @@ namespace PrioritaFrm
         DATAODL,
         BARCODE,
         REPARTO,
+        FASE,
         ARTICOLO,
+        BIL,
         QUANTITA,
         QUANTITADATERMINARE
     };
@@ -77,6 +80,7 @@ namespace PrioritaFrm
                 bPriorita.FillCLIFO(_dsAnagrafica);
                 bPriorita.FillREPARTI(_dsAnagrafica);
                 bPriorita.FillSEGNALATORI(_dsAnagrafica);
+                bPriorita.FillTABFAS(_dsAnagrafica);
             }
         }
 
@@ -89,6 +93,9 @@ namespace PrioritaFrm
             //            ddlReparto.Items.AddRange(_dsAnagrafica.REPARTI.Select(x => x.RAGIONESOC).ToArray());
             ddlReparto.Items.AddRange(_dsAnagrafica.CLIFO.Where(x => !x.IsRAGIONESOCNull() && x.TIPO == "F").Select(x => x.RAGIONESOC).ToArray());
 
+            ddlFase.Items.Add(string.Empty);
+            ddlFase.Items.AddRange(_dsAnagrafica.TABFAS.Where(x => !x.IsCODICECLIFOPREDFASENull()).OrderBy(x => x.DESTABFAS).Select(x => x.DESTABFAS).ToArray());
+
         }
 
         private void btnTrova_Click(object sender, EventArgs e)
@@ -99,7 +106,8 @@ namespace PrioritaFrm
             {
                 _dsGriglieODL.Tables[_nomeTabellaGrigliaODL].Clear();
                 string codiceSegnalatore = string.Empty;
-                string codiceReparto = string.Empty;
+                string idTabFas = string.Empty;
+                string codiceReparto = GetCodiceReparto();
                 if (ddlSegnalatore.SelectedIndex != -1)
                 {
                     codiceSegnalatore = ddlSegnalatore.SelectedItem as string;
@@ -107,19 +115,18 @@ namespace PrioritaFrm
                         codiceSegnalatore = _dsAnagrafica.SEGNALATORI.Where(x => x.RAGIONESOC == codiceSegnalatore).Select(x => x.CODICE).FirstOrDefault();
                 }
 
-                if (ddlReparto.SelectedIndex != -1)
+                if (ddlFase.SelectedIndex != -1)
                 {
-                    codiceReparto = ddlReparto.SelectedItem as string;
-                    //if (_dsAnagrafica.REPARTI.Any(x => x.RAGIONESOC == codiceReparto))
-                    //    codiceReparto = _dsAnagrafica.REPARTI.Where(x => x.RAGIONESOC == codiceReparto).Select(x => x.CODICE).FirstOrDefault();
-                    if (_dsAnagrafica.CLIFO.Any(x => !x.IsRAGIONESOCNull() && x.RAGIONESOC == codiceReparto))
-                        codiceReparto = _dsAnagrafica.CLIFO.Where(x => !x.IsRAGIONESOCNull() && x.RAGIONESOC == codiceReparto && x.TIPO == "F").Select(x => x.CODICE).FirstOrDefault();
+                    idTabFas = ddlFase.SelectedItem as string;
+                    if (_dsAnagrafica.TABFAS.Any(x => x.DESTABFAS == idTabFas))
+                        idTabFas = _dsAnagrafica.TABFAS.Where(x => x.DESTABFAS == idTabFas).Select(x => x.IDTABFAS).FirstOrDefault();
                 }
+
                 _dsPriorita = new PrioritaDS();
                 using (PrioritaBusiness bPriorita = new PrioritaBusiness())
                 {
-                    bPriorita.FillUSR_PRD_MOVFASI_Aperti(_dsPriorita, codiceSegnalatore, codiceReparto);
-                    bPriorita.FillUSR_PRD_MOVFASI_Chiusi(_dsPriorita, codiceSegnalatore, codiceReparto, 7);
+                    bPriorita.FillUSR_PRD_MOVFASI_Aperti(_dsPriorita, codiceSegnalatore, codiceReparto, idTabFas);
+                    bPriorita.FillUSR_PRD_MOVFASI_Chiusi(_dsPriorita, codiceSegnalatore, codiceReparto, idTabFas, 7);
 
                     List<string> articoli = _dsPriorita.USR_PRD_MOVFASI.Select(x => x.IDMAGAZZ).Distinct().ToList();
                     bPriorita.FillMAGAZZ(_dsAnagrafica, articoli);
@@ -132,6 +139,8 @@ namespace PrioritaFrm
 
                     List<string> IDPRDMOVFASE = _dsPriorita.USR_PRD_MOVFASI.Select(x => x.IDPRDMOVFASE).Distinct().ToList();
                     bPriorita.FillRW_SCADENZE(_dsPriorita, IDPRDMOVFASE);
+                    IDPRDMOVFASE = _dsPriorita.USR_PRD_MOVFASI.Select(x => x.IDPRDMOVFASE).Distinct().ToList();
+                    bPriorita.FillUSR_VENDITET(_dsPriorita, IDPRDMOVFASE);
 
                     PopolaDSGrigliaODL();
                 }
@@ -157,6 +166,7 @@ namespace PrioritaFrm
             dtGriglia.Columns.Add("IDPRDFASE", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("IDPRDMOVFASE", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("IDMAGAZZ", Type.GetType("System.String")).ReadOnly = true;
+            dtGriglia.Columns.Add("Azienda", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("Segnalatore", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("Commessa", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("Data commessa", Type.GetType("System.String")).ReadOnly = true;
@@ -164,7 +174,9 @@ namespace PrioritaFrm
             dtGriglia.Columns.Add("Data ODL", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("Barcode", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("Reparto", Type.GetType("System.String")).ReadOnly = true;
+            dtGriglia.Columns.Add("Fase", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("Articolo", Type.GetType("System.String")).ReadOnly = true;
+            dtGriglia.Columns.Add("BIL", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("Quantità", Type.GetType("System.Decimal")).ReadOnly = true;
             dtGriglia.Columns.Add("Da terminare", Type.GetType("System.Decimal")).ReadOnly = true;
 
@@ -193,20 +205,53 @@ namespace PrioritaFrm
                 riga[(int)Colonne.IDPRDMOVFASE] = odl.IsIDPRDMOVFASENull() ? string.Empty : odl.IDPRDMOVFASE;
                 riga[(int)Colonne.IDMAGAZZ] = odl.IsIDMAGAZZNull() ? string.Empty : odl.IDMAGAZZ;
 
+                riga[(int)Colonne.AZIENDA] = odl.AZIENDA;
                 if (!lanciod.IsSEGNALATORENull())
                 {
                     PrioritaDS.SEGNALATORIRow segnalatore = _dsAnagrafica.SEGNALATORI.Where(x => x.CODICE == lanciod.SEGNALATORE).FirstOrDefault();
                     if (segnalatore != null)
                         riga[(int)Colonne.SEGNALATORE] = segnalatore.IsRAGIONESOCNull() ? string.Empty : segnalatore.RAGIONESOC;
                 }
+
                 riga[(int)Colonne.COMMESSA] = lanciod.IsNOMECOMMESSANull() ? string.Empty : lanciod.NOMECOMMESSA;
                 riga[(int)Colonne.DATACOMMESSA] = lanciod.IsDATACOMMESSANull() ? string.Empty : lanciod.DATACOMMESSA.ToShortDateString();
                 riga[(int)Colonne.ODL] = odl.IsNUMMOVFASENull() ? string.Empty : odl.NUMMOVFASE;
                 riga[(int)Colonne.DATAODL] = odl.IsDATAMOVFASENull() ? string.Empty : odl.DATAMOVFASE.ToShortDateString();
                 riga[(int)Colonne.BARCODE] = odl.IsBARCODENull() ? string.Empty : odl.BARCODE;
-                riga[(int)Colonne.REPARTO] = odl.IsCODICECLIFONull() ? string.Empty : odl.CODICECLIFO;
+
+                if (!odl.IsCODICECLIFONull())
+                {
+                    PrioritaDS.CLIFORow clifo = _dsAnagrafica.CLIFO.Where(x => x.CODICE == odl.CODICECLIFO).FirstOrDefault();
+                    if (clifo != null)
+                    {
+                        riga[(int)Colonne.REPARTO] = clifo.IsRAGIONESOCNull() ? string.Empty : clifo.RAGIONESOC;
+                    }
+                }
+
+                if (!odl.IsCODICECLIFONull())
+                {
+                    PrioritaDS.TABFASRow tabfas = _dsAnagrafica.TABFAS.Where(x => x.IDTABFAS == odl.IDTABFAS).FirstOrDefault();
+                    if (tabfas != null)
+                    {
+                        riga[(int)Colonne.FASE] = tabfas.IsDESTABFASPPRENull() ? string.Empty : tabfas.DESTABFAS;
+                    }
+                }
+
                 if (articolo != null)
                     riga[(int)Colonne.ARTICOLO] = articolo.MODELLO;
+
+                StringBuilder BIL = new StringBuilder();
+                List<PrioritaDS.USR_VENDITETRow> vendite = _dsPriorita.USR_VENDITET.Where(x => x.IDPRDMOVFASE == odl.IDPRDMOVFASE).ToList();
+                if (vendite.Count > 0)
+                {
+                    foreach (PrioritaDS.USR_VENDITETRow vendita in vendite)
+                    {
+                        string str = string.Format("{0} del {1}, ", vendita.NUMDOC, vendita.DATDOC.ToShortDateString());
+                        BIL.Append(str);
+                    }
+                }
+
+                riga[(int)Colonne.BIL] = BIL.Length == 0 ? string.Empty : BIL.ToString().Substring(0, BIL.Length - 2);
                 riga[(int)Colonne.QUANTITA] = odl.QTA;
                 riga[(int)Colonne.QUANTITADATERMINARE] = odl.IsQTADATERNull() ? 0 : odl.QTADATER;
 
@@ -225,14 +270,17 @@ namespace PrioritaFrm
             dgvODL.Columns[(int)Colonne.IDPRDFASE].Visible = false;
             dgvODL.Columns[(int)Colonne.IDPRDMOVFASE].Visible = false;
             dgvODL.Columns[(int)Colonne.IDMAGAZZ].Visible = false;
+            dgvODL.Columns[(int)Colonne.AZIENDA].Width = 70;
             dgvODL.Columns[(int)Colonne.SEGNALATORE].Width = 170;
             dgvODL.Columns[(int)Colonne.COMMESSA].Width = 160;
-            dgvODL.Columns[(int)Colonne.DATACOMMESSA].Width = 110;
+            dgvODL.Columns[(int)Colonne.DATACOMMESSA].Width = 90;
             dgvODL.Columns[(int)Colonne.ODL].Width = 130;
-            dgvODL.Columns[(int)Colonne.DATAODL].Width = 110;
+            dgvODL.Columns[(int)Colonne.DATAODL].Width = 90;
             dgvODL.Columns[(int)Colonne.BARCODE].Width = 120;
-            dgvODL.Columns[(int)Colonne.REPARTO].Width = 90;
+            dgvODL.Columns[(int)Colonne.REPARTO].Width = 150;
+            dgvODL.Columns[(int)Colonne.FASE].Width = 200;
             dgvODL.Columns[(int)Colonne.ARTICOLO].Width = 260;
+            dgvODL.Columns[(int)Colonne.BIL].Width = 150;
             dgvODL.Columns[(int)Colonne.QUANTITA].Width = 80;
             dgvODL.Columns[(int)Colonne.QUANTITADATERMINARE].Width = 100;
 
@@ -240,6 +288,7 @@ namespace PrioritaFrm
 
         private void dgvODL_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
+            SuspendLayout();
             if (dgvODL.Rows[e.RowIndex].Cells[(int)Colonne.QUANTITADATERMINARE].Value == null) return;
 
             decimal qtaDaTer = (decimal)dgvODL.Rows[e.RowIndex].Cells[(int)Colonne.QUANTITADATERMINARE].Value;
@@ -259,6 +308,7 @@ namespace PrioritaFrm
                     dgvODL.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.Red;
                 }
             }
+            ResumeLayout();
         }
 
         private void ResetCampiScadenza()
@@ -491,6 +541,7 @@ namespace PrioritaFrm
             if (d.ShowDialog() == DialogResult.Cancel) return;
             try
             {
+                Cursor.Current = Cursors.WaitCursor;
                 ExcelHelper hExcel = new ExcelHelper();
                 byte[] fileExcel = hExcel.CreaExcelScadenze(_dsPriorita, _dsAnagrafica);
 
@@ -509,7 +560,22 @@ namespace PrioritaFrm
             {
                 if (fs != null) fs.Close();
                 MessageBox.Show("Export to excel terminato con successo", "Informazione", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Cursor.Current = Cursors.Default;
             }
         }
+
+        private string GetCodiceReparto()
+        {
+            if (ddlReparto.SelectedIndex != -1)
+            {
+                string codiceReparto = ddlReparto.SelectedItem as string;
+                if (_dsAnagrafica.CLIFO.Any(x => !x.IsRAGIONESOCNull() && x.RAGIONESOC == codiceReparto))
+                {
+                    return _dsAnagrafica.CLIFO.Where(x => !x.IsRAGIONESOCNull() && x.RAGIONESOC == codiceReparto && x.TIPO == "F").Select(x => x.CODICE).FirstOrDefault();
+                }
+            }
+            return string.Empty;
+        }
+
     }
 }

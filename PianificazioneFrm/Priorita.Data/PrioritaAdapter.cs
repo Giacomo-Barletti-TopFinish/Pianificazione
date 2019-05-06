@@ -55,12 +55,21 @@ namespace Priorita.Data
             }
         }
 
-        public void FillUSR_PRD_MOVFASI_Aperti(PrioritaDS ds, string codiceSegnalatore, string codiceReparto)
+        public void FillTABFAS(PrioritaDS ds)
         {
-            string select = @"select mf.*
-                                from usr_prd_movfasi mf
+            string select = @"select distinct *
+                                from gruppo.TABFAS order by CODICEFASE ";
+
+            using (DbDataAdapter da = BuildDataAdapter(select))
+            {
+                da.Fill(ds.TABFAS);
+            }
+        }
+        public void FillUSR_PRD_MOVFASI_Aperti(PrioritaDS ds, string codiceSegnalatore, string codiceReparto, string idtabfas)
+        {
+            string select = @"select mf.* from usr_prd_movfasi mf
                                 inner join usr_prd_fasi fa on mf.idprdfase = fa.idprdfase
-                                inner join usr_prd_lanciod ld on ld.idlanciod = fa.idlanciod
+                                inner join usr_prd_lanciod ld on ld.idlanciod = fa.idlanciod                                
                                 where 
                                 mf.qtadater > 0 ";
 
@@ -70,13 +79,16 @@ namespace Priorita.Data
             if (!string.IsNullOrEmpty(codiceReparto))
                 select = select + " and mf.codiceclifo = '" + codiceReparto + "'";
 
+            if (!string.IsNullOrEmpty(idtabfas))
+                select = select + " and mf.idtabfas = '" + idtabfas + "'";
+
             using (DbDataAdapter da = BuildDataAdapter(select))
             {
                 da.Fill(ds.USR_PRD_MOVFASI);
             }
         }
 
-        public void FillUSR_PRD_MOVFASI_Chiusi(PrioritaDS ds, string codiceSegnalatore, string codiceReparto, int giorniIndietro)
+        public void FillUSR_PRD_MOVFASI_Chiusi(PrioritaDS ds, string codiceSegnalatore, string codiceReparto,string idtabfas, int giorniIndietro)
         {
             string select = @"select mf.*
                 from usr_prd_movfasi mf
@@ -91,6 +103,9 @@ namespace Priorita.Data
 
             if (!string.IsNullOrEmpty(codiceReparto))
                 select = select + " and mf.codiceclifo = '" + codiceReparto + "'";
+
+            if (!string.IsNullOrEmpty(idtabfas))
+                select = select + " and mf.idtabfas = '" + idtabfas + "'";
 
             using (DbDataAdapter da = BuildDataAdapter(select))
             {
@@ -162,6 +177,23 @@ namespace Priorita.Data
             using (DbDataAdapter da = BuildDataAdapter(select, ps))
             {
                 da.Fill(ds.USR_PRD_FLUSSO_MOVFASI);
+            }
+        }
+
+        public void FillUSR_VENDITET(PrioritaDS ds, List<string> IDPRDMOVFASE)
+        {
+            string inCOndition = ConvertToStringForInCondition(IDPRDMOVFASE);
+
+            string select = @" select distinct mm.idprdmovfase,vt.*
+                                 from usr_prd_movmate mm
+                                 inner join USR_PRD_FLUSSO_MOVMATE fmm on fmm.idprdmovmate = mm.idprdmovmate
+                                 inner join usr_venditet vt on vt.idvenditet = fmm.idvenditet
+                                 WHERE mm.IDPRDMOVFASE in ( {0} )";
+            select = string.Format(select, inCOndition);
+
+            using (DbDataAdapter da = BuildDataAdapter(select))
+            {
+                da.Fill(ds.USR_VENDITET);
             }
         }
 

@@ -34,17 +34,24 @@ namespace Priorita.Data
         }
 
         [DataContext]
-        public void FillUSR_PRD_MOVFASI_Aperti(PrioritaDS ds, string codiceSegnalatore, string codiceReparto)
+        public void FillTABFAS(PrioritaDS ds)
         {
             PrioritaAdapter a = new PrioritaAdapter(DbConnection, DbTransaction);
-            a.FillUSR_PRD_MOVFASI_Aperti(ds, codiceSegnalatore, codiceReparto);
+            a.FillTABFAS(ds);
         }
 
         [DataContext]
-        public void FillUSR_PRD_MOVFASI_Chiusi(PrioritaDS ds, string codiceSegnalatore, string codiceReparto, int giorniIndietro)
+        public void FillUSR_PRD_MOVFASI_Aperti(PrioritaDS ds, string codiceSegnalatore, string codiceReparto, string idtabfas)
         {
             PrioritaAdapter a = new PrioritaAdapter(DbConnection, DbTransaction);
-            a.FillUSR_PRD_MOVFASI_Chiusi(ds, codiceSegnalatore, codiceReparto, giorniIndietro);
+            a.FillUSR_PRD_MOVFASI_Aperti(ds, codiceSegnalatore, codiceReparto, idtabfas);
+        }
+
+        [DataContext]
+        public void FillUSR_PRD_MOVFASI_Chiusi(PrioritaDS ds, string codiceSegnalatore, string codiceReparto, string idtabfas, int giorniIndietro)
+        {
+            PrioritaAdapter a = new PrioritaAdapter(DbConnection, DbTransaction);
+            a.FillUSR_PRD_MOVFASI_Chiusi(ds, codiceSegnalatore, codiceReparto, idtabfas, giorniIndietro);
         }
 
         [DataContext]
@@ -114,6 +121,27 @@ namespace Priorita.Data
         }
 
         [DataContext]
+        public void FillUSR_VENDITET(PrioritaDS ds, List<string> IDPRDMOVFASE)
+        {
+            PrioritaAdapter a = new PrioritaAdapter(DbConnection, DbTransaction);
+            while (IDPRDMOVFASE.Count > 0)
+            {
+                List<string> articoliDaCaricare;
+                if (IDPRDMOVFASE.Count > 999)
+                {
+                    articoliDaCaricare = IDPRDMOVFASE.GetRange(0, 999);
+                    IDPRDMOVFASE.RemoveRange(0, 999);
+                }
+                else
+                {
+                    articoliDaCaricare = IDPRDMOVFASE.GetRange(0, IDPRDMOVFASE.Count);
+                    IDPRDMOVFASE.RemoveRange(0, IDPRDMOVFASE.Count);
+                }
+                a.FillUSR_VENDITET(ds, articoliDaCaricare);
+            }
+        }
+
+        [DataContext]
         public void FillUSR_PRD_LANCIOD(PrioritaDS ds, List<string> idIDLANCIOD)
         {
             PrioritaAdapter a = new PrioritaAdapter(DbConnection, DbTransaction);
@@ -135,7 +163,7 @@ namespace Priorita.Data
         }
 
         [DataContext]
-        public void FillUSR_PRD_FLUSSO_MOVFASI(PrioritaDS ds,string IDPRMOVFASE)
+        public void FillUSR_PRD_FLUSSO_MOVFASI(PrioritaDS ds, string IDPRMOVFASE)
         {
             PrioritaAdapter a = new PrioritaAdapter(DbConnection, DbTransaction);
             a.FillUSR_PRD_FLUSSO_MOVFASI(ds, IDPRMOVFASE);
