@@ -88,7 +88,7 @@ namespace Priorita.Data
             }
         }
 
-        public void FillUSR_PRD_MOVFASI_Chiusi(PrioritaDS ds, string codiceSegnalatore, string codiceReparto,string idtabfas, int giorniIndietro)
+        public void FillUSR_PRD_MOVFASI_Chiusi(PrioritaDS ds, string codiceSegnalatore, string codiceReparto, string idtabfas, int giorniIndietro)
         {
             string select = @"select mf.*
                 from usr_prd_movfasi mf
@@ -136,6 +136,36 @@ namespace Priorita.Data
             using (DbDataAdapter da = BuildDataAdapter(select))
             {
                 da.Fill(ds.USR_PRD_FASI);
+            }
+        }
+
+        public void FillRW_SCADENZE(PrioritaDS ds, DateTime dtInizio, DateTime dtFine)
+        {
+            string select = @"select * from rw_scadenze WHERE DATA BETWEEN $P{DATA1} and $P{DATA2}";
+
+            ParamSet ps = new ParamSet();
+            ps.AddParam("DATA1", DbType.DateTime, dtInizio);
+            ps.AddParam("DATA2", DbType.DateTime, dtFine);
+
+            using (DbDataAdapter da = BuildDataAdapter(select, ps))
+            {
+                da.Fill(ds.RW_SCADENZE);
+            }
+        }
+
+        public void FillUSR_PRD_FLUSSO_MOVFASI_By_RW_SCADENZE(PrioritaDS ds, DateTime dtInizio, DateTime dtFine)
+        {
+            string select = @"select fmf.* from USR_PRD_FLUSSO_MOVFASI fmf 
+                                inner join rw_scadenze sc on sc.idprdmovfase = fmf.idprdmovfase
+                                WHERE sc.DATA BETWEEN $P{DATA1} and $P{DATA2}";
+
+            ParamSet ps = new ParamSet();
+            ps.AddParam("DATA1", DbType.DateTime, dtInizio);
+            ps.AddParam("DATA2", DbType.DateTime, dtFine);
+
+            using (DbDataAdapter da = BuildDataAdapter(select, ps))
+            {
+                da.Fill(ds.USR_PRD_FLUSSO_MOVFASI);
             }
         }
 

@@ -121,6 +121,20 @@ namespace Priorita.Data
         }
 
         [DataContext]
+        public void FillRW_SCADENZE(PrioritaDS ds, DateTime dtInizio, DateTime dtFine)
+        {
+            PrioritaAdapter a = new PrioritaAdapter(DbConnection, DbTransaction);
+            a.FillRW_SCADENZE(ds, dtInizio, dtFine);
+        }
+
+        [DataContext]
+        public void FillUSR_PRD_FLUSSO_MOVFASI_By_RW_SCADENZE(PrioritaDS ds, DateTime dtInizio, DateTime dtFine)
+        {
+            PrioritaAdapter a = new PrioritaAdapter(DbConnection, DbTransaction);
+            a.FillUSR_PRD_FLUSSO_MOVFASI_By_RW_SCADENZE(ds, dtInizio, dtFine);
+        }
+
+        [DataContext]
         public void FillUSR_VENDITET(PrioritaDS ds, List<string> IDPRDMOVFASE)
         {
             PrioritaAdapter a = new PrioritaAdapter(DbConnection, DbTransaction);

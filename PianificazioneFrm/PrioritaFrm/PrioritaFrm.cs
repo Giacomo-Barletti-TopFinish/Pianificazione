@@ -50,9 +50,50 @@ namespace PrioritaFrm
             InitializeComponent();
         }
 
+        private void VerificaRispettoScadenza()
+        {
+            PrioritaDS ds = new PrioritaDS();
+            using (PrioritaBusiness bPriorita = new PrioritaBusiness())
+            {
+                bPriorita.FillRW_SCADENZE(ds, DateTime.Today.AddDays(-8), DateTime.Today);
+                bPriorita.FillUSR_PRD_FLUSSO_MOVFASI_By_RW_SCADENZE(ds, DateTime.Today.AddDays(-8), DateTime.Today);
+
+                List<string> IDPRDMOVFASI = ds.RW_SCADENZE.Select(x => x.IDPRDMOVFASE).Distinct().ToList();
+
+                foreach (string IDPRDMOVFASE in IDPRDMOVFASI)
+                {
+                    List<PrioritaDS.RW_SCADENZERow> scadenze = ds.RW_SCADENZE.Where(x => x.IDPRDMOVFASE == IDPRDMOVFASE && x.DATA <= DateTime.Today).OrderBy(x => x.DATA).ToList();
+                    List<PrioritaDS.USR_PRD_FLUSSO_MOVFASIRow> termini = ds.USR_PRD_FLUSSO_MOVFASI.Where(x => x.IDPRDMOVFASE == IDPRDMOVFASE && x.IDPRDCAUFASE == "0000000008").OrderBy(x => x.DATAFLUSSOMOVFASE).ToList();
+
+                    foreach (PrioritaDS.RW_SCADENZERow scadenza in scadenze)
+                    {
+                        decimal quantitainScadenza = scadenze.Where(x => x.DATA <= scadenza.DATA).Sum(x => x.QTA);
+                        decimal lavoroEseguito = termini.Where(x => x.DATAFLUSSOMOVFASE <= scadenza.DATA).Sum(x => x.QTAFLUSSO);
+
+                        if (lavoroEseguito < quantitainScadenza)
+                            scadenza.SCADUTO = 1;
+                        else
+                            scadenza.SCADUTO = 0;
+                    }
+
+                }
+
+            }
+        }
+
         private void PrioritaFrm_Load(object sender, EventArgs e)
         {
+
+            // TEST
+
+            VerificaRispettoScadenza();
+
+            // FINE TEST
+
+
+
             lblMessage.Text = string.Empty;
+            statusBarLabel.Text = string.Empty;
             dtScadenza.MinDate = DateTime.Today;
             try
             {
@@ -100,8 +141,15 @@ namespace PrioritaFrm
 
         private void btnTrova_Click(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.WaitCursor;
+            if (bgwBIL.IsBusy)
+            {
+                MessageBox.Show("Attività di recupero BIL in corso, impossibile interrompere adesso. Aspetta che l'attività sia stata annullata e riprova", "ATTENZIONE", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                CancellaBackgroundWorker();
+                return;
+            }
 
+            Cursor.Current = Cursors.WaitCursor;
+            statusBarLabel.Text = "Ricerca in corso...";
             try
             {
                 _dsGriglieODL.Tables[_nomeTabellaGrigliaODL].Clear();
@@ -139,10 +187,12 @@ namespace PrioritaFrm
 
                     List<string> IDPRDMOVFASE = _dsPriorita.USR_PRD_MOVFASI.Select(x => x.IDPRDMOVFASE).Distinct().ToList();
                     bPriorita.FillRW_SCADENZE(_dsPriorita, IDPRDMOVFASE);
-                    IDPRDMOVFASE = _dsPriorita.USR_PRD_MOVFASI.Select(x => x.IDPRDMOVFASE).Distinct().ToList();
-                    bPriorita.FillUSR_VENDITET(_dsPriorita, IDPRDMOVFASE);
+                    //IDPRDMOVFASE = _dsPriorita.USR_PRD_MOVFASI.Select(x => x.IDPRDMOVFASE).Distinct().ToList();
+                    //bPriorita.FillUSR_VENDITET(_dsPriorita, IDPRDMOVFASE);
 
                     PopolaDSGrigliaODL();
+                    bgwBIL.RunWorkerAsync();
+                    statusBarLabel.Text = "Recupero BIL in corso...";
                 }
 
             }
@@ -176,7 +226,7 @@ namespace PrioritaFrm
             dtGriglia.Columns.Add("Reparto", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("Fase", Type.GetType("System.String")).ReadOnly = true;
             dtGriglia.Columns.Add("Articolo", Type.GetType("System.String")).ReadOnly = true;
-            dtGriglia.Columns.Add("BIL", Type.GetType("System.String")).ReadOnly = true;
+            dtGriglia.Columns.Add("BIL", Type.GetType("System.String")).ReadOnly = false;
             dtGriglia.Columns.Add("Quantità", Type.GetType("System.Decimal")).ReadOnly = true;
             dtGriglia.Columns.Add("Da terminare", Type.GetType("System.Decimal")).ReadOnly = true;
 
@@ -240,18 +290,18 @@ namespace PrioritaFrm
                 if (articolo != null)
                     riga[(int)Colonne.ARTICOLO] = articolo.MODELLO;
 
-                StringBuilder BIL = new StringBuilder();
-                List<PrioritaDS.USR_VENDITETRow> vendite = _dsPriorita.USR_VENDITET.Where(x => x.IDPRDMOVFASE == odl.IDPRDMOVFASE).ToList();
-                if (vendite.Count > 0)
-                {
-                    foreach (PrioritaDS.USR_VENDITETRow vendita in vendite)
-                    {
-                        string str = string.Format("{0} del {1}, ", vendita.NUMDOC, vendita.DATDOC.ToShortDateString());
-                        BIL.Append(str);
-                    }
-                }
+                //StringBuilder BIL = new StringBuilder();
+                //List<PrioritaDS.USR_VENDITETRow> vendite = _dsPriorita.USR_VENDITET.Where(x => x.IDPRDMOVFASE == odl.IDPRDMOVFASE).ToList();
+                //if (vendite.Count > 0)
+                //{
+                //    foreach (PrioritaDS.USR_VENDITETRow vendita in vendite)
+                //    {
+                //        string str = string.Format("{0} del {1}, ", vendita.NUMDOC, vendita.DATDOC.ToShortDateString());
+                //        BIL.Append(str);
+                //    }
+                //}
 
-                riga[(int)Colonne.BIL] = BIL.Length == 0 ? string.Empty : BIL.ToString().Substring(0, BIL.Length - 2);
+                //riga[(int)Colonne.BIL] = BIL.Length == 0 ? string.Empty : BIL.ToString().Substring(0, BIL.Length - 2);
                 riga[(int)Colonne.QUANTITA] = odl.QTA;
                 riga[(int)Colonne.QUANTITADATERMINARE] = odl.IsQTADATERNull() ? 0 : odl.QTADATER;
 
@@ -358,7 +408,6 @@ namespace PrioritaFrm
         {
             DataView custDV = new DataView(_dsPriorita.Tables["RW_SCADENZE"]);
             custDV.RowFilter = "IDPRDMOVFASE = '" + IDPRDMOVFASE + "'";
-
 
             dgvScadenze.DataSource = custDV;
         }
@@ -577,5 +626,85 @@ namespace PrioritaFrm
             return string.Empty;
         }
 
+        private void bgwBIL_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+            try
+            {
+                List<string> IDPRDMOVFASES = _dsPriorita.USR_PRD_MOVFASI.Select(x => x.IDPRDMOVFASE).Distinct().ToList();
+                using (PrioritaBusiness bPriorita = new PrioritaBusiness())
+                {
+                    bPriorita.FillUSR_VENDITET(_dsPriorita, IDPRDMOVFASES);
+                }
+                if (worker.CancellationPending == true)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                DataTable dtGriglia = _dsGriglieODL.Tables[_nomeTabellaGrigliaODL];
+
+                foreach (DataRow riga in dtGriglia.Rows)
+                {
+                    string IDPRDMOVFASE = riga[(int)Colonne.IDPRDMOVFASE].ToString();
+
+                    StringBuilder BIL = new StringBuilder();
+                    List<PrioritaDS.USR_VENDITETRow> vendite = _dsPriorita.USR_VENDITET.Where(x => x.IDPRDMOVFASE == IDPRDMOVFASE).ToList();
+                    if (worker.CancellationPending == true)
+                    {
+                        e.Cancel = true;
+                        break;
+                    }
+
+                    if (vendite.Count > 0)
+                    {
+                        foreach (PrioritaDS.USR_VENDITETRow vendita in vendite)
+                        {
+                            string str = string.Format("{0} del {1}, ", vendita.NUMDOC, vendita.DATDOC.ToShortDateString());
+                            BIL.Append(str);
+                        }
+                    }
+
+                    riga[(int)Colonne.BIL] = BIL.Length == 0 ? string.Empty : BIL.ToString().Substring(0, BIL.Length - 2);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ExceptionFrm form = new ExceptionFrm(ex);
+                form.ShowDialog();
+            }
+
+        }
+
+        private void bgwBIL_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Cancelled == true)
+            {
+                statusBarLabel.Text = "Recupero BIL annullato";
+                return;
+            }
+
+            dgvODL.Refresh();
+            dgvODL.Parent.Refresh();
+            statusBarLabel.Text = "Recupero BIL completato";
+        }
+
+        private void CancellaBackgroundWorker()
+        {
+            if (bgwBIL.WorkerSupportsCancellation == true)
+            {
+                // Cancel the asynchronous operation.
+                bgwBIL.CancelAsync();
+            }
+            statusBarLabel.Text = "Recupero BIL in fase di annullamento....";
+
+        }
+
+        private void bgwBIL_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            dgvODL.Refresh();
+            dgvODL.Parent.Refresh();
+        }
     }
 }

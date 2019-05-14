@@ -14,7 +14,7 @@
     <Shape ID="DesignTable:CLIFO" ZOrder="6" X="1340" Y="78" Height="304" Width="200" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="301" />
     <Shape ID="DesignTable:SEGNALATORI" ZOrder="5" X="-18" Y="624" Height="90" Width="158" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="86" />
     <Shape ID="DesignTable:REPARTI" ZOrder="4" X="51" Y="406" Height="90" Width="158" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="86" />
-    <Shape ID="DesignTable:RW_SCADENZE" ZOrder="3" X="1151" Y="519" Height="105" Width="154" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="149" />
+    <Shape ID="DesignTable:RW_SCADENZE" ZOrder="3" X="1151" Y="519" Height="124" Width="154" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="120" />
     <Shape ID="DesignTable:TABFAS" ZOrder="2" X="290" Y="407" Height="448" Width="190" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="444" />
     <Shape ID="DesignTable:USR_VENDITET" ZOrder="1" X="1126" Y="675" Height="304" Width="165" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="300" />
   </Shapes>

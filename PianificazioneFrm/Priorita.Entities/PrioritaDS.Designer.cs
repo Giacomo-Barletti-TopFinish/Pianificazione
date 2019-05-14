@@ -12931,6 +12931,8 @@ namespace Priorita.Entities {
             
             private global::System.Data.DataColumn columnQTA;
             
+            private global::System.Data.DataColumn columnSCADUTO;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public RW_SCADENZEDataTable() {
@@ -12998,6 +13000,14 @@ namespace Priorita.Entities {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn SCADUTOColumn {
+                get {
+                    return this.columnSCADUTO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -13033,13 +13043,14 @@ namespace Priorita.Entities {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public RW_SCADENZERow AddRW_SCADENZERow(decimal IDSCADENZA, string IDPRDMOVFASE, System.DateTime DATA, decimal QTA) {
+            public RW_SCADENZERow AddRW_SCADENZERow(decimal IDSCADENZA, string IDPRDMOVFASE, System.DateTime DATA, decimal QTA, int SCADUTO) {
                 RW_SCADENZERow rowRW_SCADENZERow = ((RW_SCADENZERow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         IDSCADENZA,
                         IDPRDMOVFASE,
                         DATA,
-                        QTA};
+                        QTA,
+                        SCADUTO};
                 rowRW_SCADENZERow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowRW_SCADENZERow);
                 return rowRW_SCADENZERow;
@@ -13066,6 +13077,7 @@ namespace Priorita.Entities {
                 this.columnIDPRDMOVFASE = base.Columns["IDPRDMOVFASE"];
                 this.columnDATA = base.Columns["DATA"];
                 this.columnQTA = base.Columns["QTA"];
+                this.columnSCADUTO = base.Columns["SCADUTO"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -13079,6 +13091,8 @@ namespace Priorita.Entities {
                 base.Columns.Add(this.columnDATA);
                 this.columnQTA = new global::System.Data.DataColumn("QTA", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnQTA);
+                this.columnSCADUTO = new global::System.Data.DataColumn("SCADUTO", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSCADUTO);
                 this.columnIDPRDMOVFASE.MaxLength = 25;
                 this.columnDATA.AllowDBNull = false;
                 this.columnQTA.AllowDBNull = false;
@@ -33528,6 +33542,22 @@ namespace Priorita.Entities {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int SCADUTO {
+                get {
+                    try {
+                        return ((int)(this[this.tableRW_SCADENZE.SCADUTOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SCADUTO\' in table \'RW_SCADENZE\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableRW_SCADENZE.SCADUTOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsIDSCADENZANull() {
                 return this.IsNull(this.tableRW_SCADENZE.IDSCADENZAColumn);
             }
@@ -33548,6 +33578,18 @@ namespace Priorita.Entities {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetIDPRDMOVFASENull() {
                 this[this.tableRW_SCADENZE.IDPRDMOVFASEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsSCADUTONull() {
+                return this.IsNull(this.tableRW_SCADENZE.SCADUTOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetSCADUTONull() {
+                this[this.tableRW_SCADENZE.SCADUTOColumn] = global::System.Convert.DBNull;
             }
         }
         
