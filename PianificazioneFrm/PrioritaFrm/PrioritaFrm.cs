@@ -173,8 +173,9 @@ namespace PrioritaFrm
                 _dsPriorita = new PrioritaDS();
                 using (PrioritaBusiness bPriorita = new PrioritaBusiness())
                 {
-                    bPriorita.FillUSR_PRD_MOVFASI_Aperti(_dsPriorita, codiceSegnalatore, codiceReparto, idTabFas);
-                    bPriorita.FillUSR_PRD_MOVFASI_Chiusi(_dsPriorita, codiceSegnalatore, codiceReparto, idTabFas, 7);
+                    bPriorita.FillUSR_PRD_MOVFASI_Aperti(_dsPriorita, codiceSegnalatore, codiceReparto, idTabFas, txtArticolo.Text.ToUpper());
+                    if (!chkSoloAperti.Checked)
+                        bPriorita.FillUSR_PRD_MOVFASI_Chiusi(_dsPriorita, codiceSegnalatore, codiceReparto, idTabFas, txtArticolo.Text.ToUpper(), 7);
 
                     List<string> articoli = _dsPriorita.USR_PRD_MOVFASI.Select(x => x.IDMAGAZZ).Distinct().ToList();
                     bPriorita.FillMAGAZZ(_dsAnagrafica, articoli);

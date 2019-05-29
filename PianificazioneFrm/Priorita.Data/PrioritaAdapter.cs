@@ -65,13 +65,24 @@ namespace Priorita.Data
                 da.Fill(ds.TABFAS);
             }
         }
-        public void FillUSR_PRD_MOVFASI_Aperti(PrioritaDS ds, string codiceSegnalatore, string codiceReparto, string idtabfas)
+        public void FillUSR_PRD_MOVFASI_Aperti(PrioritaDS ds, string codiceSegnalatore, string codiceReparto, string idtabfas, string Articolo)
         {
             string select = @"select mf.* from usr_prd_movfasi mf
                                 inner join usr_prd_fasi fa on mf.idprdfase = fa.idprdfase
                                 inner join usr_prd_lanciod ld on ld.idlanciod = fa.idlanciod                                
                                 where 
                                 mf.qtadater > 0 ";
+
+            if (!String.IsNullOrEmpty(Articolo))
+            {
+                select = @"select mf.* from usr_prd_movfasi mf
+                                inner join usr_prd_fasi fa on mf.idprdfase = fa.idprdfase
+                                inner join usr_prd_lanciod ld on ld.idlanciod = fa.idlanciod 
+                                inner join gruppo.magazz ma on ma.idmagazz = mf.idmagazz
+                                where 
+                                ma.modello like '%" + Articolo.ToUpper() + @"%'
+                                and mf.qtadater > 0 ";
+            }
 
             if (!string.IsNullOrEmpty(codiceSegnalatore))
                 select = select + " and ld.segnalatore = '" + codiceSegnalatore + "'";
@@ -88,7 +99,7 @@ namespace Priorita.Data
             }
         }
 
-        public void FillUSR_PRD_MOVFASI_Chiusi(PrioritaDS ds, string codiceSegnalatore, string codiceReparto, string idtabfas, int giorniIndietro)
+        public void FillUSR_PRD_MOVFASI_Chiusi(PrioritaDS ds, string codiceSegnalatore, string codiceReparto, string idtabfas, string Articolo, int giorniIndietro)
         {
             string select = @"select mf.*
                 from usr_prd_movfasi mf
@@ -98,6 +109,17 @@ namespace Priorita.Data
                 mf.qtadater = 0
                 and datamovfase >= sysdate-" + giorniIndietro.ToString();
 
+            if (!String.IsNullOrEmpty(Articolo))
+            {
+                select = @"select mf.*
+                            from usr_prd_movfasi mf
+                            inner join usr_prd_fasi fa on mf.idprdfase = fa.idprdfase
+                            inner join usr_prd_lanciod ld on ld.idlanciod = fa.idlanciod
+                            inner join gruppo.magazz ma on ma.idmagazz = mf.idmagazz
+                            where ma.modello like '%" + Articolo.ToUpper() + @"%'
+                            and mf.qtadater = 0
+                            and datamovfase >= sysdate-" + giorniIndietro.ToString();
+            }
             if (!string.IsNullOrEmpty(codiceSegnalatore))
                 select = select + " and ld.segnalatore = '" + codiceSegnalatore + "'";
 

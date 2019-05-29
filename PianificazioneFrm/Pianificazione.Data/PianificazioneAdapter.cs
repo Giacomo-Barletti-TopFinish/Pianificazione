@@ -532,7 +532,7 @@ inner join usr_prd_fasi fa1 on fa1.idlanciod = ma.idlanciod
             string select = string.Format(@" 
                             select la.idmagazz,fa.idmagazz idmagazz_fase,nvl(TRIM(SE.RAGIONESOC),' ') AS SEGNALATORE,pf.modello as modellolancio,ar.modello ,pf.DESMAGAZZ AS descrizione,fa.datainizio,
                                 fa.datafine,fa.codiceclifo as reparto,tf.codicefase,nvl(pb.FINITURA,' ') finitura,nvl(pb.materiale,' ')materiale,nvl(pb.pezzi,'0')pezzi,
-                                fa.stato,fa.qtadater as qta, nvl(pb.gruppo,-1) gruppo   
+                                fa.stato,fa.qtadater as qta, nvl(fior.idgruppo*1000+FIOR.ORDINE,-1) gruppo   
                                 from PIANIFICAZIONE_RUNTIME fa
                                 inner join gruppo.magazz ar on ar.idmagazz=fa.idmagazz
                                 inner join usr_prd_lanciod la on la.idlanciod = fa.idlanciod
@@ -542,6 +542,8 @@ inner join usr_prd_fasi fa1 on fa1.idlanciod = ma.idlanciod
                                 LEFT JOIN GRUPPO.CLIFO SE ON SE.CODICE = LA.SEGNALATORE 
                                 left join gruppo.tabtipm mat on mat.idtabtipm = pf.idtabtipm
                                 LEFT JOIN PEZZI_BARRA PB ON PB.IDMAGAZZ = fa.IDMAGAZZ AND PB.IDMAGAZZLANCIO=LA.IDMAGAZZ
+                                left join finitura_articoli fiar on fiar.idmagazz = fa.idmagazz
+                                left join finitura_ordine fior on fior.finitura=fiar.finitura
                                 where fa.qtadater>0 and fa.datainizio <=TO_DATE('{1}','DD/MM/YYYY') ", dtIizio, dtFine);
 
             if (!string.IsNullOrEmpty(reparto.Trim()))

@@ -41,17 +41,17 @@ namespace Priorita.Data
         }
 
         [DataContext]
-        public void FillUSR_PRD_MOVFASI_Aperti(PrioritaDS ds, string codiceSegnalatore, string codiceReparto, string idtabfas)
+        public void FillUSR_PRD_MOVFASI_Aperti(PrioritaDS ds, string codiceSegnalatore, string codiceReparto, string idtabfas, string Articolo)
         {
             PrioritaAdapter a = new PrioritaAdapter(DbConnection, DbTransaction);
-            a.FillUSR_PRD_MOVFASI_Aperti(ds, codiceSegnalatore, codiceReparto, idtabfas);
+            a.FillUSR_PRD_MOVFASI_Aperti(ds, codiceSegnalatore, codiceReparto, idtabfas, Articolo);
         }
 
         [DataContext]
-        public void FillUSR_PRD_MOVFASI_Chiusi(PrioritaDS ds, string codiceSegnalatore, string codiceReparto, string idtabfas, int giorniIndietro)
+        public void FillUSR_PRD_MOVFASI_Chiusi(PrioritaDS ds, string codiceSegnalatore, string codiceReparto, string idtabfas, string Articolo, int giorniIndietro)
         {
             PrioritaAdapter a = new PrioritaAdapter(DbConnection, DbTransaction);
-            a.FillUSR_PRD_MOVFASI_Chiusi(ds, codiceSegnalatore, codiceReparto, idtabfas, giorniIndietro);
+            a.FillUSR_PRD_MOVFASI_Chiusi(ds, codiceSegnalatore, codiceReparto, idtabfas, Articolo, giorniIndietro);
         }
 
         [DataContext]
