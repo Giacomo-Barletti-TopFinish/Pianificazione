@@ -22,7 +22,7 @@ namespace PianificazioneFrm
         private string _nomeTabella = "Griglia";
         private PianificazioneDS _dsPianificazione;
         List<PianificazioneDS.TABFASRow> _fasi;
-        private enum Colonne { IDMAGAZZFASE, IDMAGAZZLancio, Segnalatore, ModelloLancio, Descrizione,Modello, Reparto, Fase, Materiale, Finitura, PezziBarra, Gruppo, PezziPianificati, NumeroPezzi }
+        private enum Colonne { IDMAGAZZFASE, IDMAGAZZLancio, Segnalatore, ModelloLancio, Descrizione, Modello, Reparto, Fase, Materiale, Finitura, PezziBarra, Gruppo, PezziPianificati, NumeroPezzi }
 
         public Form1()
         {
@@ -182,7 +182,10 @@ namespace PianificazioneFrm
                 riga[(int)Colonne.Materiale] = gruppo.MATERIALE;
                 riga[(int)Colonne.Finitura] = gruppo.FINITURA;
                 riga[(int)Colonne.PezziBarra] = gruppo.PEZZI.ToString();
-                riga[(int)Colonne.Gruppo] = gruppo.GRUPPO.ToString();
+                if (gruppo.MATERIALE != "OTTONE")
+                    riga[(int)Colonne.Gruppo] = (1000000 + gruppo.GRUPPO).ToString();
+                else
+                    riga[(int)Colonne.Gruppo] = gruppo.GRUPPO.ToString();
 
                 decimal totale = 0;
                 decimal totaleStatico = 0;
@@ -439,7 +442,7 @@ namespace PianificazioneFrm
                 {
                     string oPezziBarra = (string)dgvGriglia.Rows[e.RowIndex].Cells[(int)Colonne.PezziBarra].Value;
                     dgvGriglia.Rows[e.RowIndex].Cells[e.ColumnIndex + 1].Value = CalcolaBarre(oPezziBarra, valore);
-                //    AggiornaTotalePezziStatici(e.RowIndex);
+                    //    AggiornaTotalePezziStatici(e.RowIndex);
 
                 }
             }
